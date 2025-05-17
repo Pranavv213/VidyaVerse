@@ -744,28 +744,28 @@ function Home2() {
 
 <div style={{display:'flex',justifyContent:'center', gap:'5px'}}>
 
-  {buttonHight==1 && <Button variant="contained" style={{borderRadius:'0px'}} onClick={()=>{
+  {buttonHight==1 && <button class="buttonTop" style={{border:'none',display:'flex',flexWrap:'wrap',justifyContent:'center',alignItems:'center',backgroundColor:'#1876d1',color:'white'}} onClick={()=>{
     
-}}>All </Button>}
- {buttonHight!=1 && <Button variant="outlined" style={{borderRadius:'0px',border:'#1876d1 0.09px solid', color:'#1876d1'}} onClick={()=>{
+}}>All </button>}
+ {buttonHight!=1 && <button class="buttonTop"  variant="outlined" style={{border:'none', color:'#1876d1',display:'flex',flexWrap:'wrap',justifyContent:'center',alignItems:'center',background:'transparent',border:'0.2px solid #1876d1'}} onClick={()=>{
      setButtonHighlight(1)
      setCategory("")
-}}>All </Button>}
-{buttonHight==2 && <Button variant="contained" style={{borderRadius:'0px'}} onClick={()=>{
+}}>All </button>}
+{buttonHight==2 && <button class="buttonTop" style={{border:'none',display:'flex',flexWrap:'wrap',justifyContent:'center',alignItems:'center',backgroundColor:'#1876d1',color:'white'}} onClick={()=>{
     
-}}>Trending &nbsp;<WhatshotIcon style={{color:'red'}}/></Button>}
-{buttonHight!=2 && <Button variant="outlined" style={{borderRadius:'0px',border:'#1876d1 0.09px solid', color:'#1876d1'}} onClick={()=>{
+}}><l>Trending </l>&nbsp;<WhatshotIcon fontSize='small' style={{color:'red'}}/></button>}
+{buttonHight!=2 && <button class="buttonTop" variant="outlined" style={{border:'none', color:'#1876d1',background:'transparent',border:'0.2px solid #1876d1',display:'flex',flexWrap:'wrap',justifyContent:'center',alignItems:'center'}} onClick={()=>{
       setButtonHighlight(2)
       setCategory("")
       
-}}>Trending &nbsp;<WhatshotIcon style={{color:'red'}}/></Button>}
+}}><l>Trending </l>&nbsp;<WhatshotIcon fontSize='small' style={{color:'red'}}/></button>}
 
-  {buttonHight==3 && <Button variant="conatined"  style={{borderRadius:'0px',backgroundColor:'#1876d1',color:'white'}} onClick={()=>{
+  {buttonHight==3 && <button class="buttonTop" style={{border:'none',display:'flex',flexWrap:'wrap',justifyContent:'center',alignItems:'center',backgroundColor:'#1876d1',color:'white'}}  onClick={()=>{
        
-  }}>Category &nbsp;<CategoryIcon /></Button>}
+  }}>Category &nbsp;<CategoryIcon fontSize='small'/></button>}
 
 
-    {buttonHight!=3 &&  <Button variant="outlined" style={{borderRadius:'0px', border:'#1876d1 0.09px solid', color:'#1876d1'}} onClick={()=>{
+    {buttonHight!=3 &&  <button class="buttonTop" variant="outlined" style={{border:'none', color:'#1876d1',display:'flex',flexWrap:'wrap',justifyContent:'center',alignItems:'center',background:'transparent',border:'0.2px solid #1876d1'}} onClick={()=>{
       if(open==false)
       {
         setOpen(true)
@@ -777,7 +777,7 @@ function Home2() {
        setButtonHighlight(3)
       
       }
-      }>Category &nbsp;<CategoryIcon style={{color:'white'}} /></Button>}
+      }>Category &nbsp;<CategoryIcon fontSize='small' style={{color:'white'}} /></button>}
 
 </div>
 <br></br><br></br>

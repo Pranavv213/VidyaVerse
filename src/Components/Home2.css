@@ -211,3 +211,20 @@ border-style: solid;
         border-radius: 10px;
       }
       
+
+      .buttonTop {
+        min-width: 5em;
+        height:3em;
+
+
+      }
+
+      @media (min-width: 768px) {
+        .buttonTop {
+          min-width: 5em;
+          height:2em;
+          font-size: 18px;
+
+        }
+        
+      }

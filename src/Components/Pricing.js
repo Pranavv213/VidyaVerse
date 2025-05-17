@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import ResponsiveAppBar from "./ResponsiveAppBar";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -13,6 +13,8 @@ import { ethers } from 'ethers';
 import { ToastContainer, toast } from 'react-toastify';
 import { db } from "../firebase-config";
 import { useOkto } from "okto-sdk-react";
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 import {
   collection,
   getDocs,
@@ -478,88 +480,64 @@ function Pricing() {
 
   const [loading, setLoading] = useState(false);
   
-  const sendTokens = async (amountString) => {
+  const sendTokens = async (amountString, category) => {
     if (!window.ethereum) return alert("MetaMask is not available.");
-
+    if (!amountString || isNaN(amountString)) return notifyCustom("Invalid amount.", "error");
+    if (!RECEIVER_ADDRESS || !CON_TOKEN_ADDRESS || !CON_TOKEN_ABI) return notifyCustom("Contract details missing.", "error");
     try {
-      setLoading(true);
-
       const data = await getDocs(usersCollectionRef1);
-                                                  
-      let usersTemp=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-
-      
-          
-     let filteredArray=usersTemp.filter(obj => obj.Email === localStorage.getItem('email'))
-
-     if(filteredArray.length==0)
-     {
-
-      return;
-     }
-
+      const usersTemp = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  
+      const filteredArray = usersTemp.filter(obj => obj.Email === localStorage.getItem('email'));
+      if (filteredArray.length === 0) return;
+  
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
       const userAddress = await signer.getAddress();
-
+  
+      const expectedAddress = localStorage.getItem("walletAddress");
+  
+      if (!expectedAddress || userAddress.toLowerCase() !== expectedAddress.toLowerCase()) {
+        notifyCustom("Connected wallet does not match your stored wallet.", "error");
+        return;
+      }
+  
       const token = new ethers.Contract(CON_TOKEN_ADDRESS, CON_TOKEN_ABI, signer);
       const decimals = await token.decimals();
       const balance = await token.balanceOf(userAddress);
-
+  
       const amountToSend = ethers.utils.parseUnits(amountString, decimals);
-
+  
       if (balance.gte(amountToSend)) {
-        const tx = await token.transfer(RECEIVER_ADDRESS, amountToSend);
-        await tx.wait();
-
-        notifyCustom(`${amountString} CON token(s) sent successfully!`,"success")
-
-
-       const userDoc1 = doc(db, "user", filteredArray[0].id);
-      const newFields1 = { Premium:'Creator'};
-        await updateDoc(userDoc1, newFields1);
-
-        notifyCustom(`Successfully bought Creators Pack`,"success")
-
-        setTimeout(() => {
-
-          window.location.reload()
-          
-        }, 3000);
-
-
-
        
+        const tx = await token.transfer(RECEIVER_ADDRESS, amountToSend);
+        setLoading(true);
+        await tx.wait();
+        setLoading(false);
+  
+        notifyCustom(`${amountString} CON token(s) sent successfully!`, "success");
+  
+        const userDoc1 = doc(db, "user", filteredArray[0].id);
+        await updateDoc(userDoc1, { Premium: category });
+  
+        notifyCustom(`Successfully bought ${category} Pack`, "success");
+  
+        setTimeout(() => window.location.reload(), 3000);
       } else {
-
-        notifyCustom(`Insufficient CON token balance.!`,"error")
-
-        setTimeout(() => {
-
-          window.location.reload()
-          
-        }, 3000);
-
-        
+        notifyCustom(`Insufficient $CON balance.`, "error");
+        setTimeout(() => window.location.reload(), 3000);
       }
     } catch (error) {
       console.error(error);
-      notifyCustom(`Transaction failed or was rejected`,"error")
-
-      setTimeout(() => {
-
-        window.location.reload()
-        
-      }, 3000);
-
-     
+      notifyCustom(`Transaction failed or was rejected`, "error");
+      setTimeout(() => window.location.reload(), 3000);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSubmit = (amount) => {
+  const handleSubmit = (amount,category) => {
 
     if(!localStorage.getItem('walletAddress'))
     {
@@ -579,7 +557,7 @@ function Pricing() {
      
       return;
     }
-    sendTokens(amount);
+    sendTokens(amount,category);
   };
 
    const notifyCustom = (text,type) =>{
@@ -603,6 +581,28 @@ function Pricing() {
               }
 
   
+      const [premium,setPremium]=useState("Starter")
+      const getPremium=async()=>{
+
+        const data = await getDocs(usersCollectionRef1);
+                                                  
+        let usersTemp=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+
+        let filteredArray=usersTemp.filter(obj => obj.Email === localStorage.getItem('email'))
+
+        if(filteredArray[0].Premium)
+        {
+          setPremium(filteredArray[0].Premium)
+        }
+
+        
+      }
+
+      useEffect(()=>{
+
+        getPremium()
+
+      },[])
 
   return (
     <div>
@@ -610,7 +610,17 @@ function Pricing() {
        <ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="outlined" createButtonStyle="outlined" dashboardButtonStyle="outlined" />
        <br></br><br></br><br></br><br></br><br></br>
 
-       <div>
+       
+
+       {loading==true &&  <Box sx={{position:'absolute', width: '50%' ,top:'40%',left:'25%'}}>
+        <l style={{color:'white',fontSize:'20px'}}>Processing Payment...</l>
+        <br></br>
+        <br></br> 
+      <LinearProgress />
+    </Box>}
+ 
+
+      {loading==false && <div>
 
          <video
             autoPlay
@@ -631,15 +641,21 @@ function Pricing() {
 
        <div style={{display:'flex',flexWrap:'wrap',gap:'20px',justifyContent:'center'}}>
 
-       <Card sx={{  }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' ,color:'white'}}>
+       <Card sx={{  }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: premium=='Starter' ? '1px solid green' :'1px solid rgb(255,255,255,0.5)',color:'rgb(255,255,255,0.5)' ,color:'white'}}>
       
       <CardContent >
         <Typography gutterBottom  component="div" >
             <br></br>
-         <l style={{fontSize:'24px'}}> Starter</l>
+
+            <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+         <l style={{fontSize:'24px'}}> Starter</l> &nbsp; 
+         
+         {premium=="Starter" && <button style={{backgroundColor:'green', width:'8em',height:'2em',fontSize:'12px',padding:'0',border:'none',borderRadius:'10px',color:'white'}}>Current Plan</button>}
+
+         </div>
           <br></br><br></br>
 
-          <l style={{fontSize:'28px'}}><b>$0 CONS</b></l> <l style={{fontSize:'16px',color:'rgb(200,200,200'}}>/ month</l>
+          <l style={{fontSize:'28px'}}><b>0 $CON</b></l> <l style={{fontSize:'16px',color:'rgb(200,200,200'}}>/ month</l>
         </Typography>
         <br></br>  
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -708,22 +724,29 @@ function Pricing() {
       </CardContent>
       <CardActions>
         <div style={{width:'100%'}}>
-        <Button variant='outlined' style={{border:'1px solid #1876d1', color:'#1876d1',width:'10em'}}>Buy</Button>
+        <Button variant='outlined' style={{border:'1px solid green', color:'green',width:'10em'}}>Free</Button>
 
         </div>
       </CardActions>
     </Card>
 
 
-    <Card sx={{  }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' ,color:'white'}}>
+    <Card sx={{  }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: premium=='Creator' ? '1px solid green' :'1px solid rgb(255,255,255,0.5)',color:'rgb(255,255,255,0.5)'}}>
       
       <CardContent >
         <Typography gutterBottom  component="div" >
             <br></br>
-         <l style={{fontSize:'24px'}}> Creator</l>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <l style={{fontSize:'24px',color:'white'}}> Creator</l> &nbsp; 
+            
+            {premium=="Creator" && <button style={{backgroundColor:'green', width:'8em',height:'2em',fontSize:'12px',padding:'0',border:'none',borderRadius:'10px',color:'white'}}>Current Plan</button>}
+            
+            
+            
+            </div>
           <br></br><br></br>
 
-          <l style={{fontSize:'28px'}}><b>$100 CONS</b></l> <l style={{fontSize:'16px',color:'rgb(200,200,200'}}>/ month</l>
+          <l style={{fontSize:'28px',color:'white'}}><b>100 $CON</b></l> <l style={{fontSize:'16px',color:'white'}}>/ month</l>
         </Typography>
         <br></br>  
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -791,22 +814,29 @@ function Pricing() {
       </CardContent>
       <CardActions>
         <div style={{width:'100%'}}>
-        <Button variant='outlined' style={{border:'1px solid #1876d1', color:'#1876d1',width:'10em'}} onClick={()=>{handleSubmit("100")}}>Buy</Button>
+        {premium!="Creator"  && <Button variant='outlined' style={{border:'1px solid #1876d1', color:'#1876d1',width:'10em'}} onClick={()=>{handleSubmit("100","Creator")}}>Buy</Button>}
 
         </div>
       </CardActions>
     </Card>
 
 
-    <Card sx={{  }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' ,color:'white'}}>
+    <Card sx={{  }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: premium=='Pro' ? '1px solid green' :'1px solid rgb(255,255,255,0.5)',color:'rgb(255,255,255,0.5)' ,color:'white'}}>
       
       <CardContent >
         <Typography gutterBottom  component="div" >
             <br></br>
-         <l style={{fontSize:'24px'}}> Pro</l>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <l style={{fontSize:'24px'}}> Pro</l> &nbsp; 
+            
+            {premium=="Pro" && <button style={{backgroundColor:'green', width:'8em',height:'2em',fontSize:'12px',padding:'0',border:'none',borderRadius:'10px',color:'white'}}>Current Plan</button>} 
+            
+            
+            
+            </div>
           <br></br><br></br>
 
-          <l style={{fontSize:'28px'}}><b>$150 CONS</b></l> <l style={{fontSize:'16px',color:'rgb(200,200,200'}}>/ month</l>
+          <l style={{fontSize:'28px'}}><b>150 $CON</b></l> <l style={{fontSize:'16px',color:'rgb(200,200,200'}}>/ month</l>
         </Typography>
         <br></br>  
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -874,7 +904,8 @@ function Pricing() {
       </CardContent>
       <CardActions>
         <div style={{width:'100%'}}>
-        <Button variant='outlined' style={{border:'1px solid #1876d1', color:'#1876d1',width:'10em'}}>Buy</Button>
+
+        {premium!="Pro" && <Button variant='outlined' style={{border:'1px solid #1876d1', color:'#1876d1',width:'10em'}} onClick={()=>{handleSubmit("150","Pro")} }>Buy</Button>}
 
         </div>
       </CardActions>
@@ -882,7 +913,7 @@ function Pricing() {
 
 
     </div>
-    </div>
+    </div>}
 
 <br></br><br></br><br></br>
  <ToastContainer style={{zIndex:'99999999999'}}/>

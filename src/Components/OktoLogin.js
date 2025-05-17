@@ -14,6 +14,8 @@ import a2e from '../assets/images/a2e.gif'
 import { ToastContainer, toast } from 'react-toastify';
 import { signInWithGoogle } from "../firebase-config";
 import { ethers } from "ethers";
+import metamask from '../assets/images/metamask.png'
+import eventBackgroundVideo from '../assets/images/eventBackgroundVideo.mp4'
 
 import { db } from "../firebase-config";
 import {
@@ -84,7 +86,7 @@ function OktoLogin() {
                     
 
       const notify = () => toast("Sign in to start earning!",{
-            position: "bottom-center",
+            position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: false,
@@ -132,7 +134,7 @@ function OktoLogin() {
       }}>Sign In</Button></div>
     </div>
       <video autoPlay loop muted playsInline className="background-video">
-        <source src="/background.mov" type="video/mp4" />
+        <source src={eventBackgroundVideo} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
       <div className="content">
@@ -157,13 +159,15 @@ function OktoLogin() {
         </Typography>
 
           <br></br>
-          <button onClick={signInWithGoogle}>
+          <button onClick={signInWithGoogle} class="login-with-google-btn" style={{color:'black',borderRadius:'7em'}}>
         Sign in with Google
       </button>
-      <br></br>
-      <button onClick={connectWallet}>
-       Connect Wallet
-      </button>        
+      <br></br><br></br>
+      <l style={{color:'white'}}>Or</l>
+      <br></br><br></br>
+      <div class="button-17" style={{height:'3em',borderRadius:'7em'}} onClick={connectWallet}>
+       <img src={metamask} style={{width:'2em'}} /> &nbsp; Connect Wallet 
+      </div>        
         </CardContent>
       </CardActionArea>
     </Card>

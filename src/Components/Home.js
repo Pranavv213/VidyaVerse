@@ -125,6 +125,10 @@ function Home() {
                 {
                   localStorage.setItem('email',localStorage.getItem('email'))
                   localStorage.setItem('coins',filteredArray[0].Coins)
+                  if(filteredArray[0].WalletAddress)
+                  {
+                    localStorage.setItem('walletAddress',filteredArray[0].WalletAddress)
+                  }
                   if(filteredArray[0].ProfileImage)
                   {
                     localStorage.setItem('profileImg',filteredArray[0].ProfileImage)

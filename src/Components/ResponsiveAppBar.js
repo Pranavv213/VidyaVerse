@@ -77,8 +77,8 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
     setAnchorElUser(null);
   };
 
-   const notifyCustom = (text,type) => toast(text,{
-                position: "top-right",
+   const notifyCustom = (text,type,position) => toast(text,{
+                position: position ? position : "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -97,7 +97,11 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
                     return;
                   }
                   if (!window.ethereum) {
-                    alert("MetaMask not detected!");
+
+                    notifyCustom("MetaMask not detected!","error","top-center")
+                    setTimeout(()=>{
+                      window.location.href="https://metamask.io"
+                  },3000)
                     return;
                   }
               
@@ -134,7 +138,9 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
                           await updateDoc(userDoc1, newFields1);
                           localStorage.getItem('walletAddress',address)
 
-                          alert('saved to databse')
+                          notifyCustom('Wallet connected!',"success")
+
+                         
 
 
 
@@ -251,7 +257,7 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
               textDecoration: 'none',
             }}
           >
-            <img src={logo} style={{width:'2em'}} ></img>
+            {/* <img src={logo} style={{width:'2em'}} ></img> */}
           
              
           </Typography>
@@ -270,13 +276,14 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
 
 <div class="flexWala">
 
+<Button style={{cursor:'pointer'}}><NotificationsIcon/></Button>
 
-          <Button style={{cursor:'pointer'}}><NotificationsIcon/></Button>
+         
 
          
 
 
-          <Button style={{cursor:'pointer'}} 
+          <Button variant='outlined' 
               onClick={connectWallet}
             >{walletAddress
               ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`
