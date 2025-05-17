@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import AppBar from '@mui/material/AppBar';
 import { useOkto } from "okto-sdk-react";
 import Box from '@mui/material/Box';
@@ -29,9 +29,25 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { ToastContainer, toast } from 'react-toastify';
 import GroupIcon from '@mui/icons-material/Group';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { ethers } from "ethers";
+
+import { db } from "../firebase-config";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  serverTimestamp
+} from "firebase/firestore";
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+const usersCollectionRef1 = collection(db, "user");
+
+
 
 function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,dashboardButtonStyle,chatButtonStyle}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -42,6 +58,9 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
 
    const { showWidgetModal, closeModal } = useOkto();
    const { createWallet, getUserDetails, getPortfolio } = useOkto();
+
+   const [walletAddress, setWalletAddress] = useState(null);
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -70,6 +89,72 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
                 type:type
                
                 });
+
+                const connectWallet = async () => {
+
+                  if(localStorage.getItem('walletAddress') && localStorage.getItem('walletAddress')==localStorage.getItem('email'))
+                  {
+                    return;
+                  }
+                  if (!window.ethereum) {
+                    alert("MetaMask not detected!");
+                    return;
+                  }
+              
+                  try {
+                    // Create provider and request accounts
+
+                    let provider
+                    let signer
+                    let address
+               
+                        provider = new ethers.providers.Web3Provider(window.ethereum);
+                        await provider.send("eth_requestAccounts", []);
+                        signer = provider.getSigner();
+                        address = await signer.getAddress();
+                        setWalletAddress(address);
+               
+
+                   
+
+                    const data = await getDocs(usersCollectionRef1);
+                                                                  
+                    let usersTemp=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+
+                    let filteredArray=usersTemp.filter(obj=>obj.Email==localStorage.getItem('email'))
+
+                    if(filteredArray.length!=0 && (!filteredArray[0].WalletAddress || filteredArray[0].WalletAddress.toLowerCase()!=address.toLowerCase()))
+
+                      {
+                        localStorage.setItem('walletAddress',address)
+
+                          const userDoc1 = doc(db, "user", filteredArray[0].id);
+                          const newFields1 = { WalletAddress:address};
+                             
+                          await updateDoc(userDoc1, newFields1);
+                          localStorage.getItem('walletAddress',address)
+
+                          alert('saved to databse')
+
+
+
+                          window.location.reload()
+
+
+                      }
+
+                     
+
+            
+
+                    
+                  } catch (error) {
+                    console.error("Error connecting wallet:", error);
+                  }
+                };
+               
+                
+              
   
 
   return (
@@ -191,9 +276,11 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
          
 
 
-          <Button style={{cursor:'pointer'}} onClick={()=>{
-              showWidgetModal()
-            }}><AccountBalanceWalletIcon /></Button>
+          <Button style={{cursor:'pointer'}} 
+              onClick={connectWallet}
+            >{walletAddress
+              ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`
+              : localStorage.getItem('walletAddress') ? `${localStorage.getItem('walletAddress').slice(0, 6)}...${localStorage.getItem('walletAddress').slice(-4)}`: `Connect Wallet` }</Button>
 
           {localStorage.getItem('email') && !localStorage.getItem('profileImg') && <Button  onClick={()=>{
             setShowDashboardDiv(true)

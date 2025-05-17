@@ -27,10 +27,10 @@ export const signInWithGoogle = () => {
       const email = result.user.email;
       const profilePic = result.user.photoURL;
       console.log(profilePic);
-      localStorage.setItem("name", name);
+      
       localStorage.setItem("email", email);
       localStorage.setItem("profilePic", profilePic);
-      window.location.reload();
+      window.location.href="/home"
     })
     .catch((error) => {
       console.log(error);

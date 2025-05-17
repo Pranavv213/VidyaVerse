@@ -12,8 +12,23 @@ import Button from '@mui/material/Button';
 import logo from '../assets/images/logo.png'
 import a2e from '../assets/images/a2e.gif'
 import { ToastContainer, toast } from 'react-toastify';
+import { signInWithGoogle } from "../firebase-config";
+import { ethers } from "ethers";
+
+import { db } from "../firebase-config";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  serverTimestamp
+} from "firebase/firestore";
 
 import './OktoLogin.css'
+
+   const usersCollectionRef1 = collection(db, "user");
 
 function OktoLogin() {
 
@@ -25,12 +40,48 @@ function OktoLogin() {
 
     const buttonBRef = useRef(null);
 
+    const [walletAddress, setWalletAddress] = useState(null);
+
     const handleButtonClickA = () => {
       // Programmatically click Button B
       if (buttonBRef.current) {
         buttonBRef.current.click();
       }
     };
+
+
+     const connectWallet = async () => {
+    
+                      
+                      if (!window.ethereum) {
+                        alert("MetaMask not detected!");
+                        return;
+                      }
+                  
+                      try {
+                        // Create provider and request accounts
+    
+                        let provider
+                        let signer
+                        let address
+                   
+                            provider = new ethers.providers.Web3Provider(window.ethereum);
+                            await provider.send("eth_requestAccounts", []);
+                            signer = provider.getSigner();
+                            address = await signer.getAddress();
+                            setWalletAddress(address);
+                            localStorage.setItem("email", address);
+                            localStorage.setItem('walletAddress',address)
+                            window.location.href="/home"
+   
+    
+                          }
+                      catch (error) {
+                        console.error("Error connecting wallet:", error);
+                      }
+                    };
+                   
+                    
 
       const notify = () => toast("Sign in to start earning!",{
             position: "bottom-center",
@@ -106,28 +157,13 @@ function OktoLogin() {
         </Typography>
 
           <br></br>
-          <GoogleLogin 
-      onSuccess={handleGoogleLogin}
-      onError={(error) => console.error("Login Failed", error)}
-      render={(renderProps) => (
-        <button ref={buttonBRef}
-          onClick={renderProps.onClick}
-          disabled={renderProps.disabled}
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#4285F4", // Button color
-            color: "#fff", // Text color
-            border: "none",
-            borderRadius: "5px",
-            fontSize: "16px",
-            cursor: "pointer",
-          }}
-        >
-          Login
-        </button>
-      )}
-    />
-        
+          <button onClick={signInWithGoogle}>
+        Sign in with Google
+      </button>
+      <br></br>
+      <button onClick={connectWallet}>
+       Connect Wallet
+      </button>        
         </CardContent>
       </CardActionArea>
     </Card>

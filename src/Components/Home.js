@@ -104,28 +104,26 @@ function Home() {
         
       }
 
-      getUserDetails().then((result)=>{
-
-      }).catch(()=>{
-
-
-        console.log("/oktologin")
+      if(!localStorage.getItem('email'))
+      {
         window.location.href="/oktologin"
-      })
+      }
+
+     
 
 
         getUsers().then((usersTemp)=>{
 
           
-         getUserDetails().then((result)=>{
+        
 
 
           console.log("usersTemp",usersTemp)
-          let filteredArray=usersTemp.filter(obj=>obj.Email==result.email)
+          let filteredArray=usersTemp.filter(obj=>obj.Email==localStorage.getItem('email'))
                 console.log("filteredArray",filteredArray)
                 if(filteredArray.length!=0)
                 {
-                  localStorage.setItem('email',result.email)
+                  localStorage.setItem('email',localStorage.getItem('email'))
                   localStorage.setItem('coins',filteredArray[0].Coins)
                   if(filteredArray[0].ProfileImage)
                   {
@@ -145,7 +143,12 @@ function Home() {
                   
                 }
                 else{
-                  localStorage.setItem('email',result.email)
+               
+
+                
+
+                   
+                 
                   localStorage.setItem('coins',100)
                   
                      const timer = setTimeout(() => {
@@ -157,7 +160,7 @@ function Home() {
                 }
 
 
-              })})
+            })
       },[])
   return (
     <div >
@@ -201,7 +204,7 @@ function Home() {
           <p>Your account has been created.</p>
           <p>Click on Get Started to continue.</p>
           <br></br>
-          <center>    {coins==0 && <button class="button-85" onClick={async()=>{
+          <center>    {coins==0 && <button class="button-85" style={{height:'3em'}} onClick={async()=>{
     
     if( localStorage.getItem('email') )
     {
@@ -213,20 +216,42 @@ function Home() {
                     
                        
       
-                    
-      
-        await addDoc(usersCollectionRef1, { Email:localStorage.getItem('email'), Coins: 100, EventsCreated: [], EventsRegistered: [], EventsApproved:[],EventsAttended: []});
-        setCoins(100)
-
-        if(localStorage.getItem('currentEvent'))
+        if(localStorage.getItem('walletAddress') && localStorage.getItem('walletAddress')==localStorage.getItem('email'))
         {
+          await addDoc(usersCollectionRef1, { Email:localStorage.getItem('email'), Coins: 100, EventsCreated: [], EventsRegistered: [], EventsApproved:[],EventsAttended: [],WalletAddress:localStorage.getItem('email')});
+          setCoins(100)
 
-          window.location.href=`event/${localStorage.getItem('currentEvent')}`
+          if(localStorage.getItem('currentEvent'))
+            {
+    
+              window.location.href=`event/${localStorage.getItem('currentEvent')}`
+            }
+    
+            else{
+              window.location.href = '/home2';
+            }
         }
+        
+        else if(localStorage.getItem('email'))
 
-        else{
-          window.location.href = '/home2';
-        }
+          {
+            await addDoc(usersCollectionRef1, { Email:localStorage.getItem('email'), Coins: 100, EventsCreated: [], EventsRegistered: [], EventsApproved:[],EventsAttended: []});
+            setCoins(100)
+
+            if(localStorage.getItem('currentEvent'))
+              {
+      
+                window.location.href=`event/${localStorage.getItem('currentEvent')}`
+              }
+      
+              else{
+                window.location.href = '/home2';
+              }
+          }
+      
+       
+
+      
         
         
        
