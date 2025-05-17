@@ -1,0 +1,17 @@
+.flexWala{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    gap:'10px'
+}
+
+.dashboardDivMenu{
+    background-color: transparent;
+}
+
+.dashboardDivMenu:hover{
+    background-color: #1876d1;
+    color:white
+
+
+}
