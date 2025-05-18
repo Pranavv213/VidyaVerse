@@ -47,6 +47,458 @@ import eventpageEntireBackground from '../assets/images/eventBackground5.gif'
 import CloseIcon from '@mui/icons-material/Close';
 import VideoCallIcon from '@mui/icons-material/VideoCall';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { ethers } from 'ethers';
+import LinearProgress from '@mui/material/LinearProgress';
+
+const CON_TOKEN_ADDRESS = '0x594BC5879948faf0F9014aEB37E7a5F7B051f4c1';
+const CON_TOKEN_ABI = 
+  [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "approve",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "burn",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "burnFrom",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "initialOwner",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "allowance",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "needed",
+          "type": "uint256"
+        }
+      ],
+      "name": "ERC20InsufficientAllowance",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "balance",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "needed",
+          "type": "uint256"
+        }
+      ],
+      "name": "ERC20InsufficientBalance",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "approver",
+          "type": "address"
+        }
+      ],
+      "name": "ERC20InvalidApprover",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "receiver",
+          "type": "address"
+        }
+      ],
+      "name": "ERC20InvalidReceiver",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "ERC20InvalidSender",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        }
+      ],
+      "name": "ERC20InvalidSpender",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "Approval",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "mint",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "transfer",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "Transfer",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "transferFrom",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        }
+      ],
+      "name": "allowance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "balanceOf",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "decimals",
+      "outputs": [
+        {
+          "internalType": "uint8",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "name",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "symbol",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalSupply",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+
+
+
 
 
 
@@ -56,6 +508,7 @@ function EventPage() {
 
   const { showWidgetModal, closeModal } = useOkto();
   const { createWallet, getUserDetails, getPortfolio } = useOkto();
+  const [loading, setLoading] = useState(false);
   
 
     // Store answers as an array
@@ -88,8 +541,128 @@ function EventPage() {
       })
 
   }
+
+   const notifyCustom = (text,type) =>{
+      
+      toast(text,{
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: false,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "dark",
+                  type:type
+                 
+                  });
   
-    
+                  
+  
+  
+                }
+  
+  
+
+                const sendTokens = async (result) => {
+                  try {
+                    // Fetch users from Firestore
+
+
+                   let RECEIVER_ADDRESS = '';
+
+                   if(events.length!=0 && events[0].PriceRecieverAddress)
+                   {
+                    RECEIVER_ADDRESS=events[0].PriceRecieverAddress
+                   }
+                    const data = await getDocs(usersCollectionRef1);
+                    const users = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+                    const userEmail = localStorage.getItem('email');
+                    const filteredUser = users.find((user) => user.Email === userEmail);
+                
+                    if (!filteredUser) return;
+                
+                    // Check if user already registered
+                    if (filteredUser.EventsRegistered.includes(event_id)) {
+                      notify("Already Registered", "error");
+                      return;
+                    }
+                
+                    const amountString = events.length ? events[0].Price : null;
+                    if (!window.ethereum) return alert("MetaMask is not available.");
+                    if (!amountString || isNaN(amountString)) return notifyCustom("Invalid amount.", "error");
+                    if (!RECEIVER_ADDRESS || !CON_TOKEN_ADDRESS || !CON_TOKEN_ABI) return notifyCustom("Contract details missing.", "error");
+                
+                    // Connect to MetaMask
+                    const provider = new ethers.providers.Web3Provider(window.ethereum);
+                    await provider.send("eth_requestAccounts", []);
+                    const signer = provider.getSigner();
+                    const userAddress = await signer.getAddress();
+                
+                    const expectedAddress = localStorage.getItem("walletAddress");
+                    if (!expectedAddress || userAddress.toLowerCase() !== expectedAddress.toLowerCase()) {
+                      notifyCustom("Connected wallet does not match your stored wallet.", "error");
+                      return;
+                    }
+                
+                    // Prepare token transaction
+                    const token = new ethers.Contract(CON_TOKEN_ADDRESS, CON_TOKEN_ABI, signer);
+                    const decimals = await token.decimals();
+                    const balance = await token.balanceOf(userAddress);
+                    const amountToSend = ethers.utils.parseUnits(amountString, decimals);
+                
+                    if (balance.lt(amountToSend)) {
+                      notifyCustom("Insufficient balance.", "error");
+                      return setTimeout(() => window.location.reload(), 3000);
+                    }
+                
+                    // Execute token transfer
+                    const tx = await token.transfer(RECEIVER_ADDRESS, amountToSend);
+                    setLoading(true);
+                    await tx.wait();
+                    setLoading(false);
+                
+                    // Firestore updates
+                    if (!userEmail) {
+                      notify("Please log in first", "error");
+                      localStorage.setItem("currentEvent", event_id);
+                      return;
+                    }
+                
+                    const eventDocRef = doc(db, "events", event_id);
+                    const updatedEventData = {
+                      ...events[0],
+                      Attendees: [...events[0].Attendees, result],
+                      Registrations: [...events[0].Registrations, result],
+                      AttendeesCount: events[0].AttendeesCount + 1,
+                      RegistrationsCount: events[0].RegistrationsCount + 1,
+                    };
+                    await updateDoc(eventDocRef, updatedEventData);
+                
+                    const userDocRef = doc(db, "user", filteredUser.id);
+                    const updatedUserData = {
+                      ...filteredUser,
+                      EventsRegistered: [...filteredUser.EventsRegistered, event_id],
+                      EventsApproved: [...filteredUser.EventsApproved, event_id], // Fixed typo here
+                    };
+                    await updateDoc(userDocRef, updatedUserData);
+                
+                    notify("Registration complete!", "success");
+                
+                    if (events.length) {
+                      notifyCustom(`Successfully booked ticket for ${events[0].Name}!`, "success");
+                    }
+                
+                    setTimeout(() => window.location.reload(), 3000);
+                  } catch (error) {
+                    console.error("Transaction Error:", error);
+                    notifyCustom("Transaction failed or was rejected", "error");
+                    setTimeout(() => window.location.reload(), 3000);
+                  } finally {
+                    setLoading(false);
+                  }
+                };
+                
 
 
 
@@ -116,8 +689,19 @@ function EventPage() {
 
   console.log(result);
 
-    console.log(result); // You can send this to backend or do whatever you need
-    updateUser(result)
+    console.log(result); 
+
+    if(events.length!=0 && events[0].Price)
+    {
+      sendTokens(result)
+    }
+
+    else
+    {
+      updateUser(result)
+    }
+   
+    
   };
 
 
@@ -199,6 +783,8 @@ function EventPage() {
 
           }
 
+
+
           const data = await getDocs(usersCollectionRef1);
                                      
           let usersTemp=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
@@ -272,8 +858,15 @@ function EventPage() {
       <br></br>
       <ResponsiveAppBar   homeButtonStyle="outlined" earnButtonStyle="outlined" createButtonStyle="outlined" dashboardButtonStyle="outlined"/>
       <br></br> <br></br>  <br></br> <br></br>  <br></br> <br></br>
+
+      {loading==true &&  <Box sx={{position:'absolute', width: '50%' ,top:'40%',left:'25%',zIndex:'9999999999999'}}>
+        <l style={{color:'white',fontSize:'20px'}}>Processing Payment...</l>
+        <br></br>
+        <br></br> 
+      <LinearProgress />
+    </Box>}
   
-        <div className="item" >
+       {loading==false && <div className="item" >
 
 <div className="item1">
 
@@ -337,6 +930,17 @@ function EventPage() {
     <span style={{ color: 'white' }}>
       Registrations:&nbsp;
       {events.length !== 0 && events[0].RegistrationsCount}
+    </span>
+    <br></br>
+    <span style={{ color: 'white' }}>
+
+    {events.length !== 0 && events[0].Price && <div  style={{display:'flex',backgroundColor:'red',paddingRight:'1em',paddingLeft:'1em',height:'2em',fontSize:'12px',border:'none',borderRadius:'10px',color:'white',alignItems:'center'}}><l>Price: ${events[0].Price} USD</l></div>
+}
+
+{events.length !== 0 && !events[0].Price && <div  style={{display:'flex',backgroundColor:'red',paddingRight:'1em',paddingLeft:'1em',height:'2em',fontSize:'12px',border:'none',borderRadius:'10px',color:'white',alignItems:'center'}}><l>FREE</l></div>
+}
+     
+      
     </span>
   </div>
 </div>
@@ -443,6 +1047,7 @@ function EventPage() {
     </div>
     
     </div>
+}
 
   
        <br></br>
@@ -509,7 +1114,7 @@ function EventPage() {
 
 
    <center >
-  <div style={{width:'35vh',background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' ,padding:'2em',border:'2px solid grey',borderRadius:'10px'}}>
+  {loading==false && <div style={{width:'35vh',background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' ,padding:'2em',border:'2px solid grey',borderRadius:'10px'}}>
 
   <div style={{textAlign:'right'}}>
      <CancelIcon style={{color:'white'}} onClick={()=>{
@@ -672,6 +1277,7 @@ function EventPage() {
        
         
         }
+  
 
 <center>
   
@@ -687,9 +1293,11 @@ function EventPage() {
       </center>
 
       </div>
+}
       </center>
       <br></br><br></br> <br></br><br></br> <br></br><br></br> <br></br><br></br> <br></br><br></br>
     </div>
+    
    
 }
 
