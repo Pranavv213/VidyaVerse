@@ -91,6 +91,9 @@ function AdminCreate() {
     const [category,setCategory]=useState("")
     const [showShowCategory,setShowCategory]=useState(false)
     const [categoryColor,setCategoryColor]=useState(["white,white,white,white,white,white,white,white,white,white"])
+    const [priceShowDiv,setPriceShowDiv]=useState(false)
+    const [price,setPrice]=useState("")
+    const [priceRecieverAddress,setPriceRecieverAddress]=useState("")
        const { createWallet, getUserDetails, getPortfolio } = useOkto();
 
         const editor = useEditor({
@@ -177,18 +180,38 @@ function AdminCreate() {
 
       if(!isOnline)
       {
-        const result=await addDoc(usersCollectionRef, { Name: eventName, Image:imageUrl,Address:selectedAddress,StartDateTime:startDateTime,EndDateTime:endDateTime,Capacity:capacity,Description: text, Creator:localStorage.getItem('email') ,Questions:questionsArray,Attendees:[],Registrations:[],AttendeesCount:0,RegistrationsCount:0,Category:category,Timestamp:now});
-
-        console.log(result.id)
-
-        if(user.length!=0)
+        if(price.length!=0 && priceRecieverAddress.length!=0)
         {
-          updateUser(result.id)
+          const result=await addDoc(usersCollectionRef, { Name: eventName, Image:imageUrl,Address:selectedAddress,StartDateTime:startDateTime,EndDateTime:endDateTime,Capacity:capacity,Description: text, Creator:localStorage.getItem('email') ,Questions:questionsArray,Attendees:[],Registrations:[],AttendeesCount:0,RegistrationsCount:0,Category:category,Timestamp:now,Price:price, PriceRecieverAddress:priceRecieverAddress});
+
+          if(user.length!=0)
+            {
+              updateUser(result.id)
+            }
+
+          console.log(result.id)
         }
+        else
+        {
+          const result=await addDoc(usersCollectionRef, { Name: eventName, Image:imageUrl,Address:selectedAddress,StartDateTime:startDateTime,EndDateTime:endDateTime,Capacity:capacity,Description: text, Creator:localStorage.getItem('email') ,Questions:questionsArray,Attendees:[],Registrations:[],AttendeesCount:0,RegistrationsCount:0,Category:category,Timestamp:now });
+
+          if(user.length!=0)
+            {
+              updateUser(result.id)
+            }
+
+          console.log(result.id)
+        }
+       
+
+      
       }
       else
       {
-        const result=await addDoc(usersCollectionRef, { Name: eventName,Type:"online", Image:imageUrl,Address:moderatorLink+"{}"+guestLink,StartDateTime:startDateTime,EndDateTime:endDateTime,Capacity:capacity,Description: text, Creator:localStorage.getItem('email') ,Questions:questionsArray,Attendees:[],Registrations:[],AttendeesCount:0,RegistrationsCount:0,Category:category,Timestamp:now});
+
+        if(price.length!=0 && priceRecieverAddress.length!=0)
+        {
+          const result=await addDoc(usersCollectionRef, { Name: eventName,Type:"online", Image:imageUrl,Address:moderatorLink+"{}"+guestLink,StartDateTime:startDateTime,EndDateTime:endDateTime,Capacity:capacity,Description: text, Creator:localStorage.getItem('email') ,Questions:questionsArray,Attendees:[],Registrations:[],AttendeesCount:0,RegistrationsCount:0,Category:category,Timestamp:now,Price:price, PriceRecieverAddress:priceRecieverAddress});
 
         console.log(result.id)
 
@@ -196,6 +219,11 @@ function AdminCreate() {
         {
           updateUser(result.id)
         }
+        }
+        else{
+          const result=await addDoc(usersCollectionRef, { Name: eventName,Type:"online", Image:imageUrl,Address:moderatorLink+"{}"+guestLink,StartDateTime:startDateTime,EndDateTime:endDateTime,Capacity:capacity,Description: text, Creator:localStorage.getItem('email') ,Questions:questionsArray,Attendees:[],Registrations:[],AttendeesCount:0,RegistrationsCount:0,Category:category,Timestamp:now});
+        }
+        
       }
         
        
@@ -510,18 +538,34 @@ isOnline && <div class="location"  style={{ cursor:'pointer',background: "rgba(2
 
          
           
-          <div class="capacity" style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'100%'}} onClick={(e)=>{
+          <div class="capacity" style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'100%'}} onClick={async(e)=>{
 
             e.stopPropagation()
-            notify("Subscribe to Premium for paid events","dark","top-right","error")
 
-            setTimeout(()=>{
-                window.location.href="/pricing"
-            },3000)
+             const data = await getDocs(usersCollectionRef1);
+                                                      
+              let usersTemp=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+                 
+               let filteredArray=usersTemp.filter(obj => obj.Email === localStorage.getItem('email'))
+
+               if(filteredArray.length!=0 && filteredArray[0].Premium!=null)
+               {
+                setPriceShowDiv(true)
+               }
+               else
+               {  
+                notify("Subscribe to Premium for paid events","dark","top-right","error")
+
+                setTimeout(()=>{
+                    window.location.href="/pricing"
+                },3000)
+
+               }
+           
 }}><div  style={{display:'flex',alignItems:'center',width:'100%'}} ><ConfirmationNumberIcon fontSize='small'/>
         &nbsp;<l>Tickets</l></div>
         <div style={{display:'flex',alignItems:'right'}}> &nbsp;
-        <l style={{color:'#1876d1'}}>Free</l></div>
+        <l style={{color:'#1876d1'}}>{price.length==0 ? 'Free' : 'Paid'}</l></div>
                     </div>
 
 
@@ -1095,6 +1139,80 @@ isOnline && <div class="location"  style={{ cursor:'pointer',background: "rgba(2
           </center>
 
           </div>
+          </center>
+        </div>}
+
+
+        {priceShowDiv &&  <div style={{
+            width: '100%', 
+            minHeight:'100%',
+           
+            padding: '20px', 
+            position:'fixed',
+            top:'0px',
+            left:'50%',
+            
+           color:'white',
+            backgroundColor: 'black', 
+            border: '2px solid #1876d1',
+            borderRadius:'8px',
+            
+            textAlign: 'center', 
+            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
+          
+            transform: 'translateX(-50%)',
+            zIndex: 99999999,
+            animation: 'popupAnimation 0.5s ease',
+            backgroundImage:`url(${eventpageBackground})`,
+            backgroundSize: 'cover', 
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat',
+        }}>
+            <br></br> <br></br> <br></br> <br></br> <br></br> <br></br>
+            <center>
+            <div style={{backgroundColor:'black',padding:'2em',width:'18em', border: '1px solid #1876d1' ,borderRadius:'8px'}}>
+          <h2 style={{color:'white'}}>Tickets</h2>
+         
+          <br></br><br></br><br></br>
+          <center>
+          <input style={{fontSize:'20px',width:'10em',backgroundColor:'black',borderTop:'none',borderLeft:'none',borderRight:'none',color:'white'}}onChange={(e)=>{
+            setPrice(e.target.value)
+          }} placeholder='Enter Price' value={price}></input>
+          </center>
+          <br></br>
+          <center>
+          <input style={{fontSize:'20px',width:'10em',backgroundColor:'black',borderTop:'none',borderLeft:'none',borderRight:'none',color:'white'}}onChange={(e)=>{
+           setPriceRecieverAddress(e.target.value)
+          }} placeholder='Receiver Wallet Address' value={priceRecieverAddress}></input>
+          </center>
+          <br></br>
+         
+          <br></br><l></l>
+          <div >
+         
+              </div>
+     <br></br><br></br>
+          <center>
+          <Button variant="outlined" style={{color:'red',border:'0.5px solid red'}} onClick={()=>{
+            
+            setPrice("")
+            setPriceRecieverAddress("")
+            setPriceShowDiv(false)
+           
+          }}>Cancel</Button>
+          &nbsp;  &nbsp;   &nbsp;  
+          <Button variant="contained"  onClick={()=>{
+            toast.dismiss()
+            setPriceShowDiv(false)
+           
+          }}>Save</Button>
+
+          <br></br>
+          
+          </center>
+
+          </div>
+
           </center>
         </div>}
  

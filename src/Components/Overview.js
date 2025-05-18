@@ -118,6 +118,9 @@ function AdminCreate() {
     const [type, setType] = useState("");
     const [moderatorLink,setModeratorLink]=useState("")
     const [guestLink,setGuestLink]=useState("")
+        const [priceShowDiv,setPriceShowDiv]=useState(false)
+        const [price,setPrice]=useState("")
+        const [priceRecieverAddress,setPriceRecieverAddress]=useState("")
     
        const { createWallet, getUserDetails, getPortfolio } = useOkto();
 
@@ -206,7 +209,7 @@ function AdminCreate() {
                      const userDoc = doc(db, "events", event_id);
        
                    
-                       const newFields = { Name: eventName, Description: eventDescription, Creator:events[0].Creator ,Questions:questions,Attendees:events[0].Attendees,Registrations:events[0].Registrations,AttendeesCount:events[0].AttendeesCount,RegistrationsCount:events[0].RegistrationsCount,StartDateTime:startDateTime,EndDateTime:endDateTime,Capacity:capacity,Address:selectedAddress,Image:imageUrl};
+                       const newFields = { Name: eventName, Description: eventDescription, Creator:events[0].Creator ,Questions:questions,Attendees:events[0].Attendees,Registrations:events[0].Registrations,AttendeesCount:events[0].AttendeesCount,RegistrationsCount:events[0].RegistrationsCount,StartDateTime:startDateTime,EndDateTime:endDateTime,Capacity:capacity,Address:selectedAddress,Image:imageUrl,Price:price,PriceRecieverAddress:priceRecieverAddress};
                        await updateDoc(userDoc, newFields);
                        window.location.reload();
                  
@@ -274,10 +277,21 @@ function AdminCreate() {
             {
 
 
+              let newFields;
                 const userDoc = doc(db, "events", event_id);
+
+                if(price.length==0)
+                {
+                 newFields = { Name: eventName, Type:"online",Description: text, Creator:events[0].Creator ,Questions:questions,Attendees:events[0].Attendees,Registrations:events[0].Registrations,AttendeesCount:events[0].AttendeesCount,RegistrationsCount:events[0].RegistrationsCount,StartDateTime:startDateTime,EndDateTime:endDateTime,Capacity:capacity,Address:moderatorLink+"{}"+guestLink,Image:imageUrl};
+                }
+
+                else
+                {
+                  newFields = { Name: eventName, Type:"online",Description: text, Creator:events[0].Creator ,Questions:questions,Attendees:events[0].Attendees,Registrations:events[0].Registrations,AttendeesCount:events[0].AttendeesCount,RegistrationsCount:events[0].RegistrationsCount,StartDateTime:startDateTime,EndDateTime:endDateTime,Capacity:capacity,Address:moderatorLink+"{}"+guestLink,Image:imageUrl,Price:price,PriceRecieverAddress:priceRecieverAddress};
+                }
         
                     
-        const newFields = { Name: eventName, Type:"online",Description: text, Creator:events[0].Creator ,Questions:questions,Attendees:events[0].Attendees,Registrations:events[0].Registrations,AttendeesCount:events[0].AttendeesCount,RegistrationsCount:events[0].RegistrationsCount,StartDateTime:startDateTime,EndDateTime:endDateTime,Capacity:capacity,Address:moderatorLink+"{}"+guestLink,Image:imageUrl};
+       
 
         await updateDoc(userDoc, newFields);
 
@@ -292,9 +306,19 @@ function AdminCreate() {
 
             {
         const userDoc = doc(db, "events", event_id);
-        
+        let newFields;
+              
+        if(price.length==0)
+        {
+          newFields = { Name: eventName, Description: text, Creator:events[0].Creator ,Questions:questions,Attendees:events[0].Attendees,Registrations:events[0].Registrations,AttendeesCount:events[0].AttendeesCount,RegistrationsCount:events[0].RegistrationsCount,StartDateTime:startDateTime,EndDateTime:endDateTime,Capacity:capacity,Address:selectedAddress,Image:imageUrl};
+        }
+
+        else
+        {
+          newFields = { Name: eventName, Description: text, Creator:events[0].Creator ,Questions:questions,Attendees:events[0].Attendees,Registrations:events[0].Registrations,AttendeesCount:events[0].AttendeesCount,RegistrationsCount:events[0].RegistrationsCount,StartDateTime:startDateTime,EndDateTime:endDateTime,Capacity:capacity,Address:selectedAddress,Image:imageUrl,Price:price,PriceRecieverAddress:priceRecieverAddress};
+        }
                     
-        const newFields = { Name: eventName, Description: text, Creator:events[0].Creator ,Questions:questions,Attendees:events[0].Attendees,Registrations:events[0].Registrations,AttendeesCount:events[0].AttendeesCount,RegistrationsCount:events[0].RegistrationsCount,StartDateTime:startDateTime,EndDateTime:endDateTime,Capacity:capacity,Address:selectedAddress,Image:imageUrl};
+ 
 
         await updateDoc(userDoc, newFields);
 
@@ -337,6 +361,12 @@ function AdminCreate() {
               setType(filteredArray[0].Type)
               setModeratorLink(filteredArray[0].Address.slice(0,filteredArray[0].Address.indexOf("{")))
               setGuestLink(filteredArray[0].Address.slice(filteredArray[0].Address.indexOf("}")+1))
+
+              if(filteredArray[0].Price)
+              {
+                setPrice(filteredArray[0].Price)
+                setPriceRecieverAddress(filteredArray[0].PriceRecieverAddress)
+              }
 
               
 
@@ -643,33 +673,38 @@ function AdminCreate() {
 
 
 
-         
-          
-          <div  style={{display:'flex',alignItems:'center',justifyContent:'space-between'}} onClick={(e)=>{
+        <div class="capacity" style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'100%',marginLeft:'0'}} onClick={async(e)=>{
 
-            e.stopPropagation()
+        e.stopPropagation()
+
+        const data = await getDocs(usersCollectionRef1);
+                                                  
+          let usersTemp=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+            
+          let filteredArray=usersTemp.filter(obj => obj.Email === localStorage.getItem('email'))
+
+          if(filteredArray.length!=0 && filteredArray[0].Premium!=null)
+          {
+            setPriceShowDiv(true)
+          }
+          else
+          {  
             notify("Subscribe to Premium for paid events","dark","top-right","error")
 
             setTimeout(()=>{
                 window.location.href="/pricing"
             },3000)
-            }}>
 
-            <div style={{display:'flex',gap:'10px'}}>
-            <div  style={{display:'flex',alignItems:'center'}} ><ConfirmationNumberIcon fontSize='small'/>
-        &nbsp;<l>Tickets</l> 
-        </div>
+          }
 
-        <l style={{color:'green'}}>Free</l> 
+        }}><div  style={{display:'flex',alignItems:'center',width:'100%'}} ><ConfirmationNumberIcon fontSize='small'/>
+        &nbsp;<l>Tickets</l></div>
+        <div style={{display:'flex',alignItems:'right'}}> &nbsp;
+        <l style={{color:'#1876d1'}}>{price.length==0 ? 'Free' : 'Paid'}</l></div>
+                </div>
 
-          </div>
-        
+          
        
-          <l style={{color:'#1876d1'}}>Change</l> 
-        
-       
-       
-                    </div>
 
           
         <div  style={{display:'flex',alignItems:'center',justifyContent:'space-between'}} onClick={()=>{
@@ -1565,6 +1600,79 @@ function AdminCreate() {
     </div>
   </div>
 )}
+
+{priceShowDiv &&  <div style={{
+            width: '100%', 
+            minHeight:'100%',
+           
+            padding: '20px', 
+            position:'fixed',
+            top:'0px',
+            left:'50%',
+            
+           color:'white',
+            backgroundColor: 'black', 
+            border: '2px solid #1876d1',
+            borderRadius:'8px',
+            
+            textAlign: 'center', 
+            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
+          
+            transform: 'translateX(-50%)',
+            zIndex: 99999999,
+            animation: 'popupAnimation 0.5s ease',
+            backgroundImage:`url(${eventpageBackground})`,
+            backgroundSize: 'cover', 
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat',
+        }}>
+            <br></br> <br></br> <br></br> <br></br> <br></br> <br></br>
+            <center>
+            <div style={{backgroundColor:'black',padding:'2em',width:'18em', border: '1px solid #1876d1' ,borderRadius:'8px'}}>
+          <h2 style={{color:'white'}}>Tickets</h2>
+         
+          <br></br><br></br><br></br>
+          <center>
+          <input style={{fontSize:'20px',width:'10em',backgroundColor:'black',borderTop:'none',borderLeft:'none',borderRight:'none',color:'white'}}onChange={(e)=>{
+            setPrice(e.target.value)
+          }} placeholder='Enter Price' value={price}></input>
+          </center>
+          <br></br>
+          <center>
+          <input style={{fontSize:'20px',width:'10em',backgroundColor:'black',borderTop:'none',borderLeft:'none',borderRight:'none',color:'white'}}onChange={(e)=>{
+           setPriceRecieverAddress(e.target.value)
+          }} placeholder='Receiver Wallet Address' value={priceRecieverAddress}></input>
+          </center>
+          <br></br>
+         
+          <br></br><l></l>
+          <div >
+         
+              </div>
+     <br></br><br></br>
+          <center>
+          <Button variant="outlined" style={{color:'red',border:'0.5px solid red'}} onClick={()=>{
+            
+            setPrice("")
+            setPriceRecieverAddress("")
+            setPriceShowDiv(false)
+           
+          }}>Cancel</Button>
+          &nbsp;  &nbsp;   &nbsp;  
+          <Button variant="contained"  onClick={()=>{
+            toast.dismiss()
+            setPriceShowDiv(false)
+           
+          }}>Save</Button>
+
+          <br></br>
+          
+          </center>
+
+          </div>
+
+          </center>
+        </div>}
 
 
         <Dialog 
