@@ -418,11 +418,28 @@ function Chat() {
                                     <ChatIcon style={{color:'#1876d1'}}/> <MonetizationOnIcon style={{color:'#1876d1'}} onClick={(e)=>{
 
                                         e.stopPropagation()
-                                        notifyCustom("Subscribe to Premium to Pay","error")
 
-                                        setTimeout(()=>{
-                                            window.location.href="/pricing"
-                                        },3000)
+                                        if(usersData.length!=0 && usersData.filter(obj=>obj.Email==localStorage.getItem('email')).length!=0 && !usersData.filter(obj=>obj.Email==localStorage.getItem('email'))[0].Premium)
+                                        {
+                                          notifyCustom("Subscribe to Premium to send crypto","error")
+
+                                          setTimeout(()=>{
+                                              window.location.href="/pricing"
+                                          },3000)
+                                        }
+
+                                        else if(!x.WalletAddress)
+                                        {
+                                          notifyCustom(`${x.UserName} has not set up wallet address`,"error")
+                                        }
+
+                                        else
+
+                                        {
+                                          localStorage.setItem('receiver',JSON.stringify(x))
+                                          window.location.href=`/crypto`
+                                        }
+                                       
                                     }}/>
                                 </div>
                                 

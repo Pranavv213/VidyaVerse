@@ -92,76 +92,108 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
 
                 const connectWallet = async () => {
 
-                  if(localStorage.getItem('walletAddress') && localStorage.getItem('walletAddress')==localStorage.getItem('email'))
+                 
+
+                  if((localStorage.getItem('walletAddress') && localStorage.getItem('email')==localStorage.getItem('walletAddress')))
                   {
                     return;
                   }
-                  if (!window.ethereum) {
-
-                    notifyCustom("MetaMask not detected!","error","top-center")
-                    setTimeout(()=>{
-                      window.location.href="https://metamask.io"
-                  },3000)
-                    return;
-                  }
-              
-                  try {
-                    // Create provider and request accounts
-
-                    let provider
-                    let signer
-                    let address
-               
-                        provider = new ethers.providers.Web3Provider(window.ethereum);
-                        await provider.send("eth_requestAccounts", []);
-                        signer = provider.getSigner();
-                        address = await signer.getAddress();
-                        setWalletAddress(address);
-               
-
-                   
-
-                    const data = await getDocs(usersCollectionRef1);
-                                                                  
-                    let usersTemp=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-
-                    let filteredArray=usersTemp.filter(obj=>obj.Email==localStorage.getItem('email'))
-
-                    if(filteredArray.length!=0 && (!filteredArray[0].WalletAddress || filteredArray[0].WalletAddress.toLowerCase()!=address.toLowerCase()))
-
-                      {
-                        localStorage.setItem('walletAddress',address)
-
-                          const userDoc1 = doc(db, "user", filteredArray[0].id);
-                          const newFields1 = { WalletAddress:address};
-                             
-                          await updateDoc(userDoc1, newFields1);
-                          localStorage.getItem('walletAddress',address)
-
-                          notifyCustom('Wallet connected!',"success")
-
-                         
 
 
+                  else if(localStorage.getItem('walletAddress')){
 
-                          window.location.reload()
+                       if (!window.ethereum) {
+                                            alert("MetaMask not detected!");
+                                            return;
+                                          }
+                                      
+                                          try {
+                                            // Create provider and request accounts
+                        
+                                            let provider
+                                            let signer
+                                            let address
+                                       
+                                                provider = new ethers.providers.Web3Provider(window.ethereum);
+                                                await provider.send("eth_requestAccounts", []);
+                                                signer = provider.getSigner();
+                                                address = await signer.getAddress();
 
+                                                if(localStorage.getItem('walletAddress')==address)
+                                                {
+                                                  return;
+                                                }
 
-                      }
+                                                 const data = await getDocs(usersCollectionRef1);
+                                                                                          
+                                                 let usersTemp=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+                                               
+                                                
+                                                localStorage.setItem('walletAddress',address)
 
-                     
+                                                 let filteredArray=usersTemp.filter(obj => obj.Email === localStorage.getItem('email'))
+                                                
+                                                             console.log(filteredArray)
+                                                                           
+                                                  const userDoc1 = doc(db, "user", filteredArray[0].id);
+                                                  const newFields1 = {WalletAddress:address};
+                                                     
+                                                               // update
+                                                     
+                                                     
+                                                  await updateDoc(userDoc1, newFields1);
+                                               
+                                                  notifyCustom('Wallet Address Updated',"success")
 
-            
+                                                  setTimeout(()=>{
+                                                    window.location.reload()
+                                                  },3000)
+                        
+                                              }
+                                          catch (error) {
+                                            console.error("Error connecting wallet:", error);
+                                          } } 
+                                        
+                                        else{
+                                          let provider
+                                          let signer
+                                          let address
+                                     
+                                              provider = new ethers.providers.Web3Provider(window.ethereum);
+                                              await provider.send("eth_requestAccounts", []);
+                                              signer = provider.getSigner();
+                                              address = await signer.getAddress();
 
-                    
-                  } catch (error) {
-                    console.error("Error connecting wallet:", error);
-                  }
-                };
-               
-                
-              
-  
+                                              const data = await getDocs(usersCollectionRef1);
+                                                                                          
+                                              let usersTemp=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+                                            
+                                             
+                                             localStorage.setItem('walletAddress',address)
+
+                                              let filteredArray=usersTemp.filter(obj => obj.Email === localStorage.getItem('email'))
+                                             
+                                                          console.log(filteredArray)
+                                                                        
+                                               const userDoc1 = doc(db, "user", filteredArray[0].id);
+                                               const newFields1 = {WalletAddress:address};
+                                                  
+                                                            // update
+                                                  
+                                                  
+                                               await updateDoc(userDoc1, newFields1);
+                                            
+                                               notifyCustom('Wallet Address added to profile',"success")
+
+                                               setTimeout(()=>{
+                                                 window.location.reload()
+                                               },3000)
+
+                                        }
+                                        
+                                        
+                                        };
+
 
   return (
     <AppBar position="static" style={{backgroundColor:'black',color:'#1876d1',position:'fixed',top:'0',zIndex:'99999999999999999999999999999999999999',borderBottom:'1px solid white'}}>
@@ -285,9 +317,9 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
 
           <Button variant='outlined' 
               onClick={connectWallet}
-            >{walletAddress
-              ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`
-              : localStorage.getItem('walletAddress') ? `${localStorage.getItem('walletAddress').slice(0, 6)}...${localStorage.getItem('walletAddress').slice(-4)}`: `Connect Wallet` }</Button>
+            >{localStorage.getItem('walletAddress') ?
+               `${localStorage.getItem('walletAddress').slice(0, 6)}...${localStorage.getItem('walletAddress').slice(-4)}` : 'Connect Wallet'
+              }</Button>
 
           {localStorage.getItem('email') && !localStorage.getItem('profileImg') && <Button  onClick={()=>{
             setShowDashboardDiv(true)

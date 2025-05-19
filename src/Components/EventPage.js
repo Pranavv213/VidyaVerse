@@ -519,6 +519,8 @@ function EventPage() {
 
   // Handle input change
   const handleChange = (index, value) => {
+
+    console.log("funtionRUN",answers)
     const updatedAnswers = [...answers];
     updatedAnswers[index] = value;
     setAnswers(updatedAnswers);
@@ -565,7 +567,31 @@ function EventPage() {
   
 
                 const sendTokens = async (result) => {
+
+
+                  console.log("answersArray",answers)
+
+                  if(Object.keys(result).slice(1).some(key => result[key] === undefined || result[key] === ""))
+                  {
+                    notifyCustom("Fill all the fields","error")
+
+                    return;
+                  }
+
+                  
+
+                
+        
+ 
                   try {
+
+
+                   
+                  
+                   
+  
+
+                    
                     // Fetch users from Firestore
 
 
@@ -657,7 +683,7 @@ function EventPage() {
                   } catch (error) {
                     console.error("Transaction Error:", error);
                     notifyCustom("Transaction failed or was rejected", "error");
-                    setTimeout(() => window.location.reload(), 3000);
+                    setTimeout(() => window.location.reload(), 500);
                   } finally {
                     setLoading(false);
                   }
@@ -773,6 +799,15 @@ function EventPage() {
       };
 
       const updateUser = async (result) => {
+
+        console.log("answersArray",answers)
+
+        if(Object.keys(result).slice(1).some(key => result[key] === undefined || result[key] === ""))
+        {
+          notifyCustom("Fill all the fields","error")
+
+          return;
+        }
 
         try{
 
@@ -1236,7 +1271,7 @@ function EventPage() {
                 <select
                   
                   
-                  style={{fontSize:'16px',height:'2.5em',width:'20.5em',borderRadius:'10px',backgroundColor:'rgb(46,47,48)',color:'white',border:'none'}}
+                  style={{fontSize:'16px',height:'2.5em',width:'18em',borderRadius:'10px',backgroundColor:'rgb(46,47,48)',color:'white',border:'none'}}
                   onChange={(event)=>{
                     
 
