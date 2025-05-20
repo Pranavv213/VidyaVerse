@@ -201,7 +201,7 @@ const Chat = () => {
 
         e.stopPropagation()
 
-        navigator.clipboard.writeText(`https://v1-six-liart.vercel.app/testing3/${x.id}`)
+        navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/testing3/${x.id}`)
       .then(() => {
        notifyCustom("Community link copied","success");
       })
@@ -277,7 +277,7 @@ const Chat = () => {
       <Button variant="outlined" onClick={(e)=>{
          e.stopPropagation()
 
-         navigator.clipboard.writeText(`https://v1-six-liart.vercel.app/testing3/${x.id}`)
+         navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/testing3/${x.id}`)
        .then(() => {
         notifyCustom("Community link copied","success");
        })

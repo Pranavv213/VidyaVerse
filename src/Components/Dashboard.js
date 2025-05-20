@@ -507,7 +507,7 @@ function Home2() {
            
           e.stopPropagation()
           
-            navigator.clipboard.writeText(`https://v1-six-liart.vercel.app/event/${x.id}`)
+            navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/event/${x.id}`)
             notifyClipboard()
           }}><ShareIcon/>  </Button>
 

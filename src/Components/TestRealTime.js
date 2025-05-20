@@ -780,16 +780,24 @@ const handleContextMenu = (event) => {
           <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer'}} class="dashboardDivMenu" onClick={(e)=>{
 
             e.stopPropagation()
-            notifyCustom("Subscribe to Premium to continue","error")
-
-            setTimeout(()=>{
-                window.location.href="/pricing"
-            },3000)
+            window.location.href=`/groupinfo/${community_id}`
             }} ><PaidIcon/>  Airdrop </div>
           <br></br>
           
-          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer'}} class="dashboardDivMenu" onClick={()=>{
-            window.location.href="/testing3"
+          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer'}} class="dashboardDivMenu" onClick={(e)=>{
+
+            e.stopPropagation()
+
+            navigator.clipboard.writeText(`https://v2-six-puce.vercel.app//testing3/${community_id}`)
+            .then(() => {
+            console.log("Text copied to clipboard!");
+
+            notifyCustom("Link Copied","default")
+            })
+            .catch(err => {
+            console.error("Failed to copy: ", err);
+            });
+            
           }}><PeopleIcon/> Add Members</div>
 
         

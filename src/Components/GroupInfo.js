@@ -233,7 +233,7 @@ const Chat = () => {
           
           <Button variant="outlined" onClick={()=>{
 
-                navigator.clipboard.writeText(`https://v1-six-liart.vercel.app/testing3/${community_id}`)
+                navigator.clipboard.writeText(`https://v2-six-puce.vercel.app//testing3/${community_id}`)
                 .then(() => {
                 console.log("Text copied to clipboard!");
 
@@ -355,7 +355,9 @@ const Chat = () => {
                 return (
                   <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
 
-                    <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
+                    <div style={{display:'flex',alignItems:'center',gap:'10px',cursor:'pointer'}} onClick={()=>{
+                      window.location.href=`/channel/${x.UserName}`
+                    }}  >
                     
                     <img src={x.ProfileImage} style={{width:'2em',height:'2em',borderRadius:'50%',objectFit:'cover'}}></img>
 
@@ -363,8 +365,12 @@ const Chat = () => {
                     
                     </div>
 
-                   {showAirdrop &&  <input type="checkbox" checked={airdropToArray[index]} onChange={e => setAirdropToArray(prev => { const copy = [...prev]; copy[index] = e.target.checked; return copy; })}
-  />
+                   {showAirdrop &&  <input type="checkbox" checked={airdropToArray[index]} onChange={(e) => {
+                    
+                    e.stopPropagation()
+                    
+                    setAirdropToArray(prev => { const copy = [...prev]; copy[index] = e.target.checked; return copy; })}}
+                  />
 
 
                    }
@@ -441,7 +447,9 @@ const Chat = () => {
 
                     <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
 
-                <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
+                <div style={{display:'flex',alignItems:'center',gap:'10px',cursor:'pointer'}} onClick={()=>{
+                      window.location.href=`/channel/${x.UserName}`
+                    }} >
                     
                     <img src={x.ProfileImage} style={{width:'2em',height:'2em',borderRadius:'50%',objectFit:'cover'}}></img>
 
@@ -451,7 +459,10 @@ const Chat = () => {
 
                     <div style={{display:'flex',alignItems:'center',justifyContent:'flex-end',gap:'20px'}}>
 
-                    {showAirdrop &&  <input type="checkbox" checked={airdropToArray[index]} onChange={e => setAirdropToArray(prev => { const copy = [...prev]; copy[index] = e.target.checked; return copy; })}
+                    {showAirdrop &&  <input type="checkbox" checked={airdropToArray[index]} onChange={(e) => {
+                      
+                      e.stopPropagation()
+                      setAirdropToArray(prev => { const copy = [...prev]; copy[index] = e.target.checked; return copy; })}}
                     />
 
                    }

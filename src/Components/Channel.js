@@ -544,7 +544,19 @@ localStorage.setItem('getChat',JSON.stringify(users[0]))
 
 <Button variant="outlined" style={{height:'2em',width:'4em',border:'0.1px solid yellow',color:'yellow'}} onClick={()=>{
 
-notifyCustom("Subscribe to Premium for Pay option","error")
+    if(users.length!=0 && users[0].Premium && (users[0].Premium=='Creator' || users[0].Premium=='Pro'))
+    {
+      localStorage.setItem('receiver',JSON.stringify(users[0]))
+      window.location.href="/crypto"
+    }
+
+    else{
+      notifyCustom("Subscribe to premium to continue","error")
+
+      setTimeout(()=>{
+        window.location.reload()
+      },2000)
+    }
 }}>Pay</Button>
 
 </div>
