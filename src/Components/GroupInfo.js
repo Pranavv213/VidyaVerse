@@ -436,7 +436,7 @@ const Chat = () => {
                 const email = person.Email.toLowerCase().replace(/\s/g, '');
               
                 return userName.includes(query) || email.includes(query);
-            }).map((x)=>{
+            }).map((x,index)=>{
                 return (
 
                     <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
@@ -449,6 +449,13 @@ const Chat = () => {
 
                     </div>
 
+                    <div style={{display:'flex',alignItems:'center',justifyContent:'flex-end',gap:'20px'}}>
+
+                    {showAirdrop &&  <input type="checkbox" checked={airdropToArray[index]} onChange={e => setAirdropToArray(prev => { const copy = [...prev]; copy[index] = e.target.checked; return copy; })}
+                    />
+
+                   }
+
                     <ArrowForwardIosIcon fontSize="small" onClick={()=>{
 
 
@@ -457,6 +464,7 @@ const Chat = () => {
                         window.location.href="/chat"
 
                     }}/>
+                    </div>
 
                     
                     </div>
