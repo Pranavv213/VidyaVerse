@@ -23,6 +23,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
+
 const Chat = () => {
 
       const { community_id } = useParams();
@@ -33,6 +34,8 @@ const Chat = () => {
   const [membersArray,setMembersArray]=useState([])
   const [showSearchDiv,setShowSearchDiv]=useState(false)
   const [search,setSearch]=useState('')
+  const [showAirdrop,setShowAirdrop]=useState(false)
+  const [airdropToArray,setAirdropToArray]=useState([])
 
   const scrollRef = useRef(null);
 
@@ -56,6 +59,9 @@ const Chat = () => {
     }
 
     setMembersArray(membersArray1)
+    const arr = new Array(membersArray1.length).fill(true);
+    setAirdropToArray(arr)
+
  
    
   }
@@ -192,7 +198,12 @@ const Chat = () => {
 
           <l style={{color:'white',fontSize:'24px'}}>{messages.Name}</l>
 
+        
+
           <l style={{color:'grey',fontSize:'16px'}}>{messages.Participants.length} members</l>
+          
+
+        
 
           <div style={{display:'flex',gap:'10px',alignItems:'flex-start'}}>
             
@@ -204,7 +215,12 @@ const Chat = () => {
             setTimeout(()=>{
                 window.location.href="/pricing"
             },3000)
-            }}><PaidIcon/></Button>
+            }}><PaidIcon onClick={(e)=>{
+
+              e.stopPropagation()
+              setShowAirdrop(!showAirdrop)
+
+            }}/></Button>
           
           
           
@@ -278,12 +294,66 @@ const Chat = () => {
 
         {membersArray && membersArray.length!=0 && <div style={{backgroundColor:'rgba(255,255,255,0.2',width:'70%',borderRadius:'1em',color:'white',padding:'1.5em',display:'flex',flexDirection:'column', gap:'12px'}}>
             
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
             <l style={{color:'white',width:'100%',textAlign:'left'}}>Members</l>
+
+            {showAirdrop &&    
+            <div style={{display:'flex',gap:'0px',alignItems:'center'}}> 
+            <input type="checkbox" defaultChecked={true} onChange={(e)=>{
+              console.log(e.target.checked)
+
+              console.log("airdropArray",airdropToArray)
+
+              if(e.target.checked)
+              {
+                const arr = new Array(membersArray.length).fill(true);
+                setAirdropToArray(arr)
+              }
+              else
+              {
+                const arr = new Array(membersArray.length).fill(false);
+                setAirdropToArray(arr)
+              }
+             
+
+
+            }}></input>
+              <l>All </l>
+            </div>
+
+            }
+
+
+
+            {showAirdrop &&     
+            <Button  style={{maxWidth:'18em',borderRadius:'7px'}} onClick={()=>{
+              console.log(airdropToArray)
+
+              let arr = [];
+              let j = 0;
+              for (let i = 0; i < airdropToArray.length; i++) {
+                if (airdropToArray[i] === true) {
+                  console.log(airdropToArray[i]);
+                  arr[j] = membersArray[i];
+                  j++;
+                }
+              }
+              
+
+              localStorage.setItem("receivers",JSON.stringify(arr))
+              window.location.href="/crypto_group"
+
+            }}>Done</Button>
+
+            }
+
+             </div>
             <br></br>
             
             {     
-               membersArray.map((x)=>{
+               membersArray.map((x,index)=>{
                 return (
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
 
                     <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
                     
@@ -293,12 +363,24 @@ const Chat = () => {
                     
                     </div>
 
+                   {showAirdrop &&  <input type="checkbox" checked={airdropToArray[index]} onChange={e => setAirdropToArray(prev => { const copy = [...prev]; copy[index] = e.target.checked; return copy; })}
+  />
+
+
+                   }
+                    </div>
+
 
                 )
             })
             
             
-            }</div>}
+            }
+
+           
+           
+            
+            </div>}
 
 
      </div>

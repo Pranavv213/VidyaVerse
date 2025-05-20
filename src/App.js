@@ -29,6 +29,9 @@ import Testing4 from './Components/Testing4';
 import Channel from './Components/Channel'
 import Pricing from './Components/Pricing'
 import Crypto from './Components/Crypto'
+
+import Crypto_Group from './Components/Crypto_Group'
+
 function App() {
   const OKTO_CLIENT_API_KEY = "f144c56d-f768-426c-b123-f7ee71f8cee8";
   return (
@@ -134,6 +137,12 @@ function App() {
         
         <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
        <Crypto/>
+    </OktoProvider>} />
+
+    <Route path="/crypto_group" element={
+        
+        <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
+       <Crypto_Group/>
     </OktoProvider>} />
    
     </Routes>

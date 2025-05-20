@@ -22,6 +22,7 @@ import Confetti from 'react-confetti'
 import { Menu, Item, useContextMenu } from 'react-contexify';
 import 'react-contexify/dist/ReactContexify.css';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 
 import './TestRealTime.css'
 
@@ -36,6 +37,8 @@ const Chat = () => {
   const [showDeleteDiv,setShowDeleteDiv]=useState(false)
   const [deleteIndex,setDeleteIndex] =useState(-10)
   const [allUsers,setAllUsers]=useState([])
+  const [fileUrl,setFileUrl]=useState("")
+ 
  
 
 
@@ -55,9 +58,41 @@ const handleContextMenu = (event) => {
     }, 600); // 600ms = long press
   };
 
-  const handleTouchEnd = () => {
-    // Cancel if user didn't hold long enough
-    clearTimeout(touchTimer.current);
+  const fileInputRef = useRef(null);
+
+  const handleIconClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "my_unsigned_preset"); // 🔁 Replace with your actual preset
+
+    try {
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/getsetcourse/auto/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+
+      if (data.secure_url) {
+        console.log("✅ Uploaded File URL:", data.secure_url);
+        setFileUrl(data.secure_url)
+       
+      } else {
+        console.error("❌ Upload failed:", data);
+      }
+    } catch (error) {
+      console.error("❌ Error uploading file:", error);
+    }
   };
 
   const scrollRef = useRef(null);
@@ -200,17 +235,44 @@ const handleContextMenu = (event) => {
         if(filteredArray[0].Participants.includes(localStorage.getItem('email')))
 
             {
-                const newFields1 = {Creator:filteredArray[0].Creator, Name:filteredArray[0].Name ,Description: filteredArray[0].Description,Chats:[...filteredArray[0].Chats,{SenderEmail:localStorage.getItem('email'),Message:newMessage,Timestamp:now,ChatId:filteredArray[0].Chats.length-1,isReply:isReply}],Timestamp: now,Participants:[...filteredArray[0].Participants]}
+                if(fileUrl.length==0)
+                {
+                  const newFields1 = {Creator:filteredArray[0].Creator, Name:filteredArray[0].Name ,Description: filteredArray[0].Description,Chats:[...filteredArray[0].Chats,{SenderEmail:localStorage.getItem('email'),Message:newMessage,Timestamp:now,ChatId:filteredArray[0].Chats.length-1,isReply:isReply}],Timestamp: now,Participants:[...filteredArray[0].Participants]}
 
-                await updateDoc(userDoc1, newFields1);
+                  await updateDoc(userDoc1, newFields1);
+                }
+
+                else
+                {
+                  const newFields1 = {Creator:filteredArray[0].Creator, Name:filteredArray[0].Name ,Description: filteredArray[0].Description,Chats:[...filteredArray[0].Chats,{SenderEmail:localStorage.getItem('email'),Message:"(Image?"+fileUrl+")"+newMessage,Timestamp:now,ChatId:filteredArray[0].Chats.length-1,isReply:isReply}],Timestamp: now,Participants:[...filteredArray[0].Participants]}
+
+                  await updateDoc(userDoc1, newFields1);
+                }
+
+                
+                setFileUrl("")
+               
             }
 
         else
         {
 
+          if(fileUrl.length==0)
+            {
+
             const newFields1 = {Creator:filteredArray[0].Creator, Name:filteredArray[0].Name ,Description: filteredArray[0].Description,Chats:[...filteredArray[0].Chats,{SenderEmail:localStorage.getItem('email'),Message:newMessage,Timestamp:now,ChatId:filteredArray[0].Chats.length-1,isReply:isReply}],Timestamp: now,Participants:[...filteredArray[0].Participants,localStorage.getItem('email')]}
 
             await updateDoc(userDoc1, newFields1);
+
+            }
+            else
+            {
+              const newFields1 = {Creator:filteredArray[0].Creator, Name:filteredArray[0].Name ,Description: filteredArray[0].Description,Chats:[...filteredArray[0].Chats,{SenderEmail:localStorage.getItem('email'),Message:"(Image?"+fileUrl+")"+newMessage,Timestamp:now,ChatId:filteredArray[0].Chats.length-1,isReply:isReply}],Timestamp: now,Participants:[...filteredArray[0].Participants,localStorage.getItem('email')]}
+
+              await updateDoc(userDoc1, newFields1);
+            }
+
+            setFileUrl("")
         }
 
        
@@ -418,7 +480,10 @@ const handleContextMenu = (event) => {
                     x.isReply.indexOf('|') + 1,
                     x.isReply.indexOf('|', x.isReply.indexOf('|') + 1)
                   )
-                  )}`}> <div style={{ display:'flex',flexDirection:'column',justifyContent:'space-between' ,gap:'10px',overflow: 'hidden',borderRadius:'5px',backgroundColor: x.isReply.slice(2,x.isReply.indexOf('|'))==localStorage.getItem('email') ? '#5a9ddb': 'rgb(100, 100, 100)' , alignItems:'flex-start',padding:'1em'}}>
+                  )}`}> 
+                  
+                  
+                  <div style={{ display:'flex',flexDirection:'column',justifyContent:'space-between' ,gap:'10px',overflow: 'hidden',borderRadius:'5px',backgroundColor: x.isReply.slice(2,x.isReply.indexOf('|'))==localStorage.getItem('email') ? '#5a9ddb': 'rgb(100, 100, 100)' , alignItems:'flex-start',padding:'1em'}}>
 
                    
                     <label style={{ color:'white', cursor: 'pointer',fontSize:'14px'}} >
@@ -431,8 +496,16 @@ const handleContextMenu = (event) => {
                     <div style={{ color:'white', cursor: 'pointer',fontSize:'14px',textAlign:'left'}} >
 
                 
+                    {!x.isReply.slice(x.isReply.indexOf('|',x.isReply.indexOf('|')+1)+1).startsWith('(Image?') && <div style={{maxHeight:'2.4em',overflow: 'hidden',padding:'2px',maxWidth:'10em'}}>{x.isReply.slice(x.isReply.indexOf('|',x.isReply.indexOf('|')+1)+1)}</div>
+                    
+                    }
 
-                        <div style={{maxHeight:'2.4em',overflow: 'hidden',padding:'2px'}}>{x.isReply.slice(x.isReply.indexOf('|',x.isReply.indexOf('|')+1)+1)}</div>
+                  {x.isReply.slice(x.isReply.indexOf('|',x.isReply.indexOf('|')+1)+1).startsWith('(Image?') && <img style={{maxWidth:'10em',maxHeight:'10em'}} src={x.isReply.slice(x.isReply.indexOf('|',x.isReply.indexOf('|')+1)+1).slice(x.isReply.slice(x.isReply.indexOf('|',x.isReply.indexOf('|')+1)+1).indexOf('?')+1,x.isReply.slice(x.isReply.indexOf('|',x.isReply.indexOf('|')+1)+1).indexOf(')'))} />
+                    
+                  }
+                        
+
+
                        
                     </div>
 
@@ -441,6 +514,9 @@ const handleContextMenu = (event) => {
 
 
                     </div>
+
+
+
                     </a>
                 
                 
@@ -460,12 +536,73 @@ const handleContextMenu = (event) => {
                     >
 
            
-                     <div style={{ color: 'white', textAlign: 'left' }}  >  
-                         
+<div style={{ color: 'white', textAlign: 'left' }}>
+  {(() => {
+    const raw = x.Message;
+
+    // Extract the first link (if any)
+    
+    // Remove link from message for clean text parsing
+   
+
+    // Image detection
+    const hasImage = x.Message.startsWith('(Image?');
+    const imageUrl = hasImage
+      ? x.Message.slice(x.Message.indexOf('?')+1, x.Message.indexOf(')'))
+      : null;
+
       
-      {x.Message}
+    const textAfterImage = hasImage
+      ? x.Message.slice(x.Message.indexOf(')') + 1).trim()
+      : x.Message;
+
+      const link = (textAfterImage.match(/https?:\/\/[^\s]+/) || [])[0];
+
+
       
-      </div>
+
+    return (
+      <>
+        {/* Image (if any) */}
+        {imageUrl && (
+          <img
+            src={imageUrl}
+            alt="image"
+            style={{
+              maxWidth: '15em',
+              maxHeight: '15em',
+              display: 'block',
+              marginBottom: '0.5em',
+            }}
+          />
+        )}
+
+        {/* Text (if any) */}
+        {textAfterImage && (
+          <div style={{ wordBreak: 'break-word', marginBottom: link ? '0.5em' : 0 }}>
+            {textAfterImage}
+          </div>
+        )}
+
+        {/* Link (if any) */}
+        {link && (
+          <div>
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'lightblue', wordBreak: 'break-word' }}
+            >
+              {link}
+            </a>
+          </div>
+        )}
+      </>
+    );
+  })()}
+</div>
+
+
 
      
 
@@ -544,7 +681,40 @@ const handleContextMenu = (event) => {
                 
                 }
 
-                <div style={{display:'flex', width:'100%'}}>
+                <div style={{display:'flex', width:'100%',alignItems:'center',gap:'5px'}}>
+
+
+              {  fileUrl.length==0 && 
+                
+                <div>
+            <AddIcon
+              style={{ color: 'white', cursor: 'pointer' }}
+              onClick={handleIconClick}
+            />
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              onChange={handleFileChange}
+              accept="image/*,.pdf,.doc,.docx,.txt"
+            />
+          </div>
+
+              }
+
+      {  fileUrl.length!=0 && 
+                
+                <div style={{display:'flex',gap:'5px'}}>
+                  <CancelIcon style={{color:'white'}} fontSize="small" onClick={()=>{
+                    setFileUrl("")
+                  }}/>
+                <img style={{width:'2em',height:'2em',border:'0.1px solid white'}} src={fileUrl}/>
+              </div>
+
+              }
+             
+
+                 
 
                 <input
                 style={{
