@@ -176,7 +176,11 @@ function AdminCreate() {
 
     const createUser = async () => {
 
+    
+
       const now = dayjs().format("YYYY-MM-DD HH:mm:ss");
+
+      console.log(user)
 
       if(!isOnline)
       {
@@ -222,6 +226,11 @@ function AdminCreate() {
         }
         else{
           const result=await addDoc(usersCollectionRef, { Name: eventName,Type:"online", Image:imageUrl,Address:moderatorLink+"{}"+guestLink,StartDateTime:startDateTime,EndDateTime:endDateTime,Capacity:capacity,Description: text, Creator:localStorage.getItem('email') ,Questions:questionsArray,Attendees:[],Registrations:[],AttendeesCount:0,RegistrationsCount:0,Category:category,Timestamp:now});
+
+          if(user.length!=0)
+            {
+              updateUser(result.id)
+            }
         }
         
       }
@@ -615,6 +624,8 @@ isOnline && <div class="location"  style={{ cursor:'pointer',background: "rgba(2
         <button  className='button-85' style={{height:'2em',width:'100%'}} onClick={()=>{
           toast.dismiss()
             createUser()
+
+            
 
         
         }}>Create</button>
@@ -1218,7 +1229,7 @@ isOnline && <div class="location"  style={{ cursor:'pointer',background: "rgba(2
  
         
     </div>
-    <ToastContainer style={{zIndex:'99999999999999999'}} />
+    <ToastContainer style={{zIndex:'999999999999999999999999999999'}} />
     </div>
   )
 }
