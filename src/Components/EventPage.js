@@ -662,6 +662,7 @@ function EventPage() {
                       Registrations: [...events[0].Registrations, result],
                       AttendeesCount: events[0].AttendeesCount + 1,
                       RegistrationsCount: events[0].RegistrationsCount + 1,
+                      Coins:events[0].RegistrationsCount*1000+1100
                     };
                     await updateDoc(eventDocRef, updatedEventData);
                 
@@ -670,6 +671,7 @@ function EventPage() {
                       ...filteredUser,
                       EventsRegistered: [...filteredUser.EventsRegistered, event_id],
                       EventsApproved: [...filteredUser.EventsApproved, event_id], // Fixed typo here
+
                     };
                     await updateDoc(userDocRef, updatedUserData);
                 
@@ -838,7 +840,7 @@ function EventPage() {
 
 
         const userDoc = doc(db, "events", event_id);
-        const newFields = { Name: events[0].Name, Description: events[0].Description, Creator:events[0].Creator ,Questions:events[0].Questions,Attendees:events[0].Attendees,Registrations:[...events[0].Registrations,result],AttendeesCount:events[0].AttendeesCount,RegistrationsCount:events[0].RegistrationsCount+1};
+        const newFields = { Name: events[0].Name, Description: events[0].Description, Creator:events[0].Creator ,Questions:events[0].Questions,Attendees:events[0].Attendees,Registrations:[...events[0].Registrations,result],AttendeesCount:events[0].AttendeesCount,RegistrationsCount:events[0].RegistrationsCount+1,Coins:events[0].RegistrationsCount*1000+1100};
         await updateDoc(userDoc, newFields);
      
 

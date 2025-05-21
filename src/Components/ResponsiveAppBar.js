@@ -30,6 +30,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import GroupIcon from '@mui/icons-material/Group';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { ethers } from "ethers";
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 
 import { db } from "../firebase-config";
 import {
@@ -261,7 +262,9 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><HomeIcon fontSize='small'/> <l>Home</l></div></Button></Typography>
                 </MenuItem>
                 <MenuItem  onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}><Button variant={earnButtonStyle}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><PaidIcon fontSize='small'/> <l>Earn</l></div></Button></Typography>
+                  <Typography sx={{ textAlign: 'center' }}><Button variant={earnButtonStyle} onClick={()=>{
+                    window.location.href="/rewards"
+                  }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><CardGiftcardIcon fontSize='small'/> <l>Rewards</l></div></Button></Typography>
                 </MenuItem>
                 <MenuItem  onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}><Button variant={createButtonStyle} onClick={()=>{
@@ -299,7 +302,9 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
           <Button variant={homeButtonStyle} onClick={()=>{
             window.location.href="/home2"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><HomeIcon fontSize='small'/> <l>Home</l></div></Button>
-          <Button variant={earnButtonStyle}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><PaidIcon fontSize='small'/> <l>Earn</l></div></Button>
+          <Button variant={earnButtonStyle} onClick={()=>{
+            window.location.href="/rewards"
+          }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><CardGiftcardIcon fontSize='small'/> <l>Rewards</l></div></Button>
           <Button variant={createButtonStyle} onClick={()=>{
             window.location.href="/creator"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><AddCircleOutlineIcon fontSize='small'/> <l>Create</l></div></Button>

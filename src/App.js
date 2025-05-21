@@ -32,6 +32,7 @@ import Crypto from './Components/Crypto'
 
 import Crypto_Group from './Components/Crypto_Group'
 import NFT from './Components/NFT'
+import Rewards from './Components/Rewards';
 
 function App() {
   const OKTO_CLIENT_API_KEY = "f144c56d-f768-426c-b123-f7ee71f8cee8";
@@ -148,6 +149,14 @@ function App() {
 
     <Route path="/nft/:user_name/:event_id" element={<NFT/>}
 />   
+
+<Route path="/rewards" element={
+        
+        <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
+       <Rewards/>
+    </OktoProvider>} />
+
+           
     </Routes>
   </Router>
     </div>

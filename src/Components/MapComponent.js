@@ -93,22 +93,33 @@ const QrScanner = () => {
       const updateUser = async (obj,EventId) => {
     
               
-                        const userDoc = doc(db, "user", obj.id);
+                        let userDoc = doc(db, "user", obj.id);
                         let filteredArray=0;
                          filteredArray=obj.EventsAttended.filter(x=>x==event_id)
                         console.log(obj.EventsAttended)
                         console.log(filteredArray)
                         if(filteredArray.length==0)
                         {
-                          
-                          const newFields = { Email: obj.Email, Coins:obj.Coins+1000, EventsCreated:obj.EventsCreated,EventsRegistered:obj.EventsRegistered, EventsApproved:obj.EventsApproved,EventsAttended:[...obj.EventsAttended,EventId]};
-                          await updateDoc(userDoc, newFields);
 
-                       
-                         notify("Congratulations! You earned 1000 coins","success")
+                          let data = await getDocs(usersCollectionRef);
+                                 
+                           let eventsTemp=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+                                 
+                           let filteredArray=eventsTemp.filter(obj => obj.id === event_id)
+                           console.log(filteredArray)
+
+                           if(filteredArray.length!=0)
+                           {
+                            let newFields = { Email: obj.Email, Coins:obj.Coins+filteredArray[0].Coins, EventsCreated:obj.EventsCreated,EventsRegistered:obj.EventsRegistered, EventsApproved:obj.EventsApproved,EventsAttended:[...obj.EventsAttended,EventId]};
+                            await updateDoc(userDoc, newFields);
+  
+                            userDoc = doc(db, "events", event_id);
+  
+                            
                          
-                         
-                         
+                           notify("Congratulations! You earned 1000 coins","success")
+                           }
+
                          
                         }
                       
