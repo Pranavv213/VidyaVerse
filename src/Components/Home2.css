@@ -218,13 +218,44 @@ border-style: solid;
 
 
       }
+      
+      .coinImg{
+
+   
+          width: 7em ;
+          height: 7em ;
+          overflow: hidden ;
+      
+      }
+      
+      .coin{
+        margin-top:10%
+      }
+ 
+     
 
       @media (min-width: 768px) {
         .buttonTop {
+        
           min-width: 5em;
           height:2em;
           font-size: 18px;
+       
 
         }
+
+        .coin{
+          margin-top:5%
+        }
+
+        .coinImg{
+
+   
+          width: 9em ;
+          height: 9em ;
+          overflow: hidden ;
+      
+      }
+      
         
       }

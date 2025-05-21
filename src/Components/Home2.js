@@ -597,7 +597,7 @@ function Home2() {
 
     
   return (
-    <div>
+    <div >
       <br></br>
 
       {/* <div style={{top:'0',position:'fixed',zIndex:'999999999',width:'100%',backgroundColor:'black'}}>
@@ -610,8 +610,7 @@ function Home2() {
            <ResponsiveAppBar homeButtonStyle="contained" earnButtonStyle="outlined" createButtonStyle="outlined" dashboardButtonStyle="outlined" />
            <br></br><br></br><br></br>
     
-   
-
+ 
 {showConfetti && <Confetti 
       width={"1500px"}
       height={"800px"}
@@ -621,8 +620,8 @@ function Home2() {
           width: '330px', 
           height: '400px',
           padding: '20px', 
-          backgroundColor: '#fff', 
-          border: '1px solid #ddd', 
+          backgroundColor: 'black', 
+          border: '0.2px solid white', 
           textAlign: 'center', 
           boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
           position: 'absolute', 
@@ -631,6 +630,7 @@ function Home2() {
           transform: 'translateX(-50%)',
           zIndex: 9999,
           animation: 'popupAnimation 0.5s ease',
+          color:'white'
         }}>
           <h1>Congratulations!</h1>
           <img  style={{width: '130px', 
@@ -721,13 +721,23 @@ function Home2() {
 }}>
   
 
-      <div class="coin" style={{marginLeft:'0%',marginTop:'0%'
+      <div class="coin" style={{marginLeft:'0%'
         }}> 
-
     
-    <img src={coinImg} style={{width: '130px', 
-    height: '200px', 
-    objectFit: 'cover' }} alt="Logo"  />   <l style={{fontSize:"52px"}}><CountUp start={coins-100} end={coins} /></l></div>
+    
+    <div class="coinImg" >
+  <img 
+    src={coinImg} 
+    alt="Logo" 
+    style={{ 
+      width: '100%', 
+      height: '100%', 
+      objectFit: 'cover' 
+    }} 
+  />
+</div>  <l style={{fontSize:"52px"}}><CountUp start={coins-100} end={coins} /></l></div>
+
+<br></br>
      
 <Button variant="contained" style={{border:"green 0.5px solid",backgroundColor:'green'}} onClick={()=>{
 

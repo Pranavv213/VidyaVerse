@@ -194,15 +194,17 @@ function Home() {
           width: '300px', 
           height: '250px',
           padding: '20px', 
-          backgroundColor: '#fff', 
-          border: '1px solid #ddd', 
+          backgroundColor: 'rgb(25,25,25)', 
+          borderRadius:'10px',
+          border: '0.1px solid white', 
           textAlign: 'center', 
           boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
           position: 'absolute', 
-          top: '30%', 
+          top: '29%', 
           left: '50%', 
           transform: 'translateX(-50%)',
           animation: 'popupAnimation 0.5s ease',
+          color:'white'
         }}>
           <h1>Congratulations!</h1>
           <p>Your account has been created.</p>
@@ -267,8 +269,8 @@ function Home() {
 
     }
    
-}}><l>Get Started</l> <img src={coinImg} style={{width: '60px', 
-  height: '60px', 
+}}><l>Get Started</l>&nbsp; <img src={coinImg} style={{width: '40px', 
+  height: '40px', 
   objectFit: 'cover' }}></img></button>}</center>
       
         </div>
