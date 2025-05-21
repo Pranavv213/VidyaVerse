@@ -128,6 +128,36 @@ function Testing4() {
 
    }
 
+   const addCoinstoEvents=async()=>{
+
+    const data = await getDocs(collection(db,"events"));
+
+     
+                                       
+    let eventsTemp=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+
+    
+
+    for(let i=0;i<eventsTemp.length;i++)
+    {
+
+       
+
+        const userDoc = doc(db, "events",eventsTemp[i].id);
+           
+                       
+        const newFields = {Coins:eventsTemp[i].RegistrationsCount*1000+100};
+
+        await updateDoc(userDoc, newFields);
+
+    }
+
+
+    
+   
+
+}
+
 
   return (
     <div>
@@ -142,6 +172,11 @@ function Testing4() {
       <button onClick={()=>{
        addRandomDateTimetoEvents()
       }}>Set Ramdom Timestamp to all events</button>
+
+
+<button onClick={()=>{
+       addCoinstoEvents()
+      }}>Set Coins to Events</button>
     </div>
   )
 }

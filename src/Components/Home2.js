@@ -811,43 +811,47 @@ function Home2() {
        <CardContent>
 
        
-<Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
+       <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
 
-  <div style={{display:'flex',alignItems:'flex-start',gap:'10px'}}> {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
-    window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
-  }} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
+<div style={{display:'flex',alignItems:'flex-start',gap:'10px'}}> {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
+window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
+}} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
+
+<div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
   
-  <div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
-    
-    <l style={{fontSize:'18px'}}>{x.Name}</l>
+  <l style={{fontSize:'18px'}}>{x.Name}</l>
 
-    <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
+  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
 <CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
 {!x.Type && <> <LocationPinIcon fontSize='small'/>
-   <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1).slice(0,9)+"..." :x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
+ <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1).slice(0,9)+"..." :x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
 
 
-    {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
-      <l>Online</l> </>}
+  {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
+    <l>Online</l> </>}
 </Typography>
 
-    <l>
-      
-      {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
+  <l>
     
-    </l>
-   
-    
+    {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
+  
+  </l>
 
-<Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
+  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> <img src={coinImg} style={{width: '4em', 
+height: '4em', 
+objectFit: 'cover' }} alt="Logo"  /> <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l></Typography>
 
-    
-    </div>
-    
-    </div>
+ 
 
-</Typography>
+ 
+  
 
+
+  </div>
+  
+  </div>
+
+</Typography>    
 
 
 <br></br>
@@ -880,6 +884,9 @@ function Home2() {
   window.location.href=`/manage/${x.id}`
 }}><EditIcon/>  </Button>
 }
+
+<br></br> <br></br>
+        <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
 
 </CardContent>
       </CardActionArea>
@@ -909,44 +916,47 @@ function Home2() {
        <CardContent>
 
        
-<Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
+       <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
 
-  <div style={{display:'flex',alignItems:'flex-start',gap:'10px'}}> {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
-    window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
-  }} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
+<div style={{display:'flex',alignItems:'flex-start',gap:'10px'}}> {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
+window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
+}} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
+
+<div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
   
-  <div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
-    
-    <l style={{fontSize:'18px'}}>{x.Name}</l>
+  <l style={{fontSize:'18px'}}>{x.Name}</l>
 
-    <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
+  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
 <CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
 {!x.Type && <> <LocationPinIcon fontSize='small'/>
-    <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1).slice(0,9)+"..." :x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
+ <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1).slice(0,9)+"..." :x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
 
 
-    {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
-      <l>Online</l> </>}
+  {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
+    <l>Online</l> </>}
 </Typography>
 
-    <l>
-      
-      {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
+  <l>
     
-    </l>
-   
-    
+    {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
+  
+  </l>
 
-<Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
+  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> <img src={coinImg} style={{width: '4em', 
+height: '4em', 
+objectFit: 'cover' }} alt="Logo"  /> <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l></Typography>
 
-    
-    </div>
-    
-    </div>
+ 
 
-</Typography>
+ 
+  
 
 
+  </div>
+  
+  </div>
+
+</Typography>    
 
 <br></br>
 
@@ -978,6 +988,9 @@ function Home2() {
   window.location.href=`/manage/${x.id}`
 }}><EditIcon/>  </Button>
 }
+
+<br></br> <br></br>
+        <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
 
 </CardContent>
       </CardActionArea>
@@ -1006,43 +1019,47 @@ function Home2() {
        <CardContent>
 
        
-<Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
+       <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
 
-  <div style={{display:'flex',alignItems:'flex-start',gap:'10px'}}> {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
-    window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
-  }} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
+<div style={{display:'flex',alignItems:'flex-start',gap:'10px'}}> {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
+window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
+}} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
+
+<div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
   
-  <div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
-    
-    <l style={{fontSize:'18px'}}>{x.Name}</l>
+  <l style={{fontSize:'18px'}}>{x.Name}</l>
 
-    <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
+  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
 <CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
 {!x.Type && <> <LocationPinIcon fontSize='small'/>
-   <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1).slice(0,9)+"..." :x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
+ <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1).slice(0,9)+"..." :x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
 
 
-    {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
-      <l>Online</l> </>}
+  {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
+    <l>Online</l> </>}
 </Typography>
 
-    <l>
-      
-      {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
+  <l>
     
-    </l>
-   
-    
+    {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
+  
+  </l>
 
-<Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
+  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> <img src={coinImg} style={{width: '4em', 
+height: '4em', 
+objectFit: 'cover' }} alt="Logo"  /> <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l></Typography>
 
-    
-    </div>
-    
-    </div>
+ 
 
-</Typography>
+ 
+  
 
+
+  </div>
+  
+  </div>
+
+</Typography>    
 
 
 <br></br>
@@ -1076,6 +1093,9 @@ function Home2() {
 }}><EditIcon/>  </Button>
 }
 
+<br></br> <br></br>
+        <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
+
 </CardContent>
       </CardActionArea>
     </Card>
@@ -1093,7 +1113,7 @@ function Home2() {
 {allEvents.length!=0 && allEvents.map((x)=>{
   return(
 
-    <Card sx={{ maxWidth: 345,minWidth:300 ,maxHeight:500  }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' }}>
+    <Card sx={{ maxWidth: 345,minWidth:300 ,maxHeight:600  }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' }}>
       <CardActionArea>
         <br></br>
         <img style={{width:'20em' ,height:'20em'}} src={x.Image} onClick={()=>{
@@ -1128,19 +1148,48 @@ function Home2() {
                 {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
               
               </l>
+              <br></br>
+
+              <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> 
+
+<div style={{ width: '3em', height: '3em', overflow: 'hidden', position: 'relative' }}>
+    <iframe
+      src="https://lottie.host/embed/330faee1-9a6c-4664-bbcd-7d3709db4c83/uYUzV2Lzv4.lottie"
+      style={{
+        position: 'absolute',
+        top: '-50%',
+        left: '-50%',
+        width: '200%',
+        height: '200%',
+        border: 'none',
+      }}
+      title="Lottie Animation"
+    />
+  </div>
+
+<l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l></Typography>
+
+             
+
              
               
 
-        <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
-
-              
+            
               </div>
               
               </div>
        
-          </Typography>
+          </Typography>    
 
-          
+
+         
+              
+
+       
+
+    
+
+
 
           <br></br>
 
@@ -1172,6 +1221,8 @@ function Home2() {
             window.location.href=`/manage/${x.id}`
           }}><EditIcon/>  </Button>
         }
+        <br></br> <br></br>
+        <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
         
         </CardContent>
       </CardActionArea>
@@ -1199,19 +1250,63 @@ function Home2() {
         }}></img>
        
         <CardContent>
-          <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
-          {x.Name}
-          </Typography>
-          <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
-          <CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
-          {!x.Type && <> <LocationPinIcon fontSize='small'/>
-             <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1).slice(0,9)+"..." :x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
+        <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
+
+<div style={{display:'flex',alignItems:'flex-start',gap:'10px'}}> {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
+window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
+}} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
+
+<div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
+  
+  <l style={{fontSize:'18px'}}>{x.Name}</l>
+
+  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
+<CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
+{!x.Type && <> <LocationPinIcon fontSize='small'/>
+ <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1).slice(0,9)+"..." :x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
 
 
-              {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
-                <l>Online</l> </>}
-        </Typography>
+  {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
+    <l>Online</l> </>}
+</Typography>
 
+  <l>
+    
+    {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
+  
+  </l>
+<br></br>
+  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> 
+
+  <div style={{ width: '3em', height: '3em', overflow: 'hidden', position: 'relative' }}>
+      <iframe
+        src="https://lottie.host/embed/330faee1-9a6c-4664-bbcd-7d3709db4c83/uYUzV2Lzv4.lottie"
+        style={{
+          position: 'absolute',
+          top: '-50%',
+          left: '-50%',
+          width: '200%',
+          height: '200%',
+          border: 'none',
+        }}
+        title="Lottie Animation"
+      />
+    </div>
+
+<l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l></Typography>
+
+
+ 
+
+ 
+  
+
+
+  </div>
+  
+  </div>
+
+</Typography>    
           <br></br>
           
           <Button variant="outlined" onClick={(e)=>{
@@ -1237,6 +1332,9 @@ function Home2() {
             window.location.href=`/manage/${x.id}`
           }}><EditIcon/>  </Button>
         }
+        <br></br> <br></br>
+         <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
+        
         
         </CardContent>
       </CardActionArea>
@@ -1269,8 +1367,8 @@ function Home2() {
         <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
 
 <div style={{display:'flex',alignItems:'flex-start',gap:'10px'}}> {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
-    window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
-  }} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
+window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
+}} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
 
 <div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
   
@@ -1279,7 +1377,7 @@ function Home2() {
   <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
 <CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
 {!x.Type && <> <LocationPinIcon fontSize='small'/>
-  <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1).slice(0,9)+"..." :x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
+ <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1).slice(0,9)+"..." :x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
 
 
   {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
@@ -1291,25 +1389,39 @@ function Home2() {
     {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
   
   </l>
+
+  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> 
+
+  <div style={{ width: '3em', height: '3em', overflow: 'hidden', position: 'relative' }}>
+      <iframe
+        src="https://lottie.host/embed/330faee1-9a6c-4664-bbcd-7d3709db4c83/uYUzV2Lzv4.lottie"
+        style={{
+          position: 'absolute',
+          top: '-50%',
+          left: '-50%',
+          width: '200%',
+          height: '200%',
+          border: 'none',
+        }}
+        title="Lottie Animation"
+      />
+    </div>
+
+<l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l></Typography>
+
+ 
+
  
   
 
-<Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
 
-  
   </div>
   
   </div>
 
-</Typography>
+</Typography>    
 
 
-
-<br></br>
-
-        
-
-          <br></br>
 
         
 
@@ -1382,6 +1494,10 @@ function Home2() {
             navigator.clipboard.writeText(`http://localhost:3000/event/${x.id}`)
             notifyClipboard()
           }}><ShareIcon/>  </Button></div>}
+          <br></br>  <br></br>
+
+<Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
+        
 
             
             
