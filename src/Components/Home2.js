@@ -830,7 +830,7 @@ function Home2() {
 {localStorage.getItem('email') && x.Creator==localStorage.getItem('email') && 
                       <button variant='contained' style={{backgroundColor:'#1876d0',border:'none',position:'absolute',top:'20px',left:'85%',borderRadius:'50%',height:'3em',width:'3em'}} onClick={()=>{
                       window.location.href=`/manage/${x.id}`
-                      }}> <EditIcon/> </button>
+                      }}> <EditIcon style={{color:'white'}}/> </button>
                       }
      
       <CardContent>
@@ -989,7 +989,7 @@ function Home2() {
 {localStorage.getItem('email') && x.Creator==localStorage.getItem('email') && 
                       <button variant='contained' style={{backgroundColor:'#1876d0',border:'none',position:'absolute',top:'20px',left:'85%',borderRadius:'50%',height:'3em',width:'3em'}} onClick={()=>{
                       window.location.href=`/manage/${x.id}`
-                      }}> <EditIcon/> </button>
+                      }}> <EditIcon style={{color:'white'}}/> </button>
                       }
      
       <CardContent>
@@ -1147,7 +1147,7 @@ function Home2() {
 {localStorage.getItem('email') && x.Creator==localStorage.getItem('email') && 
                         <button variant='contained' style={{backgroundColor:'#1876d0',border:'none',position:'absolute',top:'20px',left:'85%',borderRadius:'50%',height:'3em',width:'3em'}} onClick={()=>{
                         window.location.href=`/manage/${x.id}`
-                        }}> <EditIcon/> </button>
+                        }}> <EditIcon style={{color:'white'}}/> </button>
                         }
        
         <CardContent>
@@ -1307,7 +1307,7 @@ function Home2() {
 {localStorage.getItem('email') && x.Creator==localStorage.getItem('email') && 
                         <button variant='contained' style={{backgroundColor:'#1876d0',border:'none',position:'absolute',top:'20px',left:'85%',borderRadius:'50%',height:'3em',width:'3em'}} onClick={()=>{
                         window.location.href=`/manage/${x.id}`
-                        }}> <EditIcon/> </button>
+                        }}> <EditIcon style={{color:'white'}}/> </button>
                         }
        
         <CardContent>
@@ -1466,7 +1466,7 @@ function Home2() {
 {localStorage.getItem('email') && x.Creator==localStorage.getItem('email') && 
                         <button variant='contained' style={{backgroundColor:'#1876d0',border:'none',position:'absolute',top:'20px',left:'85%',borderRadius:'50%',height:'3em',width:'3em'}} onClick={()=>{
                         window.location.href=`/manage/${x.id}`
-                        }}> <EditIcon/> </button>
+                        }}> <EditIcon style={{color:'white'}}/> </button>
                         }
        
         <CardContent>
