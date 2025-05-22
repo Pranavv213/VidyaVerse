@@ -273,6 +273,7 @@ border-style: solid;
       .coin-container {
         position: relative;
         background: transparent;
+
         box-shadow: 0 8px 32px 0 rgba(74, 34, 148, 0.5);
         backdrop-filter: blur(17.5px);
         -webkit-backdrop-filter: blur(17.5px);
@@ -309,8 +310,8 @@ border-style: solid;
         .coinImg{
 
    
-          width: 7em ;
-          height: 7em ;
+          width: 10em ;
+          height: 10em ;
           overflow: hidden ;
       
       }
@@ -326,7 +327,7 @@ border-style: solid;
         padding: 1em;
         padding-left: 2em;
         padding-right: 2em;
-        width: 30%;
+        width: 25%;
       }
 
       .inputLocation{
