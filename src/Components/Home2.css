@@ -213,17 +213,18 @@ border-style: solid;
       
 
       .buttonTop {
-        min-width: 5em;
-        height:3em;
-
+        width: 8em;
+        height:1em;
+        
+        border-radius: 7px;
 
       }
       
       .coinImg{
 
    
-          width: 7em ;
-          height: 7em ;
+          width: 10em ;
+          height: 10em ;
           overflow: hidden ;
       
       }
@@ -237,9 +238,10 @@ border-style: solid;
       @media (min-width: 768px) {
         .buttonTop {
         
-          min-width: 5em;
-          height:2em;
-          font-size: 18px;
+         width: 10em;
+          height:1em;
+          font-size: 14px;
+          border-radius: 7px;
        
 
         }

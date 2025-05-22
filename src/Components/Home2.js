@@ -65,7 +65,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import SendIcon from '@mui/icons-material/Send';
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
-import backgroundVideo from '../assets/images/eventBackgroundVideo.mp4'
+import backgroundVideo from '../assets/images/homeBackground.mp4'
+
+
 
 dayjs.extend(relativeTime);
 // import { signInWithGoogle } from "../firebase-config";
@@ -299,7 +301,7 @@ function Home2() {
         }
       };
     
-      return `${day}${getOrdinal(day)} ${month}, ${year}`;
+      return `${day}${getOrdinal(day)} ${month}, ${JSON.stringify(year).slice(2)}`;
     }
     const createUser = async (email) => {
 
@@ -597,7 +599,7 @@ function Home2() {
 
     
   return (
-    <div >
+    <div  >
       <br></br>
 
       {/* <div style={{top:'0',position:'fixed',zIndex:'999999999',width:'100%',backgroundColor:'black'}}>
@@ -702,26 +704,17 @@ function Home2() {
 
       {/* <hr></hr> */}
 
-  
+  <br></br><br></br>
 
 <div style={{
-  background: 'rgba(255, 255, 255, 0)',
-  backgroundImage:`url(${coinAnimation})`,
-  boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-  backdropFilter: 'blur(2.5px)',
-  WebkitBackdropFilter: 'blur(2.5px)',
-
-  borderBottom: '0.2px solid white',
-  borderTop: '0.2px solid white',
- 
-  backgroundSize: 'cover', // Ensures the image covers the entire area without distortion
-  backgroundPosition: 'center center', // Centers the image within the div
-  backgroundRepeat: 'no-repeat', // Prevents repeating of the image
+   position:'relative',background: 'rgb(0,0,0,0.2)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.1px solid rgba(255, 255, 255,0.5)',paddingTop:'0.1em'
 
 }}>
+
+
   
 
-      <div class="coin" style={{marginLeft:'0%'
+      <div class="coin" style={{marginLeft:'0%',position:'relative',zIndex:1
         }}> 
     
     
@@ -739,7 +732,7 @@ function Home2() {
 
 <br></br>
      
-<Button variant="contained" style={{border:"green 0.5px solid",backgroundColor:'green'}} onClick={()=>{
+<Button variant="outlined" style={{border:"green 0.5px solid",color:'green'}} onClick={()=>{
 
   getLeaderboard()
 }}>Leaderboard &nbsp; <LeaderboardIcon/></Button>
@@ -751,8 +744,23 @@ function Home2() {
 {/* <hr style={{ border: 'none', height: '0.1px', backgroundColor: '#1876d1', margin: '20px 0' }} /> */}
 <br></br> 
 <br></br>
-
-<div style={{display:'flex',justifyContent:'center', gap:'5px'}}>
+  {/* <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{
+              position: "absolute",
+             
+              left: 0,
+              width: "100%",
+              height: "100vh",
+              objectFit: "cover",
+              zIndex: 0,
+            }}
+            src={backgroundVideo}
+          /> */}
+<div style={{display:'flex',justifyContent:'center', gap:'5px',position:'relative',zIndex:1}}>
 
   {buttonHight==1 && <button class="buttonTop" style={{border:'none',display:'flex',flexWrap:'wrap',justifyContent:'center',alignItems:'center',backgroundColor:'#1876d1',color:'white'}} onClick={()=>{
     
@@ -795,9 +803,9 @@ function Home2() {
 
      
      
-<input style={{fontSize:'30px',background: "transparent", boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)", backdropFilter: "blur(0px)", WebkitBackdropFilter: "blur(0px)", borderTop: "none",borderLeft:'none',borderRight:'none',borderBottom:'0.2px solid white', width:'100%',color:'white',maxWidth:'12em'}} onChange={(e)=>{
+<input style={{fontSize:'30px',background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '15px', border: '1px solid rgba(255, 255, 255, 0.18)',paddingLeft:'1em',paddingRight:'1em'}} onChange={(e)=>{
   setCity(e.target.value)
-}} placeholder="&nbsp; &nbsp;🔍 Search by location"></input>
+}} placeholder="🔍 Search by location"></input>
 
 <br></br>
 
@@ -811,96 +819,150 @@ function Home2() {
    if (x.Address.toLowerCase().replace(/[^\w\s]/g, '').includes(input) && x.Type!="online")
   return(
 
-    <Card sx={{ maxWidth: 345,minWidth:300  }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' }} >
-      <CardActionArea>
-        <br></br>
-        <img style={{width:'20em' ,height:'20em'}} src={x.Image} onClick={()=>{
-          window.location.href=`/event/${x.id}`
-        }}></img>
-       
-       <CardContent>
-
-       
-       <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
-
-<div style={{display:'flex',alignItems:'flex-start',gap:'10px'}}> {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
-window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
-}} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
-
-<div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
-  
-  <l style={{fontSize:'18px'}}>{x.Name}</l>
-
-  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
-<CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
-{!x.Type && <> <LocationPinIcon fontSize='small'/>
- <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1).slice(0,9)+"..." :x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
-
-
-  {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
-    <l>Online</l> </>}
-</Typography>
-
-  <l>
-    
-    {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
-  
-  </l>
-
-  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> <img src={coinImg} style={{width: '4em', 
-height: '4em', 
-objectFit: 'cover' }} alt="Logo"  /> <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l></Typography>
-
- 
-
- 
-  
-
-
-  </div>
-  
-  </div>
-
-</Typography>    
-
-
-<br></br>
-
-<Button variant="outlined" onClick={(e)=>{
-   e.stopPropagation()
-  window.location.href=`/event/${x.id}`
-}}><LaunchIcon/>  </Button>
-
-<Button variant="outlined" onClick={(e)=>{
-   e.stopPropagation()
-
-   setEvent_id(x.id)
-
-   getComments(x.id)
-
-   
-
-  
-}}><CommentIcon/>  </Button>
-
-<Button variant="outlined" onClick={(e)=>{
-   e.stopPropagation()
-  navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/event/${x.id}`)
-  notifyClipboard()
-}}><ShareIcon/>  </Button>
+    <Card sx={{ maxWidth: 500,minWidth:400 ,maxHeight:600  }} style={{ position:'relative',background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' ,position:'relative'}}>
+    <CardActionArea>
+      <br></br>
+      <img style={{width:'27.5em' ,height:'18em'}} src={x.Image} onClick={()=>{
+        window.location.href=`/event/${x.id}`
+      }}></img>
 
 {localStorage.getItem('email') && x.Creator==localStorage.getItem('email') && 
-<Button variant="outlined" style={{color:'green'}} onClick={()=>{
-  window.location.href=`/manage/${x.id}`
-}}><EditIcon/>  </Button>
-}
+                      <button variant='contained' style={{backgroundColor:'#1876d0',border:'none',position:'absolute',top:'20px',left:'85%',borderRadius:'50%',height:'3em',width:'3em'}} onClick={()=>{
+                      window.location.href=`/manage/${x.id}`
+                      }}> <EditIcon/> </button>
+                      }
+     
+      <CardContent>
 
-<br></br> <br></br>
-        <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
+     
+        <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
 
-</CardContent>
-      </CardActionArea>
-    </Card>
+          <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between'}}> 
+
+            
+            <div style={{display:'flex',gap:'10px' }}>
+            
+            {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
+  window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
+}} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'3em',height:'3em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
+          
+          <div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
+            
+            <l style={{fontSize:'18px'}}>{x.Name}</l>
+
+            
+
+            <l>
+              
+              {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
+            
+            </l>
+            <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
+
+          
+            
+            <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> 
+
+                      <div style={{ width: '4em', height: '4em', overflow: 'hidden', position: 'relative' }}>
+                      <iframe
+                      src="https://lottie.host/embed/330faee1-9a6c-4664-bbcd-7d3709db4c83/uYUzV2Lzv4.lottie"
+                      style={{
+                      position: 'absolute',
+                      top: '-50%',
+                      left: '-50%',
+                      width: '200%',
+                      height: '200%',
+                      border: 'none',
+                      }}
+                      title="Lottie Animation"
+                      />
+                      </div>
+
+                      <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l>
+                     
+                      </Typography>
+         
+                      </div>
+
+            
+                     
+            
+
+          
+            </div>
+
+            <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+
+                      <Button  onClick={(e)=>{
+                      e.stopPropagation()
+                      window.location.href=`/event/${x.id}`
+                      }}><LaunchIcon/>  </Button>
+
+                      <Button  onClick={(e)=>{
+                      e.stopPropagation()
+
+                      setEvent_id(x.id)
+
+                      getComments(x.id)
+
+
+
+
+                      }}><CommentIcon/>  </Button>
+
+                      <Button  onClick={(e)=>{
+                      e.stopPropagation()
+                      navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/event/${x.id}`)
+                      notifyClipboard()
+                      }}><ShareIcon/>  </Button>
+
+                      
+                      </div>
+
+
+
+            
+            </div>
+     
+        </Typography>    
+
+
+       
+            
+        <Typography gutterBottom sx={{  fontSize: 14 }} style={{position:'absolute',left:'20%',bottom:'7%',color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
+          
+          <div style={{display:'flex',alignItems:'flex-start',gap:'5px'}}>
+        <CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
+        </div>
+
+        &nbsp;&nbsp;{!x.Type && <> <LocationPinIcon fontSize='small'/>
+           <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1):x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
+
+
+            {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
+              <l>Online</l> </>}
+      </Typography>
+      <br></br>
+
+                    
+      
+                 
+
+                            
+
+  
+
+
+
+        <br></br>
+
+        
+
+      <br></br> <br></br>
+      
+      </CardContent>
+    </CardActionArea>
+  </Card>
    
   )
 })}
@@ -916,95 +978,150 @@ objectFit: 'cover' }} alt="Logo"  /> <l style={{fontSize:'24px',color:'rgb(200,2
 {trendingEvents.length!=0 && buttonHight==2 &&  trendingEvents.map((x)=>{
   return(
 
-    <Card sx={{ maxWidth: 345,minWidth:300  }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' }} >
-      <CardActionArea>
-        <br></br>
-        <img style={{width:'20em' ,height:'20em'}} src={x.Image} onClick={()=>{
-          window.location.href=`/event/${x.id}`
-        }}></img>
-       
-       <CardContent>
-
-       
-       <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
-
-<div style={{display:'flex',alignItems:'flex-start',gap:'10px'}}> {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
-window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
-}} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
-
-<div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
-  
-  <l style={{fontSize:'18px'}}>{x.Name}</l>
-
-  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
-<CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
-{!x.Type && <> <LocationPinIcon fontSize='small'/>
- <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1).slice(0,9)+"..." :x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
-
-
-  {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
-    <l>Online</l> </>}
-</Typography>
-
-  <l>
-    
-    {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
-  
-  </l>
-
-  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> <img src={coinImg} style={{width: '4em', 
-height: '4em', 
-objectFit: 'cover' }} alt="Logo"  /> <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l></Typography>
-
- 
-
- 
-  
-
-
-  </div>
-  
-  </div>
-
-</Typography>    
-
-<br></br>
-
-<Button variant="outlined" onClick={(e)=>{
-   e.stopPropagation()
-  window.location.href=`/event/${x.id}`
-}}><LaunchIcon/>  </Button>
-
-<Button variant="outlined" onClick={(e)=>{
-   e.stopPropagation()
-
-   setEvent_id(x.id)
-
-   getComments(x.id)
-
-   
-
-  
-}}><CommentIcon/>  </Button>
-
-<Button variant="outlined" onClick={(e)=>{
-   e.stopPropagation()
-  navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/event/${x.id}`)
-  notifyClipboard()
-}}><ShareIcon/>  </Button>
+    <Card sx={{ maxWidth: 500,minWidth:400 ,maxHeight:600  }} style={{ position:'relative',background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' ,position:'relative'}}>
+    <CardActionArea>
+      <br></br>
+      <img style={{width:'27.5em' ,height:'18em'}} src={x.Image} onClick={()=>{
+        window.location.href=`/event/${x.id}`
+      }}></img>
 
 {localStorage.getItem('email') && x.Creator==localStorage.getItem('email') && 
-<Button variant="outlined" style={{color:'green'}} onClick={()=>{
-  window.location.href=`/manage/${x.id}`
-}}><EditIcon/>  </Button>
-}
+                      <button variant='contained' style={{backgroundColor:'#1876d0',border:'none',position:'absolute',top:'20px',left:'85%',borderRadius:'50%',height:'3em',width:'3em'}} onClick={()=>{
+                      window.location.href=`/manage/${x.id}`
+                      }}> <EditIcon/> </button>
+                      }
+     
+      <CardContent>
 
-<br></br> <br></br>
-        <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
+     
+        <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
 
-</CardContent>
-      </CardActionArea>
-    </Card>
+          <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between'}}> 
+
+            
+            <div style={{display:'flex',gap:'10px' }}>
+            
+            {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
+  window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
+}} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'3em',height:'3em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
+          
+          <div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
+            
+            <l style={{fontSize:'18px'}}>{x.Name}</l>
+
+            
+
+            <l>
+              
+              {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
+            
+            </l>
+            <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
+
+          
+            
+            <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> 
+
+                      <div style={{ width: '4em', height: '4em', overflow: 'hidden', position: 'relative' }}>
+                      <iframe
+                      src="https://lottie.host/embed/330faee1-9a6c-4664-bbcd-7d3709db4c83/uYUzV2Lzv4.lottie"
+                      style={{
+                      position: 'absolute',
+                      top: '-50%',
+                      left: '-50%',
+                      width: '200%',
+                      height: '200%',
+                      border: 'none',
+                      }}
+                      title="Lottie Animation"
+                      />
+                      </div>
+
+                      <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l>
+                     
+                      </Typography>
+         
+                      </div>
+
+            
+                     
+            
+
+          
+            </div>
+
+            <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+
+                      <Button  onClick={(e)=>{
+                      e.stopPropagation()
+                      window.location.href=`/event/${x.id}`
+                      }}><LaunchIcon/>  </Button>
+
+                      <Button  onClick={(e)=>{
+                      e.stopPropagation()
+
+                      setEvent_id(x.id)
+
+                      getComments(x.id)
+
+
+
+
+                      }}><CommentIcon/>  </Button>
+
+                      <Button  onClick={(e)=>{
+                      e.stopPropagation()
+                      navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/event/${x.id}`)
+                      notifyClipboard()
+                      }}><ShareIcon/>  </Button>
+
+                      
+                      </div>
+
+
+
+            
+            </div>
+     
+        </Typography>    
+
+
+       
+            
+        <Typography gutterBottom sx={{  fontSize: 14 }} style={{position:'absolute',left:'20%',bottom:'7%',color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
+          
+          <div style={{display:'flex',alignItems:'flex-start',gap:'5px'}}>
+        <CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
+        </div>
+
+        &nbsp;&nbsp;{!x.Type && <> <LocationPinIcon fontSize='small'/>
+           <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1):x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
+
+
+            {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
+              <l>Online</l> </>}
+      </Typography>
+      <br></br>
+
+                    
+      
+                 
+
+                            
+
+  
+
+
+
+        <br></br>
+
+        
+
+      <br></br> <br></br>
+      
+      </CardContent>
+    </CardActionArea>
+  </Card>
    
   )
 })}
@@ -1019,97 +1136,150 @@ objectFit: 'cover' }} alt="Logo"  /> <l style={{fontSize:'24px',color:'rgb(200,2
     
     return(
 
-    <Card sx={{ maxWidth: 345,minWidth:300  }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' }} >
+      <Card sx={{ maxWidth: 500,minWidth:400 ,maxHeight:600  }} style={{ position:'relative',background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' ,position:'relative'}}>
       <CardActionArea>
         <br></br>
-        <img style={{width:'20em' ,height:'20em'}} src={x.Image} onClick={()=>{
+        <img style={{width:'27.5em' ,height:'18em'}} src={x.Image} onClick={()=>{
           window.location.href=`/event/${x.id}`
         }}></img>
-       
-       <CardContent>
-
-       
-       <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
-
-<div style={{display:'flex',alignItems:'flex-start',gap:'10px'}}> {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
-window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
-}} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
-
-<div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
-  
-  <l style={{fontSize:'18px'}}>{x.Name}</l>
-
-  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
-<CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
-{!x.Type && <> <LocationPinIcon fontSize='small'/>
- <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1).slice(0,9)+"..." :x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
-
-
-  {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
-    <l>Online</l> </>}
-</Typography>
-
-  <l>
-    
-    {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
-  
-  </l>
-
-  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> <img src={coinImg} style={{width: '4em', 
-height: '4em', 
-objectFit: 'cover' }} alt="Logo"  /> <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l></Typography>
-
- 
-
- 
-  
-
-
-  </div>
-  
-  </div>
-
-</Typography>    
-
-
-<br></br>
-
-<Button variant="outlined" onClick={(e)=>{
-   e.stopPropagation()
-  window.location.href=`/event/${x.id}`
-}}><LaunchIcon/>  </Button>
-
-<Button variant="outlined" onClick={(e)=>{
-   e.stopPropagation()
-
-   setEvent_id(x.id)
-
-   getComments(x.id)
-
-   
-
-  
-}}><CommentIcon/>  </Button>
-
-<Button variant="outlined" onClick={(e)=>{
-   e.stopPropagation()
-  navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/event/${x.id}`)
-  notifyClipboard()
-}}><ShareIcon/>  </Button>
 
 {localStorage.getItem('email') && x.Creator==localStorage.getItem('email') && 
-<Button variant="outlined" style={{color:'green'}} onClick={()=>{
-  window.location.href=`/manage/${x.id}`
-}}><EditIcon/>  </Button>
-}
+                        <button variant='contained' style={{backgroundColor:'#1876d0',border:'none',position:'absolute',top:'20px',left:'85%',borderRadius:'50%',height:'3em',width:'3em'}} onClick={()=>{
+                        window.location.href=`/manage/${x.id}`
+                        }}> <EditIcon/> </button>
+                        }
+       
+        <CardContent>
 
-<br></br> <br></br>
-        <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
+       
+          <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
 
-</CardContent>
+            <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between'}}> 
+
+              
+              <div style={{display:'flex',gap:'10px' }}>
+              
+              {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
+    window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
+  }} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'3em',height:'3em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
+            
+            <div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
+              
+              <l style={{fontSize:'18px'}}>{x.Name}</l>
+
+              
+
+              <l>
+                
+                {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
+              
+              </l>
+              <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
+
+            
+              
+              <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> 
+
+                        <div style={{ width: '4em', height: '4em', overflow: 'hidden', position: 'relative' }}>
+                        <iframe
+                        src="https://lottie.host/embed/330faee1-9a6c-4664-bbcd-7d3709db4c83/uYUzV2Lzv4.lottie"
+                        style={{
+                        position: 'absolute',
+                        top: '-50%',
+                        left: '-50%',
+                        width: '200%',
+                        height: '200%',
+                        border: 'none',
+                        }}
+                        title="Lottie Animation"
+                        />
+                        </div>
+
+                        <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l>
+                       
+                        </Typography>
+           
+                        </div>
+
+              
+                       
+              
+
+            
+              </div>
+
+              <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+
+                        <Button  onClick={(e)=>{
+                        e.stopPropagation()
+                        window.location.href=`/event/${x.id}`
+                        }}><LaunchIcon/>  </Button>
+
+                        <Button  onClick={(e)=>{
+                        e.stopPropagation()
+
+                        setEvent_id(x.id)
+
+                        getComments(x.id)
+
+
+
+
+                        }}><CommentIcon/>  </Button>
+
+                        <Button  onClick={(e)=>{
+                        e.stopPropagation()
+                        navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/event/${x.id}`)
+                        notifyClipboard()
+                        }}><ShareIcon/>  </Button>
+
+                        
+                        </div>
+
+
+
+              
+              </div>
+       
+          </Typography>    
+
+
+         
+              
+          <Typography gutterBottom sx={{  fontSize: 14 }} style={{position:'absolute',left:'20%',bottom:'7%',color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
+            
+            <div style={{display:'flex',alignItems:'flex-start',gap:'5px'}}>
+          <CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
+          </div>
+
+          &nbsp;&nbsp;{!x.Type && <> <LocationPinIcon fontSize='small'/>
+             <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1):x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
+
+
+              {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
+                <l>Online</l> </>}
+        </Typography>
+        <br></br>
+
+                      
+        
+                   
+
+                              
+
+    
+
+
+
+          <br></br>
+
+          
+
+        <br></br> <br></br>
+        
+        </CardContent>
       </CardActionArea>
     </Card>
-   
   )
 })}
 </div>
@@ -1123,69 +1293,108 @@ objectFit: 'cover' }} alt="Logo"  /> <l style={{fontSize:'24px',color:'rgb(200,2
 {allEvents.length!=0 && allEvents.map((x)=>{
   return(
 
-    <Card sx={{ maxWidth: 345,minWidth:300 ,maxHeight:600  }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' }}>
+    <Card sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.1px solid rgba(255, 255, 255,0.2)',position:'relative',borderTop:'none'}}>
       <CardActionArea>
-        <br></br>
-        <img style={{width:'20em' ,height:'20em'}} src={x.Image} onClick={()=>{
+        
+        <img style={{width:'27.5em' ,height:'18em',objectFit:'cover', border: '1px solid rgba(255, 255, 255, 0.18)'}} src={x.Image} onClick={()=>{
           window.location.href=`/event/${x.id}`
         }}></img>
+
+{localStorage.getItem('email') && x.Creator==localStorage.getItem('email') && 
+                        <button variant='contained' style={{backgroundColor:'#1876d0',border:'none',position:'absolute',top:'20px',left:'85%',borderRadius:'50%',height:'3em',width:'3em'}} onClick={()=>{
+                        window.location.href=`/manage/${x.id}`
+                        }}> <EditIcon/> </button>
+                        }
        
         <CardContent>
 
        
           <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
 
-            <div style={{display:'flex',alignItems:'flex-start',gap:'10px'}}> {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
+            <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between'}}> 
+
+              
+              <div style={{display:'flex',gap:'10px' }}>
+              
+              {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
     window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
-  }} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
+  }} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'2em',height:'2em',borderRadius:'50%',objectFit:'cover',border:'1px solid white'}}></img> :<img style={{width:'2.8em',height:'2.8em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
             
             <div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
               
               <l style={{fontSize:'18px'}}>{x.Name}</l>
 
-              <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
-          <CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
-          {!x.Type && <> <LocationPinIcon fontSize='small'/>
-             <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1).slice(0,9)+"..." :x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
-
-
-              {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
-                <l>Online</l> </>}
-        </Typography>
+              
 
               <l>
                 
                 {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
               
               </l>
-              <br></br>
+              <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
 
+            
+              
               <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> 
 
-<div style={{ width: '3em', height: '3em', overflow: 'hidden', position: 'relative' }}>
-    <iframe
-      src="https://lottie.host/embed/330faee1-9a6c-4664-bbcd-7d3709db4c83/uYUzV2Lzv4.lottie"
-      style={{
-        position: 'absolute',
-        top: '-50%',
-        left: '-50%',
-        width: '200%',
-        height: '200%',
-        border: 'none',
-      }}
-      title="Lottie Animation"
-    />
-  </div>
+                        <div style={{ width: '4em', height: '4em', overflow: 'hidden', position: 'relative' }}>
+                        <iframe
+                        src="https://lottie.host/embed/330faee1-9a6c-4664-bbcd-7d3709db4c83/uYUzV2Lzv4.lottie"
+                        style={{
+                        position: 'absolute',
+                        top: '-50%',
+                        left: '-50%',
+                        width: '200%',
+                        height: '200%',
+                        border: 'none',
+                        }}
+                        title="Lottie Animation"
+                        />
+                        </div>
 
-<l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l></Typography>
+                        <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l>
+                       
+                        </Typography>
+           
+                        </div>
 
-             
-
-             
+              
+                       
               
 
             
               </div>
+
+              <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+
+                        <Button  onClick={(e)=>{
+                        e.stopPropagation()
+                        window.location.href=`/event/${x.id}`
+                        }}><LaunchIcon/>  </Button>
+
+                        <Button  onClick={(e)=>{
+                        e.stopPropagation()
+
+                        setEvent_id(x.id)
+
+                        getComments(x.id)
+
+
+
+
+                        }}><CommentIcon/>  </Button>
+
+                        <Button  onClick={(e)=>{
+                        e.stopPropagation()
+                        navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/event/${x.id}`)
+                        notifyClipboard()
+                        }}><ShareIcon/>  </Button>
+
+                        
+                        </div>
+
+
+
               
               </div>
        
@@ -1194,8 +1403,26 @@ objectFit: 'cover' }} alt="Logo"  /> <l style={{fontSize:'24px',color:'rgb(200,2
 
          
               
+          <Typography gutterBottom sx={{  fontSize: 14 }} style={{position:'absolute',left:'20%',bottom:'7%',color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
+            
+            <div style={{display:'flex',alignItems:'flex-start',gap:'5px'}}>
+          <CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
+          </div>
 
-       
+          &nbsp;&nbsp;{!x.Type && <> <LocationPinIcon fontSize='small'/>
+             <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1):x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
+
+
+              {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
+                <l>Online</l> </>}
+        </Typography>
+        <br></br>
+
+                      
+        
+                   
+
+                              
 
     
 
@@ -1203,36 +1430,9 @@ objectFit: 'cover' }} alt="Logo"  /> <l style={{fontSize:'24px',color:'rgb(200,2
 
           <br></br>
 
-          <Button variant="outlined" onClick={(e)=>{
-             e.stopPropagation()
-            window.location.href=`/event/${x.id}`
-          }}><LaunchIcon/>  </Button>
+          
 
-          <Button variant="outlined" onClick={(e)=>{
-             e.stopPropagation()
-
-             setEvent_id(x.id)
-
-             getComments(x.id)
-
-             
-
-            
-          }}><CommentIcon/>  </Button>
-
-          <Button variant="outlined" onClick={(e)=>{
-             e.stopPropagation()
-            navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/event/${x.id}`)
-            notifyClipboard()
-          }}><ShareIcon/>  </Button>
-
-          {localStorage.getItem('email') && x.Creator==localStorage.getItem('email') && 
-          <Button variant="outlined" style={{color:'green'}} onClick={()=>{
-            window.location.href=`/manage/${x.id}`
-          }}><EditIcon/>  </Button>
-        }
         <br></br> <br></br>
-        <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
         
         </CardContent>
       </CardActionArea>
@@ -1252,99 +1452,146 @@ objectFit: 'cover' }} alt="Logo"  /> <l style={{fontSize:'24px',color:'rgb(200,2
 {createdEvents.length!=0 && createdEvents.map((x)=>{
   return(
 
-    <Card sx={{ maxWidth: 345,minWidth:300 }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' }}>
+    <Card sx={{ maxWidth: 500,minWidth:400 ,maxHeight:600  }} style={{ position:'relative',background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' ,position:'relative'}}>
       <CardActionArea>
         <br></br>
-        <img style={{width:'20em' ,height:'20em'}} src={x.Image} onClick={()=>{
+        <img style={{width:'27.5em' ,height:'18em'}} src={x.Image} onClick={()=>{
           window.location.href=`/event/${x.id}`
         }}></img>
+
+{localStorage.getItem('email') && x.Creator==localStorage.getItem('email') && 
+                        <button variant='contained' style={{backgroundColor:'#1876d0',border:'none',position:'absolute',top:'20px',left:'85%',borderRadius:'50%',height:'3em',width:'3em'}} onClick={()=>{
+                        window.location.href=`/manage/${x.id}`
+                        }}> <EditIcon/> </button>
+                        }
        
         <CardContent>
-        <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
 
-<div style={{display:'flex',alignItems:'flex-start',gap:'10px'}}> {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
-window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
-}} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
+       
+          <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
 
-<div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
-  
-  <l style={{fontSize:'18px'}}>{x.Name}</l>
+            <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between'}}> 
 
-  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
-<CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
-{!x.Type && <> <LocationPinIcon fontSize='small'/>
- <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1).slice(0,9)+"..." :x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
+              
+              <div style={{display:'flex',gap:'10px' }}>
+              
+              {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
+    window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
+  }} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'3em',height:'3em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
+            
+            <div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
+              
+              <l style={{fontSize:'18px'}}>{x.Name}</l>
+
+              
+
+              <l>
+                
+                {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
+              
+              </l>
+              <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
+
+            
+              
+              <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> 
+
+                        <div style={{ width: '4em', height: '4em', overflow: 'hidden', position: 'relative' }}>
+                        <iframe
+                        src="https://lottie.host/embed/330faee1-9a6c-4664-bbcd-7d3709db4c83/uYUzV2Lzv4.lottie"
+                        style={{
+                        position: 'absolute',
+                        top: '-50%',
+                        left: '-50%',
+                        width: '200%',
+                        height: '200%',
+                        border: 'none',
+                        }}
+                        title="Lottie Animation"
+                        />
+                        </div>
+
+                        <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l>
+                       
+                        </Typography>
+           
+                        </div>
+
+              
+                       
+              
+
+            
+              </div>
+
+              <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+
+                        <Button  onClick={(e)=>{
+                        e.stopPropagation()
+                        window.location.href=`/event/${x.id}`
+                        }}><LaunchIcon/>  </Button>
+
+                        <Button  onClick={(e)=>{
+                        e.stopPropagation()
+
+                        setEvent_id(x.id)
+
+                        getComments(x.id)
 
 
-  {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
-    <l>Online</l> </>}
-</Typography>
-
-  <l>
-    
-    {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
-  
-  </l>
-<br></br>
-  <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> 
-
-  <div style={{ width: '3em', height: '3em', overflow: 'hidden', position: 'relative' }}>
-      <iframe
-        src="https://lottie.host/embed/330faee1-9a6c-4664-bbcd-7d3709db4c83/uYUzV2Lzv4.lottie"
-        style={{
-          position: 'absolute',
-          top: '-50%',
-          left: '-50%',
-          width: '200%',
-          height: '200%',
-          border: 'none',
-        }}
-        title="Lottie Animation"
-      />
-    </div>
-
-<l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l></Typography>
 
 
- 
+                        }}><CommentIcon/>  </Button>
 
- 
-  
+                        <Button  onClick={(e)=>{
+                        e.stopPropagation()
+                        navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/event/${x.id}`)
+                        notifyClipboard()
+                        }}><ShareIcon/>  </Button>
+
+                        
+                        </div>
 
 
-  </div>
-  
-  </div>
 
-</Typography>    
-          <br></br>
-          
-          <Button variant="outlined" onClick={(e)=>{
-             e.stopPropagation()
-            window.location.href=`/event/${x.id}`
-          }}><LaunchIcon/>  </Button>
+              
+              </div>
+       
+          </Typography>    
 
-          <Button variant="outlined" onClick={(e)=>{
-             e.stopPropagation()
-             setEvent_id(x.id)
 
-             getComments(x.id)
-          }}><CommentIcon/>  </Button>
+         
+              
+          <Typography gutterBottom sx={{  fontSize: 14 }} style={{position:'absolute',left:'20%',bottom:'7%',color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
+            
+            <div style={{display:'flex',alignItems:'flex-start',gap:'5px'}}>
+          <CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
+          </div>
 
-          <Button variant="outlined" onClick={(e)=>{
-             e.stopPropagation()
-            navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/event/${x.id}`)
-            notifyClipboard()
-          }}><ShareIcon/>  </Button>
+          &nbsp;&nbsp;{!x.Type && <> <LocationPinIcon fontSize='small'/>
+             <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1):x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
 
-          {localStorage.getItem('email') && x.Creator==localStorage.getItem('email') && 
-          <Button variant="outlined" style={{color:'green'}} onClick={()=>{
-            window.location.href=`/manage/${x.id}`
-          }}><EditIcon/>  </Button>
-        }
-        <br></br> <br></br>
-         <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
+
+              {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
+                <l>Online</l> </>}
+        </Typography>
+        <br></br>
+
+                      
         
+                   
+
+                              
+
+    
+
+
+
+          <br></br>
+
+          
+
+        <br></br> <br></br>
         
         </CardContent>
       </CardActionArea>

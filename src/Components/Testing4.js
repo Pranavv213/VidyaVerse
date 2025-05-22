@@ -71,6 +71,10 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 
 function Testing4() {
 
+  const tweetText = "Check out this awesome project! 🚀 #ReactJS #OpenAI";
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
+
+
 
     const addUser=async()=>{
 
@@ -177,7 +181,16 @@ function Testing4() {
 <button onClick={()=>{
        addCoinstoEvents()
       }}>Set Coins to Events</button>
+
+
+<br></br>
+    <a href={twitterUrl} target="_blank" rel="noopener noreferrer">
+  <button>Share on LinkedIn</button>
+</a>
+
     </div>
+
+  
   )
 }
 

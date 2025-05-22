@@ -935,7 +935,7 @@ const PoapCertificate = () => {
           cursor: uploading || minting ? 'not-allowed' : 'pointer',
         }}
       >
-        {uploading ? 'Uploading Image...' : minting ? 'Minting...' : 'Mint Certificate'}
+        {uploading ? 'Generating POAP...' : minting ? 'Minting...' : 'Mint Certificate'}
       </button>
     }
     </center>
