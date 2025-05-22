@@ -223,6 +223,8 @@ function Home2() {
 
     const [allUsersArray,setAllUsersArray]=useState([])
 
+    const [isOnline,setIsOnline]=useState(false)
+
 
     const  getLeaderboard=async ()=>{
 
@@ -802,7 +804,7 @@ function Home2() {
 
      
      
-<input style={{fontSize:'30px',background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '15px', border: '1px solid rgba(255, 255, 255, 0.18)',paddingLeft:'1em',paddingRight:'1em'}} onChange={(e)=>{
+<input style={{background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '15px', border: '1px solid rgba(255, 255, 255, 0.18)',paddingLeft:'1em',paddingRight:'1em'}} class="inputLocation" onChange={(e)=>{
   setCity(e.target.value)
 }} placeholder="🔍 Search by location"></input>
 
@@ -818,7 +820,7 @@ function Home2() {
    if (x.Address.toLowerCase().replace(/[^\w\s]/g, '').includes(input) && x.Type!="online")
   return(
 
-    <Card sx={{ maxWidth: 500,minWidth:400 ,maxHeight:600  }} style={{ position:'relative',background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' ,position:'relative'}}>
+    <Card sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.5px solid rgba(255, 255, 255,0.2)',position:'relative',borderRadius:'20px'}}>
     <CardActionArea>
       <br></br>
       <img style={{width:'27.5em' ,height:'18em'}} src={x.Image} onClick={()=>{
@@ -975,9 +977,9 @@ function Home2() {
 <div className="events">
 
 {trendingEvents.length!=0 && buttonHight==2 &&  trendingEvents.map((x)=>{
-  return(
+   if((isOnline && x.Type=='online') || !isOnline && ((x.Type && x.Type!="online" )|| !x.Type)) return(
 
-    <Card sx={{ maxWidth: 500,minWidth:400 ,maxHeight:600  }} style={{ position:'relative',background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' ,position:'relative'}}>
+    <Card sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.5px solid rgba(255, 255, 255,0.2)',position:'relative',borderRadius:'20px'}}>
     <CardActionArea>
       <br></br>
       <img style={{width:'27.5em' ,height:'18em'}} src={x.Image} onClick={()=>{
@@ -1135,7 +1137,7 @@ function Home2() {
     
     return(
 
-      <Card sx={{ maxWidth: 500,minWidth:400 ,maxHeight:600  }} style={{ position:'relative',background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' ,position:'relative'}}>
+      <Card  sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.5px solid rgba(255, 255, 255,0.2)',position:'relative',borderRadius:'20px'}}>
       <CardActionArea>
         <br></br>
         <img style={{width:'27.5em' ,height:'18em'}} src={x.Image} onClick={()=>{
@@ -1284,15 +1286,18 @@ function Home2() {
 </div>
 
 
+
+
+
 {allEvents.length==0 && <h2 style={{color:'white'}}>All</h2>}
 {allEvents.length!=0 && <h2 style={{color:'white'}}>All</h2>}
 
 <div className="events">
 
 {allEvents.length!=0 && allEvents.map((x)=>{
-  return(
+  if((isOnline && x.Type=='online') || !isOnline && ((x.Type && x.Type!="online" )|| !x.Type))return(
 
-    <Card sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.1px solid rgba(255, 255, 255,0.2)',position:'relative',borderTop:'none'}}>
+    <Card sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.5px solid rgba(255, 255, 255,0.2)',position:'relative',borderRadius:'20px'}}>
       <CardActionArea>
         
         <img style={{width:'27.5em' ,height:'18em',objectFit:'cover', border: '1px solid rgba(255, 255, 255, 0.18)'}} src={x.Image} onClick={()=>{
@@ -1451,7 +1456,7 @@ function Home2() {
 {createdEvents.length!=0 && createdEvents.map((x)=>{
   return(
 
-    <Card sx={{ maxWidth: 500,minWidth:400 ,maxHeight:600  }} style={{ position:'relative',background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' ,position:'relative'}}>
+    <Card sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.5px solid rgba(255, 255, 255,0.2)',position:'relative',borderRadius:'20px'}}>
       <CardActionArea>
         <br></br>
         <img style={{width:'27.5em' ,height:'18em'}} src={x.Image} onClick={()=>{
@@ -1610,7 +1615,7 @@ function Home2() {
   return(
     <div style={{border:'2px solid black',color:'white'}}>
       
-      <Card sx={{ maxWidth:345,minWidth:300  }} style={{marginTop:'10%', background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' }}>
+      <Card sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.5px solid rgba(255, 255, 255,0.2)',position:'relative',borderRadius:'20px'}}>
       <CardActionArea>
         <br></br>
         <img style={{width:'20em' ,height:'20em'}} src={x.Image} onClick={()=>{
@@ -1772,7 +1777,7 @@ window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.inc
 <Box
   sx={{
     position: 'fixed',   // Fixes it relative to the viewport
-    bottom: 30,          // 16px from the bottom
+    bottom: 65,          // 16px from the bottom
     right: 16,           // 16px from the right
     zIndex: 1000,        // Ensure it stays above other elements
     '& > :not(style)': { m: 1 },
@@ -1782,7 +1787,7 @@ window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.inc
     window.location.href="/creator"
   }}
 >
-  {showCommentsDiv.length==0 &&  <Fab color="primary" aria-label="add"  size="large" style={{bottom:'40%'}}>
+  {showCommentsDiv.length==0 &&  <Fab color="primary" aria-label="add"  size="large" style={{bottom:'80%'}}>
     <AddIcon />
   </Fab>}
  
@@ -2017,6 +2022,36 @@ window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.inc
     </div>
   </div>
 )}
+
+<div style={{position:'fixed',bottom:'0',width:'100%'}}>
+     
+
+      <div className="full-width-bar" style={{height:'3em',borderTop:'0.1px solid rgb(255,255,255,0.5)',background: 'black', boxShadow: '0 8px 32px 0 rgba(74, 34, 148, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)'}} >
+                
+                  
+           
+                   <div style={{color:'white'}} >
+           
+                   
+                   <Button variant={!isOnline ? "contained" :"" } style={{borderRadius:'0'}}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px',color:isOnline && "#1876D0" }} onClick={()=>{
+                    setIsOnline(false)
+                   }}><LocationPinIcon fontSize='small'/> <l>Offline Events</l></div></Button>
+
+
+
+                   <Button variant={isOnline ? "contained" :"" } onClick={()=>{
+                     setIsOnline(true)
+                   }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px',color:!isOnline && "#1876D0"}}><VideoCallIcon   fontSize='small'/> <l>Online Events</l></div></Button>
+                  
+                
+           
+           
+                   </div>
+                 
+                    
+                     </div>
+      </div>
+
 
      <br></br> <br></br> <br></br> <br></br> <br></br> <br></br>
 

@@ -640,7 +640,7 @@ function Home2() {
  <div style={{position:'fixed',bottom:'0',width:'100%'}}>
      
 
-      <div className="full-width-bar" style={{height:'3em',borderTop:'1px solid white'}} >
+      <div className="full-width-bar" style={{height:'3em',borderTop:'0.1px solid rgb(255,255,255,0.5)',background: 'black', boxShadow: '0 8px 32px 0 rgba(74, 34, 148, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)'}} >
                 
                   
            

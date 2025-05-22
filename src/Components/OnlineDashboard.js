@@ -499,7 +499,7 @@ else{
 {createdEvents.length!=0 && createdEvents.map((x)=>{
   return(
 
-    <Card sx={{ maxWidth: 345,minWidth:300 }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' }} onClick={()=>{
+    <Card  sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.1px solid rgba(255, 255, 255,0.2)',position:'relative',borderTop:'none'}} onClick={()=>{
       window.location.href=`/event/${x.id}`
     }}>
       <CardActionArea>
@@ -569,7 +569,7 @@ else{
   return(
     <div style={{border:'2px solid black',color:'white'}}>
       
-      <Card sx={{ maxWidth: 345,minWidth:300 }} style={{marginTop:'10%', background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' }} onClick={()=>{
+      <Card  sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.1px solid rgba(255, 255, 255,0.2)',position:'relative',borderTop:'none'}}onClick={()=>{
           window.location.href=`/event/${x.id}`
         }}>
       <CardActionArea>
@@ -674,7 +674,7 @@ else{
  <div style={{position:'fixed',bottom:'0',width:'100%'}}>
      
 
-      <div className="full-width-bar" style={{height:'3em',borderTop:'1px solid white'}} >
+      <div className="full-width-bar" style={{height:'3em',borderTop:'0.1px solid rgb(255,255,255,0.5)',background: 'black', boxShadow: '0 8px 32px 0 rgba(74, 34, 148, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)'}} >
                 
                   
            

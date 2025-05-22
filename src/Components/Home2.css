@@ -284,6 +284,12 @@ border-style: solid;
         width: 65%;
       }
 
+      .inputLocation{
+        width:10em;
+        font-size: 24px;
+        color: white;
+      }
+
       @media (min-width: 768px) {
         .buttonTop {
         
@@ -321,6 +327,12 @@ border-style: solid;
         padding-left: 2em;
         padding-right: 2em;
         width: 30%;
+      }
+
+      .inputLocation{
+        width:10em;
+        font-size: 34px;
+        color:white
       }
       
         

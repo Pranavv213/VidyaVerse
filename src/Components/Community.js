@@ -162,7 +162,7 @@ const Chat = () => {
 
         return (
          <Card 
-            sx={{ maxWidth: 345,minWidth:250  }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' ,paddingTop:'1em'}} 
+         sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.5px solid rgba(255, 255, 255,0.2)',position:'relative',borderRadius:'20px'}}
 >
   <CardActionArea
     onClick={() => {
@@ -239,7 +239,7 @@ const Chat = () => {
 
         return (
             <Card 
-            sx={{ maxWidth: 345,minWidth:250  }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' ,paddingTop:'1em'}} 
+            sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.5px solid rgba(255, 255, 255,0.2)',position:'relative',borderRadius:'20px'}}
 >
   <CardActionArea
     onClick={() => {
