@@ -939,7 +939,7 @@ function AdminCreate() {
           position:'fixed',
           top:'0px',
           left:'50%',
-        backgroundColor:'black',
+       
           
           textAlign: 'center', 
           boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
@@ -1105,7 +1105,7 @@ function AdminCreate() {
            top:'0px',
            left:'50%',
            
-           backgroundColor:'black',
+         
           
            textAlign: 'center', 
            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
@@ -1117,7 +1117,7 @@ function AdminCreate() {
 
             <center>
 
-            <div style={{backgroundColor:'black',padding:'2em',width:'18em',paddingBottom:'3em', border: '1px solid #1876d1',borderRadius:'8px'}}>
+            <div style={{padding:'2em',width:'18em',paddingBottom:'3em', backgroundColor: 'black', boxShadow: '0 8px 32px 0 rgba(74, 34, 148, 0.5)', backdropFilter: 'blur(17.5px)', border: '2px solid rgb(48, 19, 90)',borderBottom:'2px solid rgb(48, 19, 90)' ,borderRadius:'8px'}}>
             
             <CancelIcon style={{marginTop:'2px',marginLeft:'90%',color:'white'}} onClick={()=>{
                 toast.dismiss()
@@ -1501,7 +1501,7 @@ function AdminCreate() {
       top: '0px',
       left: '50%',
       color: 'white',
-      backgroundColor:'black',
+      
           
           textAlign: 'center', 
           boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
@@ -1517,11 +1517,10 @@ function AdminCreate() {
     <div style={{ paddingTop: '10vh', display: 'flex', justifyContent: 'center' }}>
       <div
         style={{
-          backgroundColor: 'black',
+        
           padding: '1em',
           maxWidth: '40em',
-          border: '1px solid #1876d1',
-          borderRadius: '10px',
+        backgroundColor: 'black', boxShadow: '0 8px 32px 0 rgba(74, 34, 148, 0.5)', backdropFilter: 'blur(17.5px)', border: '2px solid rgb(48, 19, 90)',borderBottom:'2px solid rgb(48, 19, 90)' ,borderRadius:'8px'
         }}
       >
         <div style={{width:'100%',textAlign:'right'}} onClick={()=>{
@@ -1532,7 +1531,7 @@ function AdminCreate() {
 
         <table style={{ width: '100%', borderCollapse: 'collapse', color: 'white' }}>
           <thead>
-            <tr style={{ borderBottom: '2px solid #1876d1' }}>
+            <tr style={{ borderBottom: '0.2px solid #1876d1' }}>
               <th style={{ padding: '10px', textAlign: 'left' }}>Question</th>
               <th style={{ padding: '10px', textAlign: 'left' }}>Type</th>
               <th style={{ padding: '10px' }}>Delete</th>
@@ -1590,7 +1589,7 @@ function AdminCreate() {
             left:'50%',
             
            color:'white',
-            backgroundColor: 'black', 
+           
           
             
             textAlign: 'center', 

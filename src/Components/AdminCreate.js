@@ -759,7 +759,7 @@ isOnline && <div class="location"  style={{ cursor:'pointer',background: "rgba(2
           position:'fixed',
           top:'0px',
           left:'50%',
-        backgroundColor:'black',
+       
           
           textAlign: 'center', 
           boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
@@ -830,7 +830,7 @@ isOnline && <div class="location"  style={{ cursor:'pointer',background: "rgba(2
               
           
                 <center>
-            <div style={{backgroundColor:'black',width:'20em',display:'flex',justifyContent:'center',paddinng:'2em',height:'4em',alignItems:'center',  border: '2px solid rgb(48, 19, 90)' ,borderTop:'none', borderBottomLeftRadius:'10px', borderBottomRightRadius:'10px'}}>
+            <div style={{width:'20em',display:'flex',justifyContent:'center',paddinng:'2em',height:'4em',alignItems:'center',  border: '2px solid rgb(48, 19, 90)' ,borderTop:'none', borderBottomLeftRadius:'10px', borderBottomRightRadius:'10px'}}>
           <Button variant="outlined" style={{border:'1px solid red',color:'red',height:'2em'}} onClick={()=>{
             toast.dismiss()
             setDescription(false)
@@ -927,7 +927,7 @@ isOnline && <div class="location"  style={{ cursor:'pointer',background: "rgba(2
             left:'50%',
             
            color:'white',
-            backgroundColor: 'black', 
+           
           
             
             textAlign: 'center', 
@@ -1151,7 +1151,7 @@ isOnline && <div class="location"  style={{ cursor:'pointer',background: "rgba(2
             left:'50%',
             
            color:'white',
-            backgroundColor: 'black', 
+            
           
             
             textAlign: 'center', 
