@@ -470,7 +470,7 @@ function Home2() {
 {createdEvents.length!=0 && createdEvents.map((x)=>{
   return(
 
-    <Card sx={{ maxWidth: 345,minWidth:300 }} style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' }} onClick={()=>{
+    <Card  sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.1px solid rgba(255, 255, 255,0.2)',position:'relative',borderTop:'none'}} onClick={()=>{
       window.location.href=`/event/${x.id}`
     }}>
       <CardActionArea>
@@ -527,7 +527,7 @@ function Home2() {
 })}
 </div>
 <br></br>
-<hr></hr>
+<hr style={{ border: '0.5px solid rgba(255, 255, 255, 0.3)'}}></hr>
 <br></br>
 
 {registeredEvents.length==0 && <h2 style={{color:'white'}}>Registered(0)</h2>}
@@ -537,7 +537,7 @@ function Home2() {
   return(
     <div style={{border:'2px solid black',color:'white'}}>
       
-      <Card sx={{ maxWidth: 345,minWidth:300 }} style={{marginTop:'10%', background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)' }} onClick={()=>{
+      <Card  sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.1px solid rgba(255, 255, 255,0.2)',position:'relative',borderTop:'none'}} onClick={()=>{
           window.location.href=`/event/${x.id}`
         }}>
       <CardActionArea>

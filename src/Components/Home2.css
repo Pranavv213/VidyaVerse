@@ -220,11 +220,48 @@ border-style: solid;
 
       }
       
+
+      .halo-box {
+        position: relative;
+       
+        background: #151133;
+        color: #ccc;
+      
+        border-radius: 12px;
+        z-index: 1;
+        overflow: hidden;
+        border: 1px solid #2d2d2d;
+        backdrop-filter: blur(2px);
+      }
+  
+      .halo-box::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background:rgb(27, 10, 46);
+        filter: blur(80px);
+        animation: rotateHalo 5s linear infinite;
+        z-index: -1;
+        border: 1px solid rgb(37, 8, 49);
+      }
+  
+      @keyframes rotateHalo {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
       .coinImg{
 
    
-          width: 10em ;
-          height: 10em ;
+          width: 7em ;
+          height: 7em ;
           overflow: hidden ;
       
       }
@@ -233,7 +270,19 @@ border-style: solid;
         margin-top:10%
       }
  
-     
+      .coin-container {
+        position: relative;
+        background: transparent;
+        box-shadow: 0 8px 32px 0 rgba(74, 34, 148, 0.5);
+        backdrop-filter: blur(17.5px);
+        -webkit-backdrop-filter: blur(17.5px);
+        border-radius: 20px;
+        border: 0.5px solid rgba(255, 255, 255, 0.2);
+        padding: 1em;
+        padding-left: 2em;
+        padding-right: 2em;
+        width: 65%;
+      }
 
       @media (min-width: 768px) {
         .buttonTop {
@@ -247,17 +296,75 @@ border-style: solid;
         }
 
         .coin{
-          margin-top:5%
+          margin-top:5%;
+          
         }
 
         .coinImg{
 
    
-          width: 9em ;
-          height: 9em ;
+          width: 7em ;
+          height: 7em ;
           overflow: hidden ;
       
+      }
+
+      .coin-container {
+        position: relative;
+        background: transparent;
+        box-shadow: 0 8px 32px 0 rgba(74, 34, 148, 0.5);
+        backdrop-filter: blur(17.5px);
+        -webkit-backdrop-filter: blur(17.5px);
+        border-radius: 20px;
+        border: 0.5px solid rgba(255, 255, 255, 0.3);
+        padding: 1em;
+        padding-left: 2em;
+        padding-right: 2em;
+        width: 30%;
       }
       
         
       }
+
+      .shine-container {
+        border-radius: 50%;
+        width:20em;
+        height:20em;
+        position: relative;
+        display: inline-block;
+        transform-style: preserve-3d;
+        animation: rotate3D 4s infinite linear;
+      }
+  
+      .shine-container img {
+        display: block;
+        transform: translateZ(30px); /* gives 3D pop */
+        backface-visibility: hidden;
+      }
+  
+      .shine-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(
+          120deg,
+          rgba(168, 85, 247, 0) 0%,
+          rgba(227, 224, 229, 0.7) 50%,
+          rgba(168, 85, 247, 0) 100%
+        );
+        transform: skewX(-25deg);
+        animation: shine 2s infinite;
+        pointer-events: none;
+      }
+  
+      @keyframes shine {
+        0% { left: -75%; }
+        100% { left: 125%; }
+      }
+  
+      
+      
+      

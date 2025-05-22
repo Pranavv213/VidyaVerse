@@ -65,7 +65,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import SendIcon from '@mui/icons-material/Send';
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
-import backgroundVideo from '../assets/images/homeBackground.mp4'
+import backgroundVideo from '../assets/images/eventBackgroundVideo.mp4'
 
 
 
@@ -610,7 +610,8 @@ function Home2() {
            <br></br><br></br><br></br><br></br> */}
 
            <ResponsiveAppBar homeButtonStyle="contained" earnButtonStyle="outlined" createButtonStyle="outlined" dashboardButtonStyle="outlined" />
-           <br></br><br></br><br></br>
+           <br></br><br></br><br></br><br></br>
+      
     
  
 {showConfetti && <Confetti 
@@ -702,14 +703,11 @@ function Home2() {
           </div> */}
 
 
-      {/* <hr></hr> */}
+    
 
-  <br></br><br></br>
+  <center>
 
-<div style={{
-   position:'relative',background: 'rgb(0,0,0,0.2)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.1px solid rgba(255, 255, 255,0.5)',paddingTop:'0.1em'
-
-}}>
+<div class="coin-container">
 
 
   
@@ -718,7 +716,7 @@ function Home2() {
         }}> 
     
     
-    <div class="coinImg" >
+    <div style={{ width:'7em',height:'7em',overflow:'hidden'}} class="shine-container">
   <img 
     src={coinImg} 
     alt="Logo" 
@@ -740,8 +738,9 @@ function Home2() {
 
 
 </div>
+</center>
+ 
 
-{/* <hr style={{ border: 'none', height: '0.1px', backgroundColor: '#1876d1', margin: '20px 0' }} /> */}
 <br></br> 
 <br></br>
   {/* <video
@@ -1442,7 +1441,7 @@ function Home2() {
 })}
 </div>
 <br></br>
-<hr></hr>
+<hr style={{ border: '0.5px solid rgba(255, 255, 255, 0.3)'}}></hr>
 <br></br>
 {createdEvents.length==0 && <h2 style={{color:'white'}}>Created(0)</h2>}
 {createdEvents.length!=0 && <h2 style={{color:'white'}}>Created({createdEvents.length})</h2>}
@@ -1601,7 +1600,7 @@ function Home2() {
 })}
 </div>
 <br></br>
-<hr></hr>
+<hr style={{ border: '0.5px solid rgba(255, 255, 255, 0.3)'}}></hr>
 <br></br>
 
 {registeredEvents.length==0 && <h2 style={{color:'white'}}>Registered(0)</h2>}

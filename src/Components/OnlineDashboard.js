@@ -559,7 +559,7 @@ else{
 })}
 </div>
 <br></br>
-<hr></hr>
+<hr style={{ border: '0.5px solid rgba(255, 255, 255, 0.3)'}}></hr>
 <br></br>
 
 {registeredEvents.length==0 && <h2 style={{color:'white'}}>Registered(0)</h2>}

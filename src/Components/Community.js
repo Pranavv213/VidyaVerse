@@ -229,7 +229,7 @@ const Chat = () => {
 
    <br></br>
 
-   <hr></hr>
+   <hr style={{ border: '0.5px solid rgba(255, 255, 255, 0.3)'}}></hr>
 
    <h2 style={{color:'white'}}>Joined ({joinedCommunities && joinedCommunities.length })</h2>
    <br></br>
