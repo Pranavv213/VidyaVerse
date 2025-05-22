@@ -322,7 +322,7 @@ border-style: solid;
         backdrop-filter: blur(17.5px);
         -webkit-backdrop-filter: blur(17.5px);
         border-radius: 20px;
-        border: 0.5px solid rgba(255, 255, 255, 0.3);
+       
         padding: 1em;
         padding-left: 2em;
         padding-right: 2em;

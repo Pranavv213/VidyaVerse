@@ -939,23 +939,18 @@ function AdminCreate() {
           position:'fixed',
           top:'0px',
           left:'50%',
-          
-         color:'white',
-          backgroundColor: 'black', 
-          border: '2px solid #1876d1',
-          borderRadius:'8px',
+        backgroundColor:'black',
           
           textAlign: 'center', 
           boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
         
           transform: 'translateX(-50%)',
           zIndex: 99999999,
-          animation: 'popupAnimation 0.5s ease',
-          backgroundImage:`url(${eventpageBackground})`,
-          backgroundSize: 'cover', 
-          backgroundPosition: 'center center',
-          backgroundRepeat: 'no-repeat',
-        }}>
+
+          
+
+        }} class="halo-box1">
+
 
             <br></br><br></br><br></br><br></br><br></br>
       
@@ -964,10 +959,10 @@ function AdminCreate() {
             <center>
                 {/* Toolbar with buttons */}
                 <div style={{borderRadius:'8px'}}>
-                <div style={{color:'white',backgroundColor:'black', border: '1px solid #1876d1',borderTopLeftRadius:'10px',borderTopRightRadius:'10px',width:'20em'}}>
+                <div style={{color:'white',backgroundColor: 'black', boxShadow: '0 8px 32px 0 rgba(74, 34, 148, 0.5)', backdropFilter: 'blur(17.5px)', border: '2px solid rgb(48, 19, 90)',borderBottom:'2px solid rgb(48, 19, 90)', borderRadius: '10px',width:'20em'}}>
                 <h3 >Description</h3>
                 </div>
-                  <div class="editorIcons" style={{backgroundColor:'#1876d1',width:'20em', border: '1px solid #1876d1',}}>
+                <div class="editorIcons" style={{backgroundColor:'#1876d1',width:'20em', border: '1px solid #1876d1',}}>
                   <Button variant="outlined" style={{width:'3em',height:'2.5em',fontSize:'20px',width:'2em', border: '1px solid #1876d1',color:'white'}} onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} ><b>H</b></Button>
                   <Button variant="outlined" style={{borderRadius:'0', border: '1px solid #1876d1',color:'white'}} onClick={() => editor.chain().focus().toggleBold().run()}><FormatBoldIcon/></Button>
                   <Button variant="outlined" style={{borderRadius:'0', border: '1px solid #1876d1',color:'white'}} onClick={() => editor.chain().focus().toggleItalic().run()}><FormatItalicIcon/></Button>
@@ -983,7 +978,7 @@ function AdminCreate() {
                   style={{
                     height: '50vh',
                     overflowY: 'auto',
-                    border: '1px solid #1876d1', // Optional: Add a border to the editor
+                     border: '2px solid rgb(48, 19, 90)', // Optional: Add a border to the editor
                     backgroundColor:'black',width:'20em',
                     color:'white',
                     textAlign: 'left',
@@ -1013,7 +1008,7 @@ function AdminCreate() {
               
           
                 <center>
-            <div style={{backgroundColor:'black',width:'20em',display:'flex',justifyContent:'center',paddinng:'2em',height:'4em',alignItems:'center', border: '1px solid #1876d1' , borderBottomLeftRadius:'10px', borderBottomRightRadius:'10px'}}>
+            <div style={{backgroundColor:'black',width:'20em',display:'flex',justifyContent:'center',paddinng:'2em',height:'4em',alignItems:'center',  border: '2px solid rgb(48, 19, 90)' ,borderTop:'none', borderBottomLeftRadius:'10px', borderBottomRightRadius:'10px'}}>
           <Button variant="outlined" style={{border:'1px solid red',color:'red',height:'2em'}} onClick={()=>{
             toast.dismiss()
             setDescription(false)
@@ -1047,8 +1042,8 @@ function AdminCreate() {
             left:'50%',
             
            color:'white',
-            backgroundColor: 'black', 
-            border: '2px solid #1876d1',
+           
+            
             borderRadius:'8px',
             
             textAlign: 'center', 
@@ -1056,15 +1051,13 @@ function AdminCreate() {
           
             transform: 'translateX(-50%)',
             zIndex: 99999999,
-            animation: 'popupAnimation 0.5s ease',
-            backgroundImage:`url(${eventpageBackground})`,
-            backgroundSize: 'cover', 
-            backgroundPosition: 'center center',
-            backgroundRepeat: 'no-repeat',
-        }}>
+            
+
+           
+        }} class="halo-box1">
             <br></br> <br></br> <br></br> <br></br> <br></br> <br></br> 
             <center>
-            <div style={{backgroundColor:'black',padding:'2em',width:'18em', border: '1px solid #1876d1' ,borderRadius:'8px'}}>
+            <div style={{padding:'2em',width:'18em', backgroundColor: 'black', boxShadow: '0 8px 32px 0 rgba(74, 34, 148, 0.5)', backdropFilter: 'blur(17.5px)', border: '2px solid rgb(48, 19, 90)',borderBottom:'2px solid rgb(48, 19, 90)' ,borderRadius:'8px'}}>
           <h2 style={{color:'white'}}>Tickets</h2>
          
           <br></br>
@@ -1112,22 +1105,14 @@ function AdminCreate() {
            top:'0px',
            left:'50%',
            
-          color:'white',
-           backgroundColor: 'black', 
-           border: '2px solid #1876d1',
-           borderRadius:'8px',
-           blur:'50px', 
+           backgroundColor:'black',
+          
            textAlign: 'center', 
            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
          
            transform: 'translateX(-50%)',
            zIndex: 99999999,
-           animation: 'popupAnimation 0.5s ease',
-           backgroundImage:`url(${eventpageBackground})`,
-           backgroundSize: 'cover', 
-           backgroundPosition: 'center center',
-           backgroundRepeat: 'no-repeat',
-        }}>
+        }} class="halo-box1">
             <br></br> <br></br>   <br></br>  <br></br> <br></br> <br></br><br></br>  
 
             <center>
@@ -1516,21 +1501,15 @@ function AdminCreate() {
       top: '0px',
       left: '50%',
       color: 'white',
-      backgroundColor: 'black',
-      border: '2px solid #1876d1',
-      borderRadius: '10px',
-      textAlign: 'center',
-      boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-      transform: 'translateX(-50%)',
-      zIndex: 99999999,
-      animation: 'popupAnimation 0.5s ease',
-      backgroundImage: `url(${eventpageBackground})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center center',
-      backgroundRepeat: 'no-repeat',
-      overflowY: 'auto',
+      backgroundColor:'black',
+          
+          textAlign: 'center', 
+          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
+        
+          transform: 'translateX(-50%)',
+          zIndex: 99999999,
     }}
-  >
+  class="halo-box1">
   <br></br><br></br>
 
 
@@ -1612,23 +1591,19 @@ function AdminCreate() {
             
            color:'white',
             backgroundColor: 'black', 
-            border: '2px solid #1876d1',
-            borderRadius:'8px',
+          
             
             textAlign: 'center', 
             boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
           
             transform: 'translateX(-50%)',
             zIndex: 99999999,
-            animation: 'popupAnimation 0.5s ease',
-            backgroundImage:`url(${eventpageBackground})`,
-            backgroundSize: 'cover', 
-            backgroundPosition: 'center center',
-            backgroundRepeat: 'no-repeat',
-        }}>
+            
+           
+        }} class="halo-box1">
             <br></br> <br></br> <br></br> <br></br> <br></br> <br></br>
             <center>
-            <div style={{backgroundColor:'black',padding:'2em',width:'18em', border: '1px solid #1876d1' ,borderRadius:'8px'}}>
+            <div style={{backgroundColor: 'black', boxShadow: '0 8px 32px 0 rgba(74, 34, 148, 0.5)', backdropFilter: 'blur(17.5px)', border: '2px solid rgb(48, 19, 90)',padding:'2em',width:'18em' ,borderRadius:'10px'}}>
           <h2 style={{color:'white'}}>Tickets</h2>
          
           <br></br><br></br><br></br>
