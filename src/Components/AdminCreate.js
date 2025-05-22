@@ -830,7 +830,7 @@ isOnline && <div class="location"  style={{ cursor:'pointer',background: "rgba(2
               
           
                 <center>
-            <div style={{width:'20em',display:'flex',justifyContent:'center',paddinng:'2em',height:'4em',alignItems:'center',  border: '2px solid rgb(48, 19, 90)' ,borderTop:'none', borderBottomLeftRadius:'10px', borderBottomRightRadius:'10px'}}>
+            <div style={{width:'20em',display:'flex',justifyContent:'center',paddinng:'2em',height:'4em',alignItems:'center',  border: '2px solid rgb(48, 19, 90)' ,borderTop:'none', borderBottomLeftRadius:'10px', borderBottomRightRadius:'10px',backgroundColor:'black'}}>
           <Button variant="outlined" style={{border:'1px solid red',color:'red',height:'2em'}} onClick={()=>{
             toast.dismiss()
             setDescription(false)
