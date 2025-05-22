@@ -75,22 +75,7 @@ function Rewards() {
 <br></br><br></br><br></br>
 <br></br>
 
-<video
-            autoPlay
-            loop
-            muted
-            playsInline
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100vh",
-              objectFit: "cover",
-              zIndex: 0,
-            }}
-            src={backgroundVideo}
-          />
+
       
 { events.length!=0 && <div style={{display:'flex',justifyContent:'center',gap:'20px',flexWrap:'wrap'}}>
 
@@ -99,9 +84,9 @@ function Rewards() {
             events.map((x)=>{
                 return(
 
-                    <div style={{ background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.18)',padding:'1em' }}>
+                    <div style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.5px solid rgba(255, 255, 255,0.2)',position:'relative',borderRadius:'20px'}}>
 
-                        <img src={x.Image} style={{height:'400px',width:'300px'}}></img>
+                    <img style={{width:'20em' ,height:'20em',objectFit:'cover'}} src={x.Image}></img>
                         <br></br> <br></br> 
                         
                         <div style={{color:'white',display:'flex',alignItems:'center',justifyContent:'center',gap:'10px'}}> <img src={coinImg} style={{width: '4em', 
