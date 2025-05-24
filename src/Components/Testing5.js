@@ -5,8 +5,9 @@ import { db } from "../firebase-config";
 import { useParams } from 'react-router-dom';
 import {
   collection,
-  getDocs,
+  getDocs,doc, updateDoc
 } from "firebase/firestore";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function FaceRecognition() {
   const { event_id } = useParams();
@@ -16,8 +17,23 @@ export default function FaceRecognition() {
   const [matchResult, setMatchResult] = useState('No reference image uploaded');
   const [storedImages, setStoredImages] = useState([]);
 
+  const usersCollectionRef= collection(db, 'events');
   const usersCollectionRefFace = collection(db, 'Face');
   const usersCollectionRefUser = collection(db, 'user');
+
+
+     const notify = (text,type) => toast(text,{
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          type:type
+         
+          });
 
   // Load face-api models
   useEffect(() => {
@@ -55,6 +71,43 @@ export default function FaceRecognition() {
     loadStoredImages();
   }, []);
 
+   const updateUser = async (obj,EventId) => {
+      
+                
+                          let userDoc = doc(db, "user", obj.id);
+                          let filteredArray=0;
+                           filteredArray=obj.EventsAttended.filter(x=>x==event_id)
+                          console.log(obj.EventsAttended)
+                          console.log(filteredArray)
+                          if(filteredArray.length==0)
+                          {
+  
+                            let data = await getDocs(usersCollectionRef);
+                                   
+                             let eventsTemp=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+                                   
+                             let filteredArray=eventsTemp.filter(obj => obj.id === event_id)
+                             console.log(filteredArray)
+  
+                             if(filteredArray.length!=0)
+                             {
+                              let newFields = { Email: obj.Email, Coins:obj.Coins+filteredArray[0].Coins, EventsCreated:obj.EventsCreated,EventsRegistered:obj.EventsRegistered, EventsApproved:obj.EventsApproved,EventsAttended:[...obj.EventsAttended,EventId]};
+                              await updateDoc(userDoc, newFields);
+    
+                              userDoc = doc(db, "events", event_id);
+    
+                              
+                           
+                             notify("Congratulations! You earned 1000 coins","success")
+                             }
+  
+                           
+                          }
+                        
+  
+                          
+                        };
+      
   // Face detection & comparison logic
   const detectAndCompare = async () => {
     if (
@@ -115,6 +168,8 @@ export default function FaceRecognition() {
           } else if (matchedUser.EventsApproved?.includes(event_id)) {
             setMatchResult(`✅ Welcome ${matchedUser.UserName} !`);
 
+            updateUser(matchedUser,event_id)
+
             // alert(`✅ Welcome ${matchedUser.UserName} !`)
             matchFound = true;
             break;
@@ -164,6 +219,8 @@ export default function FaceRecognition() {
       </div>
 
       <h3>{matchResult}</h3>
+
+      <ToastContainer  style={{zIndex:'99999999999999'}}/>
     </div>
   );
 }
