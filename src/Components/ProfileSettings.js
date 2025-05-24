@@ -373,7 +373,12 @@ function ProfileSettings() {
 
       <br />
       <br />
-
+      <hr></hr>
+      <Button style={{ width: "13em", border: "1px solid green", color: "green" }} onClick={()=>{
+        window.location.href="/faceupload"
+      }}>Enalble Face Attendance</Button>
+      <br></br>
+        <br></br>
       <Button
         variant="outlined"
         style={{ width: "13em", border: "1px solid red", color: "red" }}

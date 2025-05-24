@@ -33,6 +33,8 @@ import Crypto from './Components/Crypto'
 import Crypto_Group from './Components/Crypto_Group'
 import NFT from './Components/NFT'
 import Rewards from './Components/Rewards';
+import Testing5 from './Components/Testing5';
+import Faceupload from './Components/Faceupload'
 
 function App() {
   const OKTO_CLIENT_API_KEY = "f144c56d-f768-426c-b123-f7ee71f8cee8";
@@ -154,6 +156,18 @@ function App() {
         
         <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
        <Rewards/>
+    </OktoProvider>} />
+
+    <Route path="/testing5/:event_id" element={
+        
+        <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
+       <Testing5/>
+    </OktoProvider>} />
+
+    <Route path="/faceupload" element={
+        
+        <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
+       <Faceupload/>
     </OktoProvider>} />
 
            

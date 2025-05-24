@@ -25,6 +25,7 @@
     "country-list": "^2.3.0",
     "dayjs": "^1.11.13",
     "ethers": "^5.8.0",
+    "face-api.js": "^0.22.2",
     "firebase": "^11.6.0",
     "isomorphic-fetch": "^3.0.0",
     "jsqr": "^1.4.0",
