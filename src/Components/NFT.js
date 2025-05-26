@@ -13,6 +13,8 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
+import { SocialIcon } from 'react-social-icons';
+import ShareIcon from '@mui/icons-material/Share';
 
 const contractAddress = "0x70f49fe6992c9439bba45663f35c2b15c2127d1d";
 const contractABI = [
@@ -904,7 +906,7 @@ const PoapCertificate = () => {
           alt="POAP Certificate"
           style={{
             width: '20em',
-            height: '40em',
+            height: '37em',
             border: '2px solid #bb86fc',
             borderRadius: '8px',
             display: 'block',
@@ -941,9 +943,10 @@ const PoapCertificate = () => {
     </center>
     <br></br>
 
-      {error && <p style={{ color: 'red', marginTop: 10 }}>{error}</p>}
-      {successMsg.length!=0 && <div style={{ color: 'lightgreen', gap:'5px',display:'flex',justifyContent:'center' }}><l><b>Txn: </b></l><l>{successMsg.slice(0, 6)}...{successMsg.slice(-6)}</l>
+      {/* {error && <p style={{ color: 'red', marginTop: 10 }}>{error}</p>}
+      {successMsg.length!=0 && <div  style={{ position:'relative', zIndex:1,color: 'lightgreen', gap:'5px',display:'flex',justifyContent:'center' }}><l><b>Txn: </b></l><l>{successMsg.slice(0, 6)}...{successMsg.slice(-6)}</l>
       
+	 
       <ContentCopyIcon fontSize="small" onClick={()=>{
         navigator.clipboard.writeText(successMsg)
         .then(() => {
@@ -954,7 +957,46 @@ const PoapCertificate = () => {
           console.error("Failed to copy text: ", err);
         });
      }}/>
-      </div>}
+
+	 <br></br>
+
+	 
+      </div>} */}
+	 
+
+	  
+	  
+	  <h3 style={{color:'white',position:'relative',zIndex:1}}>Share</h3>
+
+	  {successMsg.length!=0 && <div  style={{ position:'relative', zIndex:1, display:'flex',justifyContent:'center',alignItems:'center'}}>
+	  <SocialIcon
+  url="https://x.com/pranavv213"
+  onClick={(e) => {
+    e.preventDefault(); // This stops the default navigation
+    e.stopPropagation();
+
+    const tweetText = encodeURIComponent(`I just earned a ConnectVerse Poap! https://v2-six-puce.vercel.app/nft/${user_name}/${event_id}`);
+    const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
+    window.open(tweetUrl, '_blank');
+  }}
+/>
+
+
+	  &nbsp;  &nbsp;
+	  
+	<ShareIcon onClick={()=>{
+       navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/nft/${user_name}/${event_id}`)
+        .then(() => {
+          console.log("Text copied to clipboard!");
+         
+        })
+        .catch(err => {
+          console.error("Failed to copy text: ", err);
+        });
+     }}/>
+	
+	</div>}
+	  
 
       </center>
     </div>
