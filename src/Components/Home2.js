@@ -21,7 +21,8 @@ import Button from '@mui/material/Button';
 import logo from '../assets/images/logo.png'
 import Stack from '@mui/material/Stack';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import coinImg from '../assets/images/coinImg.png'
+import coinImg from '../assets/images/coinImg3.png'
+import coinImage from '../assets/images/coinImg.png'
 import Alert from '@mui/material/Alert';
 import { ToastContainer, toast } from 'react-toastify';
 import './Home2.css'
@@ -640,7 +641,7 @@ function Home2() {
           <h1>Congratulations!</h1>
           <img  style={{width: '130px', 
     height: '100px', 
-    objectFit: 'cover' }}  src={coinImg}></img>
+    objectFit: 'cover' }}  src={coinImage}></img>
           <br></br>
           <h1>{localStorage.getItem('coins')}</h1>
           <p>You just won {parseInt(localStorage.getItem('coins'))-parseInt(coins)} coins !</p>
@@ -720,7 +721,7 @@ function Home2() {
     
     <div style={{ width:'7em',height:'7em',overflow:'hidden'}} class="shine-container">
   <img 
-    src={coinImg} 
+    src={coinImage} 
     alt="Logo" 
     style={{ 
       width: '100%', 
@@ -864,20 +865,15 @@ function Home2() {
             
             <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> 
 
-                      <div style={{ width: '4em', height: '4em', overflow: 'hidden', position: 'relative' }}>
-                      <iframe
-                      src="https://lottie.host/embed/330faee1-9a6c-4664-bbcd-7d3709db4c83/uYUzV2Lzv4.lottie"
-                      style={{
-                      position: 'absolute',
-                      top: '-50%',
-                      left: '-50%',
-                      width: '200%',
-                      height: '200%',
-                      border: 'none',
-                      }}
-                      title="Lottie Animation"
-                      />
-                      </div>
+            <div className="coinimg-perspective">
+              <div className="coinimg-container">
+                <img
+                  src={coinImg}
+                  alt="Coin"
+                  style={{ width: '4em', height: '4em', objectFit: 'cover' }}
+                />
+              </div>
+              </div>
 
                       <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l>
                      
@@ -1023,20 +1019,15 @@ function Home2() {
             
             <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> 
 
-                      <div style={{ width: '4em', height: '4em', overflow: 'hidden', position: 'relative' }}>
-                      <iframe
-                      src="https://lottie.host/embed/330faee1-9a6c-4664-bbcd-7d3709db4c83/uYUzV2Lzv4.lottie"
-                      style={{
-                      position: 'absolute',
-                      top: '-50%',
-                      left: '-50%',
-                      width: '200%',
-                      height: '200%',
-                      border: 'none',
-                      }}
-                      title="Lottie Animation"
-                      />
-                      </div>
+            <div className="coinimg-perspective">
+              <div className="coinimg-container">
+                <img
+                  src={coinImg}
+                  alt="Coin"
+                  style={{ width: '4em', height: '4em', objectFit: 'cover' }}
+                />
+              </div>
+              </div>
 
                       <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l>
                      
@@ -1181,20 +1172,15 @@ function Home2() {
               
               <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> 
 
-                        <div style={{ width: '4em', height: '4em', overflow: 'hidden', position: 'relative' }}>
-                        <iframe
-                        src="https://lottie.host/embed/330faee1-9a6c-4664-bbcd-7d3709db4c83/uYUzV2Lzv4.lottie"
-                        style={{
-                        position: 'absolute',
-                        top: '-50%',
-                        left: '-50%',
-                        width: '200%',
-                        height: '200%',
-                        border: 'none',
-                        }}
-                        title="Lottie Animation"
-                        />
-                        </div>
+              <div className="coinimg-perspective">
+              <div className="coinimg-container">
+                <img
+                  src={coinImg}
+                  alt="Coin"
+                  style={{ width: '4em', height: '4em', objectFit: 'cover' }}
+                />
+              </div>
+              </div>
 
                         <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l>
                        
@@ -1341,20 +1327,16 @@ function Home2() {
               
               <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> 
 
-                        <div style={{ width: '4em', height: '4em', overflow: 'hidden', position: 'relative' }}>
-                        <iframe
-                        src="https://lottie.host/embed/330faee1-9a6c-4664-bbcd-7d3709db4c83/uYUzV2Lzv4.lottie"
-                        style={{
-                        position: 'absolute',
-                        top: '-50%',
-                        left: '-50%',
-                        width: '200%',
-                        height: '200%',
-                        border: 'none',
-                        }}
-                        title="Lottie Animation"
-                        />
-                        </div>
+              <div className="coinimg-perspective">
+  <div className="coinimg-container">
+    <img
+      src={coinImg}
+      alt="Coin"
+      style={{ width: '4em', height: '4em', objectFit: 'cover' }}
+    />
+  </div>
+</div>
+&nbsp;
 
                         <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l>
                        
@@ -1500,21 +1482,15 @@ function Home2() {
               
               <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> 
 
-                        <div style={{ width: '4em', height: '4em', overflow: 'hidden', position: 'relative' }}>
-                        <iframe
-                        src="https://lottie.host/embed/330faee1-9a6c-4664-bbcd-7d3709db4c83/uYUzV2Lzv4.lottie"
-                        style={{
-                        position: 'absolute',
-                        top: '-50%',
-                        left: '-50%',
-                        width: '200%',
-                        height: '200%',
-                        border: 'none',
-                        }}
-                        title="Lottie Animation"
-                        />
-                        </div>
-
+              <div className="coinimg-perspective">
+              <div className="coinimg-container">
+                <img
+                  src={coinImg}
+                  alt="Coin"
+                  style={{ width: '4em', height: '4em', objectFit: 'cover' }}
+                />
+              </div>
+              </div>
                         <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l>
                        
                         </Typography>
@@ -1653,20 +1629,15 @@ window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.inc
 
   <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> 
 
-  <div style={{ width: '3em', height: '3em', overflow: 'hidden', position: 'relative' }}>
-      <iframe
-        src="https://lottie.host/embed/330faee1-9a6c-4664-bbcd-7d3709db4c83/uYUzV2Lzv4.lottie"
-        style={{
-          position: 'absolute',
-          top: '-50%',
-          left: '-50%',
-          width: '200%',
-          height: '200%',
-          border: 'none',
-        }}
-        title="Lottie Animation"
-      />
-    </div>
+  <div className="coinimg-perspective">
+              <div className="coinimg-container">
+                <img
+                  src={coinImg}
+                  alt="Coin"
+                  style={{ width: '4em', height: '4em', objectFit: 'cover' }}
+                />
+              </div>
+              </div>
 
 <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l></Typography>
 
