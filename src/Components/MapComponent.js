@@ -119,7 +119,7 @@ const QrScanner = () => {
   
                             
                          
-                           notify("Congratulations! You earned 1000 coins","success")
+                           notify("Congratulations! You earned ConnectVerse coins","success")
                            }
 
                          

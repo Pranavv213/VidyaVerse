@@ -127,7 +127,7 @@ export default function FaceRecognition() {
           await updateDoc(userDocRef, updatedUser);
 
           notify('Congratulations! You earned 1000 coins', 'success');
-          speak(`Congratulations ${userObj.UserName}! You earned 1000 coins`);
+          speak(`Congratulations ${userObj.UserName}! You earned ConnectVerse coins","success`);
         }
       }
     } catch (error) {
