@@ -1,39 +1,69 @@
 import React, { useRef, useState, useEffect } from 'react';
 import * as faceapi from 'face-api.js';
 import Webcam from 'react-webcam';
-import { db } from "../firebase-config";
+import { db } from '../firebase-config';
 import { useParams } from 'react-router-dom';
 import {
   collection,
-  getDocs,doc, updateDoc
-} from "firebase/firestore";
+  getDocs,
+  doc,
+  updateDoc
+} from 'firebase/firestore';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import backgroundImage from '../assets/images/coinBackground2.gif'
+import ResponsiveAppBar from './ResponsiveAppBar';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+
 
 export default function FaceRecognition() {
   const { event_id } = useParams();
   const webcamRef = useRef(null);
 
   const [modelsLoaded, setModelsLoaded] = useState(false);
-  const [matchResult, setMatchResult] = useState('No reference image uploaded');
+  const [matchResult, setMatchResult] = useState('');
   const [storedImages, setStoredImages] = useState([]);
 
-  const usersCollectionRef= collection(db, 'events');
-  const usersCollectionRefFace = collection(db, 'Face');
-  const usersCollectionRefUser = collection(db, 'user');
+  const eventsCollectionRef = collection(db, 'events');
+  const faceCollectionRef = collection(db, 'Face');
+  const usersCollectionRef = collection(db, 'user');
+
+  const notify = (text, type) =>
+    toast(text, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+      type: type
+    });
 
 
-     const notify = (text,type) => toast(text,{
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          type:type
-         
-          });
+      const getEvents = async () => {
+    
+              if(!localStorage.getItem('email'))
+              {
+                window.location.href = '/oktologin';
+              }
+              const data = await getDocs(eventsCollectionRef);
+             
+              let eventsTemp=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+             
+              let filteredArray=eventsTemp.filter(obj => obj.Creator === localStorage.getItem('email') && obj.id===event_id)
+              
+              if(filteredArray.length==0)
+              {
+                window.location.href = '/error/User Not Authorized';
+              }
+             
+             
+            
+            };
+
 
   // Load face-api models
   useEffect(() => {
@@ -41,24 +71,27 @@ export default function FaceRecognition() {
     Promise.all([
       faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
       faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
-      faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
-    ]).then(() => setModelsLoaded(true))
+      faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
+    ])
+      .then(() => setModelsLoaded(true))
       .catch((error) => console.error('Error loading models:', error));
   }, []);
 
   // Load stored images from Firestore
   const loadStoredImages = async () => {
     try {
-      const data = await getDocs(usersCollectionRefFace);
-      const images = data.docs.map((doc) => {
-        const faceImageUrl = doc.data().FaceImage;
-        if (faceImageUrl && faceImageUrl.startsWith('http')) {
-          return { ...doc.data(), id: doc.id };
-        } else {
-          console.warn('Skipping invalid FaceImage URL for document:', doc.id);
-          return null;
-        }
-      }).filter((img) => img !== null);
+      const data = await getDocs(faceCollectionRef);
+      const images = data.docs
+        .map((doc) => {
+          const faceImageUrl = doc.data().FaceImage;
+          if (faceImageUrl && faceImageUrl.startsWith('http')) {
+            return { ...doc.data(), id: doc.id };
+          } else {
+            console.warn('Skipping invalid FaceImage URL for document:', doc.id);
+            return null;
+          }
+        })
+        .filter((img) => img !== null);
 
       setStoredImages(images);
     } catch (error) {
@@ -66,49 +99,42 @@ export default function FaceRecognition() {
     }
   };
 
-  // Load stored images on mount
   useEffect(() => {
     loadStoredImages();
+
+    getEvents()
   }, []);
 
-   const updateUser = async (obj,EventId) => {
-      
-                
-                          let userDoc = doc(db, "user", obj.id);
-                          let filteredArray=0;
-                           filteredArray=obj.EventsAttended.filter(x=>x==event_id)
-                          console.log(obj.EventsAttended)
-                          console.log(filteredArray)
-                          if(filteredArray.length==0)
-                          {
-  
-                            let data = await getDocs(usersCollectionRef);
-                                   
-                             let eventsTemp=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-                                   
-                             let filteredArray=eventsTemp.filter(obj => obj.id === event_id)
-                             console.log(filteredArray)
-  
-                             if(filteredArray.length!=0)
-                             {
-                              let newFields = { Email: obj.Email, Coins:obj.Coins+filteredArray[0].Coins, EventsCreated:obj.EventsCreated,EventsRegistered:obj.EventsRegistered, EventsApproved:obj.EventsApproved,EventsAttended:[...obj.EventsAttended,EventId]};
-                              await updateDoc(userDoc, newFields);
-    
-                              userDoc = doc(db, "events", event_id);
-    
-                              
-                           
-                             notify("Congratulations! You earned 1000 coins","success")
-                             }
-  
-                           
-                          }
-                        
-  
-                          
-                        };
-      
-  // Face detection & comparison logic
+  const updateUser = async (userObj, eventId) => {
+    try {
+      const userDocRef = doc(db, 'user', userObj.id);
+
+      // Check if user already attended the event
+      const hasAttended = userObj.EventsAttended?.includes(event_id);
+
+      if (!hasAttended) {
+        const eventsSnapshot = await getDocs(eventsCollectionRef);
+        const events = eventsSnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        const event = events.find((e) => e.id === event_id);
+
+        if (event) {
+          const updatedUser = {
+            ...userObj,
+            Coins: userObj.Coins + event.Coins,
+            EventsAttended: [...(userObj.EventsAttended || []), eventId]
+          };
+
+          await updateDoc(userDocRef, updatedUser);
+
+          notify('Congratulations! You earned 1000 coins', 'success');
+          speak(`Congratulations ${userObj.UserName}! You earned 1000 coins`);
+        }
+      }
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
+  };
+
   const detectAndCompare = async () => {
     if (
       !modelsLoaded ||
@@ -121,6 +147,8 @@ export default function FaceRecognition() {
     }
 
     try {
+
+       
       const video = webcamRef.current.video;
       const liveDetection = await faceapi
         .detectSingleFace(video)
@@ -136,10 +164,7 @@ export default function FaceRecognition() {
       let matchFound = false;
 
       for (const image of storedImages) {
-        if (!image.FaceImage || !image.FaceImage.startsWith('http')) {
-          console.warn('Skipping invalid FaceImage:', image.FaceImage);
-          continue;
-        }
+        if (!image.FaceImage) continue;
 
         const img = await faceapi.fetchImage(image.FaceImage);
         const detection = await faceapi
@@ -149,34 +174,27 @@ export default function FaceRecognition() {
 
         if (!detection) continue;
 
-        const distance = faceapi.euclideanDistance(
-          liveDescriptor,
-          detection.descriptor
-        );
+        const distance = faceapi.euclideanDistance(liveDescriptor, detection.descriptor);
 
         if (distance < 0.6) {
-          // Matched Face
-          const userData = await getDocs(usersCollectionRefUser);
-          const users = userData.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+          // Match found!
+          const usersSnapshot = await getDocs(usersCollectionRef);
+          const users = usersSnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
           const matchedUser = users.find((user) => user.Email === image.Email);
 
           if (!matchedUser) {
-
-            
             setMatchResult('❌ User Not Approved');
-           
+            
           } else if (matchedUser.EventsApproved?.includes(event_id)) {
-            setMatchResult(`✅ Welcome ${matchedUser.UserName} !`);
-
-            updateUser(matchedUser,event_id)
-
-            // alert(`✅ Welcome ${matchedUser.UserName} !`)
+            setMatchResult(`✅ Welcome ${matchedUser.UserName}!`);
+            speak(`Welcome ${matchedUser.UserName}`);
+            updateUser(matchedUser, event_id);
             matchFound = true;
             break;
           } else {
             setMatchResult(`❌ ${matchedUser.UserName} Not Approved for this event`);
-            // alert(`❌ ${matchedUser.UserName} Not Approved for this event`)
-            matchFound=true
+           
+            matchFound = true;
           }
         }
       }
@@ -190,37 +208,81 @@ export default function FaceRecognition() {
     }
   };
 
-  // Run face detection & comparison every 2 seconds
+  // Run detection every 2 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       detectAndCompare();
     }, 2000);
 
+   
+
     return () => clearInterval(interval);
   }, [modelsLoaded, storedImages]);
 
-  return (
-    <div style={{ textAlign: 'center', color: 'white' }}>
-      <h2>Face Recognition Attendance System</h2>
+  const speak = (text) => {
+    if ('speechSynthesis' in window) {
+      const speech = new SpeechSynthesisUtterance(text);
+      speech.voice = speechSynthesis.getVoices()[0];
+      speech.pitch = 1;
+      speech.rate = 1;
+      window.speechSynthesis.speak(speech);
+    } else {
+      alert('Sorry, your browser does not support text-to-speech.');
+    }
+  };
 
-      <div style={{ margin: '20px' }}>
+  return (
+    <div style={{ textAlign: 'center', color: 'white', backgroundImage:`url(${backgroundImage})`,
+    backgroundSize: 'cover', // Ensures the image covers the entire area without distortion
+    backgroundPosition: 'center center', // Centers the image within the div
+    backgroundRepeat: 'no-repeat', height:'50em'}}>
+
+<ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="outlined" createButtonStyle="outlined" dashboardButtonStyle="outlined" />
+    
+    <br></br><br></br><br></br><br></br><br></br>
+       
+      <h2>Mark your attendance here</h2>
+
+      <div style={{ margin: '20px',borderRadius:'7px' }}>
         <Webcam
           audio={false}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
-          width={320}
-          height={240}
+         
           videoConstraints={{
             width: 320,
             height: 240,
-            facingMode: 'user',
+            facingMode: 'user'
+          }}
+          style={{
+            width: "80%",
+            maxWidth: "600px",
+            borderRadius: "10px",
+            border:'1px solid white'
           }}
         />
       </div>
 
       <h3>{matchResult}</h3>
+      <br></br> <br></br>
 
-      <ToastContainer  style={{zIndex:'99999999999999'}}/>
+       <FormControlLabel
+                  control={<Switch defaultChecked />}
+                  label={<span style={{ color: 'white' }}>Face Attendance</span>}
+      
+                  onClick={()=>{
+                    window.location.href=`/map/${event_id}`
+                  }}
+                  
+                  sx={{
+                    backgroundColor: 'grey',
+                    borderRadius: '4px', // optional for rounded edges
+                    padding:'0.3em'
+                  
+                  }}
+                />
+
+      <ToastContainer style={{ zIndex: '99999999999999' }} />
     </div>
   );
 }

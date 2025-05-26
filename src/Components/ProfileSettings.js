@@ -19,6 +19,10 @@ import {
 } from "firebase/firestore";
 import { ToastContainer, toast } from 'react-toastify';
 import backgroundVideo from '../assets/images/eventBackgroundVideo.mp4'
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+
 
 function ProfileSettings() {
 
@@ -27,6 +31,21 @@ function ProfileSettings() {
      const [imageUrl, setImageUrl] = useState("");
      const [userName,setUserName]=useState("")
      const [bio,setBio]=useState("")
+     const [FaceAttendance,setFaceAttendance]=useState("False")
+
+     const [checked, setChecked] = useState(true); // defaultChecked = true
+
+  const handleChange = (event) => {
+    const isChecked = event.target.checked;
+
+    // Only trigger navigation when switching from false => true
+    if (!checked && isChecked) {
+      window.location.href = "/faceupload";
+    }
+
+    setChecked(isChecked);
+  };
+
 
       const notify = (text,type) => {
 
@@ -82,6 +101,11 @@ function ProfileSettings() {
             {
                   
                     setBio(filteredArray[0].Bio)
+            }
+
+            if(filteredArray[0].FaceAttendance)
+            {
+              setFaceAttendance(filteredArray[0].FaceAttendance)
             }
             
             
@@ -373,10 +397,44 @@ function ProfileSettings() {
 
       <br />
       <br />
-      <hr></hr>
-      <Button style={{ width: "13em", border: "1px solid green", color: "green" }} onClick={()=>{
-        window.location.href="/faceupload"
-      }}>Enalble Face Attendance</Button>
+     <hr style={{border:'0.1px solid rgb(255,255,255,0.5)'}}></hr>
+
+     &nbsp; &nbsp; &nbsp; &nbsp;
+      {
+  FaceAttendance === "True" && (
+    <FormControlLabel
+      control={<Switch defaultChecked />}
+      label={<span style={{ color: 'white' }}>Face Attendance</span>}
+      
+      sx={{
+        backgroundColor: 'grey',
+        borderRadius: '4px', // optional for rounded edges
+        padding:'0.3em'
+      
+      }}
+    />
+  )
+}
+
+{
+  FaceAttendance === "False" && (
+    <FormControlLabel
+      control={<Switch />}
+      label={<span style={{ color: 'white' }}>Face Attendance</span>}
+      onClick={() => { window.location.href = "/faceupload"; }}
+      sx={{
+        backgroundColor: 'grey',
+        borderRadius: '4px',
+         padding:'0.3em'
+       
+      }}
+    />
+  )
+}
+
+   
+
+    
       <br></br>
         <br></br>
       <Button

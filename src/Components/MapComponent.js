@@ -15,6 +15,8 @@ import backgroundImage from '../assets/images/coinBackground2.gif'
 import ResponsiveAppBar from "./ResponsiveAppBar";
 import { ToastContainer, toast } from 'react-toastify';
 import Button from '@mui/material/Button';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 
 const QrScanner = () => {
   const webcamRef = useRef(null);
@@ -189,7 +191,12 @@ const QrScanner = () => {
 
 <ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="outlined" createButtonStyle="outlined" dashboardButtonStyle="outlined" />
     
-     <br></br><br></br><br></br><br></br><br></br> <br></br> <br></br>  <br></br> <br></br>  <br></br> <br></br>  <br></br> <br></br>
+     <br></br><br></br><br></br><br></br><br></br> <br></br>
+     <div style={{ color:'white' }}>
+        <h3>Scan your Ticket here</h3>
+        {/* <p>{qrCode || "Waiting for scan..."}</p> */}
+      </div>
+      <br></br>
       
       <Webcam
         ref={webcamRef}
@@ -204,10 +211,25 @@ const QrScanner = () => {
           border:'1px solid white'
         }}
       />
-      <div style={{ marginTop: "20px" }}>
-        <strong>Scanned QR Code</strong>
-        {/* <p>{qrCode || "Waiting for scan..."}</p> */}
-      </div>
+
+      <br></br>    <br></br>
+
+       <FormControlLabel
+            control={<Switch  />}
+            label={<span style={{ color: 'white' }}>Face Attendance</span>}
+
+            onClick={()=>{
+              window.location.href=`/testing5/${event_id}`
+            }}
+            
+            sx={{
+              backgroundColor: 'grey',
+              borderRadius: '4px', // optional for rounded edges
+              padding:'0.3em'
+            
+            }}
+          />
+     
 
 <ToastContainer  style={{zIndex:'99999999999999'}}/>
 
