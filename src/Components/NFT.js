@@ -968,7 +968,7 @@ const PoapCertificate = () => {
 	  
 	  <h3 style={{color:'white',position:'relative',zIndex:1}}>Share</h3>
 
-	  {successMsg.length!=0 && <div  style={{ position:'relative', zIndex:1, display:'flex',justifyContent:'center',alignItems:'center'}}>
+	  {successMsg.length!=0 && <div  style={{ position:'relative', zIndex:1, display:'flex',justifyContent:'center',alignItems:'center',cursor:'pointer'}}>
 	  <SocialIcon
   url="https://x.com/pranavv213"
   onClick={(e) => {
