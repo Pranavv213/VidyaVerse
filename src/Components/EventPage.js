@@ -9,6 +9,8 @@ import {
   updateDoc,
   deleteDoc,
   doc,
+  increment,
+  arrayUnion
 } from "firebase/firestore";
 import { signInWithGoogle } from "../firebase-config";
 import { useParams } from 'react-router-dom';
@@ -840,8 +842,17 @@ function EventPage() {
 
 
         const userDoc = doc(db, "events", event_id);
-        const newFields = { Name: events[0].Name, Description: events[0].Description, Creator:events[0].Creator ,Questions:events[0].Questions,Attendees:events[0].Attendees,Registrations:[...events[0].Registrations,result],AttendeesCount:events[0].AttendeesCount,RegistrationsCount:events[0].RegistrationsCount+1,Coins:events[0].RegistrationsCount*1000+1100};
-        await updateDoc(userDoc, newFields);
+        await updateDoc(userDoc, {
+          Name: events[0].Name,
+          Description: events[0].Description,
+          Creator: events[0].Creator,
+          Questions: events[0].Questions,
+          Attendees: events[0].Attendees, // If Attendees needs to be updated too, you can also use arrayUnion
+          Registrations: arrayUnion(result),
+          AttendeesCount: events[0].AttendeesCount, // Or handle via increment if it's dynamic
+          RegistrationsCount: increment(1),
+          Coins: increment(1000), // This can also be increment(1000) or calculate based on your logic
+        });
      
 
         
