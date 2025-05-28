@@ -658,15 +658,17 @@ function EventPage() {
                     }
                 
                     const eventDocRef = doc(db, "events", event_id);
-                    const updatedEventData = {
-                      ...events[0],
-                      Attendees: [...events[0].Attendees, result],
-                      Registrations: [...events[0].Registrations, result],
-                      AttendeesCount: events[0].AttendeesCount + 1,
-                      RegistrationsCount: events[0].RegistrationsCount + 1,
-                      Coins:events[0].RegistrationsCount*1000+1100
-                    };
-                    await updateDoc(eventDocRef, updatedEventData);
+                    await updateDoc(eventDocRef, {
+                      Name: events[0].Name,
+                      Description: events[0].Description,
+                      Creator: events[0].Creator,
+                      Questions: events[0].Questions,
+                      Attendees: arrayUnion(result), // If Attendees needs to be updated too, you can also use arrayUnion
+                      Registrations: arrayUnion(result),
+                      AttendeesCount: increment(1), // Or handle via increment if it's dynamic
+                      RegistrationsCount: increment(1),
+                      Coins: increment(1000), // This can also be increment(1000) or calculate based on your logic
+                    });
                 
                     const userDocRef = doc(db, "user", filteredUser.id);
                     const updatedUserData = {
