@@ -256,6 +256,8 @@ function EventManage() {
 
     useEffect(() => {
 
+      localStorage.removeItem('attendeeEmails')
+
       if(!localStorage.getItem('email'))
       {
         alert('Please Log In First')
