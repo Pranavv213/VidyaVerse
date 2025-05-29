@@ -253,22 +253,22 @@ function EventPage() {
                     if (events.length) {
                       notifyCustom(`Successfully booked ticket for ${events[0].Name}!`, "success");
 
-                      setTimeout(()=>{
-                        window.location.href="/dashboard"
-                      },2000)
+                      // setTimeout(()=>{
+                      //   window.location.href="/dashboard"
+                      // },2000)
                     }
                 
                     // setTimeout(() => window.location.reload(), 3000);
                   } catch (error) {
                     console.error("Transaction Error:", error);
                     notifyCustom("Transaction failed or was rejected", "error");
-                    setTimeout(()=>{
-                      window.location.reload()
-                    },2000)
+                    // setTimeout(()=>{
+                    //   window.location.reload()
+                    // },2000)
 
-                    setTimeout(()=>{
-                      window.location.reload()
-                    },2000)
+                    // setTimeout(()=>{
+                    //   window.location.reload()
+                    // },2000)
                     // setTimeout(() => window.location.reload(), 500);
                   } finally {
                     setLoading(false);

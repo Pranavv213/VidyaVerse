@@ -99,6 +99,8 @@ function AdminCreate() {
     const [priceShowDiv,setPriceShowDiv]=useState(false)
     const [price,setPrice]=useState("")
     const [priceRecieverAddress,setPriceRecieverAddress]=useState("")
+    const [clicked, setClicked] = useState(false);
+
        const { createWallet, getUserDetails, getPortfolio } = useOkto();
 
         const editor = useEditor({
@@ -715,7 +717,9 @@ isOnline && <div class="location"  style={{ cursor:'pointer',background: "rgba(2
           
         </div>
       <br></br><br></br>
-        <button  className='button-85' style={{height:'2em',width:'100%'}} onClick={()=>{
+        <button  className='button-85' style={{height:'2em',width:'100%'}} disabled={clicked} onClick={()=>{
+
+          setClicked(true)
           toast.dismiss()
             createUser()
 
