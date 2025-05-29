@@ -280,24 +280,32 @@ function AdminCreate() {
         
           try {
             // Connect to wallet
-            await window.ethereum.request({ method: "eth_requestAccounts" });
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const signer = provider.getSigner();
-        
-            // Initialize contract
-            const contract = new ethers.Contract("0x906BC3e88Ff2f3247881D6a4C0cD837bA283E2Feb", abi, signer);
-        
-            // Call createEvent
-            const tx = await contract.createEvent(result.id, localStorage.getItem('walletAddress'));
-            console.log("Transaction sent:", tx.hash);
-        
-            // Wait for confirmation
-            const receipt = await tx.wait();
-            console.log("Transaction confirmed:", receipt);
-            notify("Event Created!","light","top-right","success")
-            setTimeout(()=>{
-              window.location.href="/onlinedashboard"
-            },2000)
+           // Connect to wallet
+           await window.ethereum.request({ method: "eth_requestAccounts" });
+           
+           const provider = new ethers.providers.Web3Provider(window.ethereum);
+           const signer = provider.getSigner();
+       
+           // Initialize contract
+           const contract = new ethers.Contract("0x906BC3e88Ff2f3247881D6a4C0cD837bA283E2Fe", abi, signer);
+
+         
+       
+           // Call createEvent
+           const tx = await contract.createEvent(result.id);
+
+           setLoading(true)
+           
+       
+           // Wait for confirmation
+           const receipt = await tx.wait();
+           setLoading(false)
+           console.log("Transaction confirmed:", receipt);
+           notify("Event Created!","light","top-right","success")
+
+           setTimeout(()=>{
+             window.location.href="/dashboard"
+           },2000)
           } catch (error) {
             console.error("Error creating event:", error);
           }
