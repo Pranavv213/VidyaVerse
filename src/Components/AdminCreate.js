@@ -58,6 +58,9 @@ import CategoryIcon from '@mui/icons-material/Category';
 import PeopleIcon from '@mui/icons-material/People';
 import backgroundVideo from '../assets/images/eventBackgroundVideo.mp4'
 import dayjs from 'dayjs';
+import { ethers } from 'ethers';
+import abi from '../Contracts/EventManager.json'
+import LinearProgress from '@mui/material/LinearProgress';
 
 
 
@@ -69,6 +72,8 @@ import dayjs from 'dayjs';
 
 const usersCollectionRef = collection(db, "events");
 const usersCollectionRef1 = collection(db, "user");
+
+
 
 
 function AdminCreate() {
@@ -171,6 +176,7 @@ function AdminCreate() {
     const [eventDescription,setEventDescription]=useState('')
     const [questionsArray,setQuestionsArray]=useState(["Name","Email"])
     const [question,setQuestion]=useState('')
+    const [loading,setLoading]=useState(false)
 
     const [user,setUser]=useState([])
 
@@ -188,9 +194,49 @@ function AdminCreate() {
         {
           const result=await addDoc(usersCollectionRef, { Name: eventName, Image:imageUrl,Address:selectedAddress,StartDateTime:startDateTime,EndDateTime:endDateTime,Capacity:capacity,Description: text, Creator:localStorage.getItem('email') ,Questions:questionsArray,Attendees:[],Registrations:[],AttendeesCount:0,RegistrationsCount:0,Category:category,Timestamp:now,Price:price, PriceRecieverAddress:priceRecieverAddress,Coins:100});
 
+
           if(user.length!=0)
             {
+
               updateUser(result.id)
+
+              if (!window.ethereum) {
+
+               
+                console.error("MetaMask not detected");
+                return;
+              }
+            
+              try {
+                // Connect to wallet
+                await window.ethereum.request({ method: "eth_requestAccounts" });
+           
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                const signer = provider.getSigner();
+            
+                // Initialize contract
+                const contract = new ethers.Contract("0x906BC3e88Ff2f3247881D6a4C0cD837bA283E2Fe", abi, signer);
+
+              
+            
+                // Call createEvent
+                const tx = await contract.createEvent(result.id);
+
+                setLoading(true)
+                
+            
+                // Wait for confirmation
+                const receipt = await tx.wait();
+                setLoading(false)
+                console.log("Transaction confirmed:", receipt);
+                notify("Event Created!","light","top-right","success")
+
+                setTimeout(()=>{
+                  window.location.href="/dashboard"
+                },2000)
+              } catch (error) {
+                console.error("Error creating event:", error);
+              }
             }
 
           console.log(result.id)
@@ -202,6 +248,10 @@ function AdminCreate() {
           if(user.length!=0)
             {
               updateUser(result.id)
+              notify("Event Created!","light","top-right","success")
+              setTimeout(()=>{
+                window.location.href="/dashboard"
+              },2000)
             }
 
           console.log(result.id)
@@ -222,6 +272,35 @@ function AdminCreate() {
         if(user.length!=0)
         {
           updateUser(result.id)
+
+          if (!window.ethereum) {
+            console.error("MetaMask not detected");
+            return;
+          }
+        
+          try {
+            // Connect to wallet
+            await window.ethereum.request({ method: "eth_requestAccounts" });
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+        
+            // Initialize contract
+            const contract = new ethers.Contract("0x906BC3e88Ff2f3247881D6a4C0cD837bA283E2Feb", abi, signer);
+        
+            // Call createEvent
+            const tx = await contract.createEvent(result.id, localStorage.getItem('walletAddress'));
+            console.log("Transaction sent:", tx.hash);
+        
+            // Wait for confirmation
+            const receipt = await tx.wait();
+            console.log("Transaction confirmed:", receipt);
+            notify("Event Created!","light","top-right","success")
+            setTimeout(()=>{
+              window.location.href="/onlinedashboard"
+            },2000)
+          } catch (error) {
+            console.error("Error creating event:", error);
+          }
         }
         }
         else{
@@ -230,6 +309,10 @@ function AdminCreate() {
           if(user.length!=0)
             {
               updateUser(result.id)
+              notify("Event Created!","light","top-right","success")
+              setTimeout(()=>{
+                window.location.href="/onlinedashboard"
+              },2000)
             }
         }
         
@@ -240,11 +323,13 @@ function AdminCreate() {
 
         const updateUser = async (id) => {
 
+          
+
             console.log(user[0])
                     const userDoc = doc(db, "user", user[0].id);
                     const newFields = { Email: user[0].Email, Coins:user[0].Coins, EventsCreated:[...user[0].EventsCreated,id],EventsRegistered:user[0].EventsRegistered, EventsApproved:user[0].EventsApproved,EventsAttended:user[0].EventsAttended};
                     await updateDoc(userDoc, newFields);
-                    notify("Event Created!","light","top-right","success")
+                   
                   
 
                   };
@@ -307,7 +392,7 @@ function AdminCreate() {
 
        
        
-       <div style={{ position: "relative", zIndex: 1 }}>
+     {!loading &&  <div style={{ position: "relative", zIndex: 1 }}>
       
        <br></br> <br></br>  <br></br> <br></br>  <br></br> <br></br>
               
@@ -559,6 +644,7 @@ isOnline && <div class="location"  style={{ cursor:'pointer',background: "rgba(2
 
                if(filteredArray.length!=0 && filteredArray[0].Premium!=null)
                {
+                
                 setPriceShowDiv(true)
                }
                else
@@ -571,9 +657,9 @@ isOnline && <div class="location"  style={{ cursor:'pointer',background: "rgba(2
 
                }
            
-}}><div  style={{display:'flex',alignItems:'center',width:'100%'}} ><ConfirmationNumberIcon fontSize='small'/>
+}}><div  style={{display:'flex',alignItems:'center',width:'100%',cursor:'pointer'}} ><ConfirmationNumberIcon fontSize='small'/>
         &nbsp;<l>Tickets</l></div>
-        <div style={{display:'flex',alignItems:'right'}}> &nbsp;
+        <div style={{display:'flex',alignItems:'right',cursor:'pointer'}}> &nbsp;
         <l style={{color:'#1876d1'}}>{price.length==0 ? 'Free' : 'Paid'}</l></div>
                     </div>
 
@@ -582,26 +668,26 @@ isOnline && <div class="location"  style={{ cursor:'pointer',background: "rgba(2
     
 
 
-          <div class="capacity" style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'100%'}} onClick={()=>{
+          <div class="capacity" style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'100%',cursor:'pointer'}} onClick={()=>{
             toast.dismiss()
             setShowCategory(true)
        
         
          
-        }}><div  style={{display:'flex',alignItems:'center',width:'100%'}} ><CategoryIcon fontSize='small'/>
+        }}><div  style={{display:'flex',alignItems:'center',width:'100%',cursor:'pointer'}} ><CategoryIcon fontSize='small'/>
         &nbsp;<l>Category </l></div>
         <div style={{display:'flex',alignItems:'right'}}> &nbsp;
         <l style={{color:'#1876d1'}}>{category.length==0 ? "select" : category.slice(0,6)+"..."}</l></div>
                     </div>
           
           
-                    <div class="capacity" style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'100%'}} onClick={()=>{
+                    <div class="capacity" style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'100%',cursor:'pointer'}} onClick={()=>{
             toast.dismiss()
             setShowCapacity(true)
        
         
          
-        }}><div  style={{display:'flex',alignItems:'center',width:'100%'}} ><PeopleIcon fontSize='small'/>
+        }}><div  style={{display:'flex',alignItems:'center',width:'100%',cursor:'pointer'}} ><PeopleIcon fontSize='small'/>
         &nbsp;<l>Capacity </l></div>
         <div style={{display:'flex',alignItems:'right'}}> &nbsp;
         <l style={{color:'#1876d1'}}>{capacity==0 ? "select" :capacity}</l></div>
@@ -1212,6 +1298,14 @@ isOnline && <div class="location"  style={{ cursor:'pointer',background: "rgba(2
  
         
     </div>
+}
+
+{loading==true &&  <Box sx={{position:'absolute', width: '50%' ,top:'40%',left:'25%',zIndex:'9999999999999'}}>
+        <l style={{color:'white',fontSize:'20px'}}>Creating Event...</l>
+        <br></br>
+        <br></br> 
+      <LinearProgress style={{backgroundColor:'green',color:'green'}} />
+    </Box>}
     <ToastContainer style={{zIndex:'999999999999999999999999999999'}} />
     </div>
   )

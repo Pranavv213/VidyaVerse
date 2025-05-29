@@ -17,6 +17,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import { ethers } from "ethers";
+import EventManagerABI from "../Contracts/EventManager.json"; // update with your actual ABI file
 
 const QrScanner = () => {
   const webcamRef = useRef(null);
@@ -27,6 +29,40 @@ const QrScanner = () => {
   const usersCollectionRef = collection(db, "events");
   const usersCollectionRef1 = collection(db, "user");
   const usersCollectionRef2 = collection(db, "ticket");
+
+
+
+
+const markAttendanceBatch = async () => {
+    try {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+
+        const contractAddress = "0x906BC3e88Ff2f3247881D6a4C0cD837bA283E2Fe";
+        const contract = new ethers.Contract(contractAddress, EventManagerABI, signer);
+
+        // Create an array of booleans (assuming all attended)
+
+        const attendeeEmails = [...new Set(JSON.parse(localStorage.getItem('attendeeEmails') || '[]'))];
+
+
+        const statuses = attendeeEmails.map(() => true);
+
+        // Send the transaction
+        const tx = await contract.batchMarkAttendance(event_id, attendeeEmails, statuses);
+        console.log("Transaction sent:", tx.hash);
+
+        // Wait for it to be mined
+        await tx.wait();
+        console.log("Attendance marked successfully for all attendees!");
+
+        alert("Attendance marked for all attendees!");
+    } catch (error) {
+        console.error(error);
+        alert("Error marking attendance.");
+    }
+};
+
 
 
    const notify = (text,type) => toast(text,{
@@ -100,6 +136,10 @@ const QrScanner = () => {
                          filteredArray=obj.EventsAttended.filter(x=>x==event_id)
                         console.log(obj.EventsAttended)
                         console.log(filteredArray)
+                        
+                        localStorage.setItem('attendeeEmails', JSON.stringify([...(JSON.parse(localStorage.getItem('attendeeEmails') || '[]')), obj.Email]));
+
+                       
                         if(filteredArray.length==0)
                         {
 
@@ -109,15 +149,16 @@ const QrScanner = () => {
                                  
                            let filteredArray=eventsTemp.filter(obj => obj.id === event_id)
                            console.log(filteredArray)
-
+                          
                            if(filteredArray.length!=0)
                            {
                             let newFields = { Email: obj.Email, Coins:obj.Coins+filteredArray[0].Coins, EventsCreated:obj.EventsCreated,EventsRegistered:obj.EventsRegistered, EventsApproved:obj.EventsApproved,EventsAttended:[...obj.EventsAttended,EventId]};
                             await updateDoc(userDoc, newFields);
   
                             userDoc = doc(db, "events", event_id);
+
   
-                            
+                           
                          
                            notify("Congratulations! You earned ConnectVerse coins","success")
                            }
@@ -212,6 +253,11 @@ const QrScanner = () => {
         }}
       />
 
+      <br></br>    <br></br>
+
+      <Button variant="outlined" onClick={()=>{
+        markAttendanceBatch()
+      }}>On Chain</Button>
       <br></br>    <br></br>
 
        <FormControlLabel

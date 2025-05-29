@@ -51,453 +51,14 @@ import VideoCallIcon from '@mui/icons-material/VideoCall';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { ethers } from 'ethers';
 import LinearProgress from '@mui/material/LinearProgress';
+import USDC_TOKEN_ABI from '../Contracts/USDCABI.json'
+import EVENT_ABI from '../Contracts/EventManager.json'
 
-const CON_TOKEN_ADDRESS = '0x594BC5879948faf0F9014aEB37E7a5F7B051f4c1';
-const CON_TOKEN_ABI = 
-  [
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "spender",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "value",
-          "type": "uint256"
-        }
-      ],
-      "name": "approve",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "value",
-          "type": "uint256"
-        }
-      ],
-      "name": "burn",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "account",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "value",
-          "type": "uint256"
-        }
-      ],
-      "name": "burnFrom",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "initialOwner",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "spender",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "allowance",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "needed",
-          "type": "uint256"
-        }
-      ],
-      "name": "ERC20InsufficientAllowance",
-      "type": "error"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "sender",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "balance",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "needed",
-          "type": "uint256"
-        }
-      ],
-      "name": "ERC20InsufficientBalance",
-      "type": "error"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "approver",
-          "type": "address"
-        }
-      ],
-      "name": "ERC20InvalidApprover",
-      "type": "error"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "receiver",
-          "type": "address"
-        }
-      ],
-      "name": "ERC20InvalidReceiver",
-      "type": "error"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "sender",
-          "type": "address"
-        }
-      ],
-      "name": "ERC20InvalidSender",
-      "type": "error"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "spender",
-          "type": "address"
-        }
-      ],
-      "name": "ERC20InvalidSpender",
-      "type": "error"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "owner",
-          "type": "address"
-        }
-      ],
-      "name": "OwnableInvalidOwner",
-      "type": "error"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "account",
-          "type": "address"
-        }
-      ],
-      "name": "OwnableUnauthorizedAccount",
-      "type": "error"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "owner",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "spender",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "value",
-          "type": "uint256"
-        }
-      ],
-      "name": "Approval",
-      "type": "event"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "mint",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "previousOwner",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "OwnershipTransferred",
-      "type": "event"
-    },
-    {
-      "inputs": [],
-      "name": "renounceOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "value",
-          "type": "uint256"
-        }
-      ],
-      "name": "transfer",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "from",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "value",
-          "type": "uint256"
-        }
-      ],
-      "name": "Transfer",
-      "type": "event"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "from",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "value",
-          "type": "uint256"
-        }
-      ],
-      "name": "transferFrom",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "transferOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "owner",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "spender",
-          "type": "address"
-        }
-      ],
-      "name": "allowance",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "account",
-          "type": "address"
-        }
-      ],
-      "name": "balanceOf",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "decimals",
-      "outputs": [
-        {
-          "internalType": "uint8",
-          "name": "",
-          "type": "uint8"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "name",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "symbol",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "totalSupply",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    }
-  ]
+const USDC_TOKEN_ADDRESS = '0x594BC5879948faf0F9014aEB37E7a5F7B051f4c1';
+
+const EVENT_ADDRESS='0x906BC3e88Ff2f3247881D6a4C0cD837bA283E2Fe'
+
+
 
 
 
@@ -511,6 +72,7 @@ function EventPage() {
   const { showWidgetModal, closeModal } = useOkto();
   const { createWallet, getUserDetails, getPortfolio } = useOkto();
   const [loading, setLoading] = useState(false);
+  const [loadingText,setLoadingText]=useState("")
   
 
     // Store answers as an array
@@ -619,7 +181,7 @@ function EventPage() {
                     const amountString = events.length ? events[0].Price : null;
                     if (!window.ethereum) return alert("MetaMask is not available.");
                     if (!amountString || isNaN(amountString)) return notifyCustom("Invalid amount.", "error");
-                    if (!RECEIVER_ADDRESS || !CON_TOKEN_ADDRESS || !CON_TOKEN_ABI) return notifyCustom("Contract details missing.", "error");
+                    if (!RECEIVER_ADDRESS || !USDC_TOKEN_ADDRESS || !USDC_TOKEN_ABI) return notifyCustom("Contract details missing.", "error");
                 
                     // Connect to MetaMask
                     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -634,7 +196,8 @@ function EventPage() {
                     }
                 
                     // Prepare token transaction
-                    const token = new ethers.Contract(CON_TOKEN_ADDRESS, CON_TOKEN_ABI, signer);
+                    const token = new ethers.Contract(USDC_TOKEN_ADDRESS, USDC_TOKEN_ABI, signer);
+                    const event = new ethers.Contract(EVENT_ADDRESS, EVENT_ABI, signer);
                     const decimals = await token.decimals();
                     const balance = await token.balanceOf(userAddress);
                     const amountToSend = ethers.utils.parseUnits(amountString, decimals);
@@ -643,10 +206,16 @@ function EventPage() {
                       notifyCustom("Insufficient balance.", "error");
                       return setTimeout(() => window.location.reload(), 3000);
                     }
-                
+                    
+
                     // Execute token transfer
-                    const tx = await token.transfer(RECEIVER_ADDRESS, amountToSend);
+                    const approveTx = await token.approve("0x906BC3e88Ff2f3247881D6a4C0cD837bA283E2Fe", amountToSend+10);
+                    setLoadingText("Approving Request...")
                     setLoading(true);
+                    await approveTx.wait();
+                    const tx = await event.depositAmount(event_id,amountToSend,USDC_TOKEN_ADDRESS);
+                    setLoadingText("Processing Payment...")
+                   
                     await tx.wait();
                     setLoading(false);
                 
@@ -683,13 +252,24 @@ function EventPage() {
                 
                     if (events.length) {
                       notifyCustom(`Successfully booked ticket for ${events[0].Name}!`, "success");
+
+                      setTimeout(()=>{
+                        window.location.href="/dashboard"
+                      },2000)
                     }
                 
-                    setTimeout(() => window.location.reload(), 3000);
+                    // setTimeout(() => window.location.reload(), 3000);
                   } catch (error) {
                     console.error("Transaction Error:", error);
                     notifyCustom("Transaction failed or was rejected", "error");
-                    setTimeout(() => window.location.reload(), 500);
+                    setTimeout(()=>{
+                      window.location.reload()
+                    },2000)
+
+                    setTimeout(()=>{
+                      window.location.reload()
+                    },2000)
+                    // setTimeout(() => window.location.reload(), 500);
                   } finally {
                     setLoading(false);
                   }
@@ -875,10 +455,9 @@ function EventPage() {
 
         notify("Registration complete!","success")
 
-        setInterval(()=>{
-          window.location.reload();
-        },3000)
-
+        setTimeout(()=>{
+          window.location.href="/dashboard"
+        },2000)
         
         }
         catch{
@@ -910,7 +489,7 @@ function EventPage() {
       <br></br> <br></br>  <br></br> <br></br>  <br></br> <br></br>
 
       {loading==true &&  <Box sx={{position:'absolute', width: '50%' ,top:'40%',left:'25%',zIndex:'9999999999999'}}>
-        <l style={{color:'white',fontSize:'20px'}}>Processing Payment...</l>
+        <l style={{color:'white',fontSize:'20px'}}>{loadingText}...</l>
         <br></br>
         <br></br> 
       <LinearProgress />

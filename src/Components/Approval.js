@@ -287,7 +287,7 @@ function EventManage() {
       <div style={{display:'flex',justifyContent:'center'}}>
       <Button variant="outlined" style={{borderRadius:'0'}}  onClick={()=>{
      window.location.href = `/manage/${event_id}`;
-}}>Overview </Button>
+}}>Edit </Button>
 <Button variant="contained" style={{borderRadius:'0'}} onClick={()=>{
      window.location.href = '/manage';
 }}>Guests </Button>
@@ -296,8 +296,8 @@ function EventManage() {
      window.location.href = `/map/${event_id}`;
 }} >Check In</Button>
 <Button variant="outlined" style={{borderRadius:'0'}} onClick={()=>{
-     window.location.href = '/manage';
-}}>More</Button>
+      window.location.href = `/payouts/${event_id}`;
+}}>Payouts</Button>
 
 </div>
 

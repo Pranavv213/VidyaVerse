@@ -434,7 +434,7 @@ function AdminCreate() {
              <div style={{display:'flex',justifyContent:'center'}}>
              <Button variant="contained" style={{borderRadius:'0'}}  onClick={()=>{
             window.location.reload();
-       }}>Overview </Button>
+       }}>Edit</Button>
        <Button variant="outlined" style={{borderRadius:'0'}} onClick={()=>{
             window.location.href = `/approve/${event_id}`;
        }}>Guests </Button>
@@ -443,8 +443,8 @@ function AdminCreate() {
             window.location.href = `/map/${event_id}`;
        }} >Check In</Button>
        <Button variant="outlined" style={{borderRadius:'0'}} onClick={()=>{
-            window.location.href = '/manage';
-       }}>More</Button>
+            window.location.href = `/payouts/${event_id}`;
+       }}>Payouts</Button>
        
        </div>
        
