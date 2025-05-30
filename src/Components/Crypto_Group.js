@@ -93,68 +93,49 @@ export default function DisperseTokenComponent() {
 
   
 
-  async function disperseTokens() {
-   
-    try {
-
-
-     
-            const _provider = new ethers.providers.Web3Provider(window.ethereum);
-            await _provider.send("eth_requestAccounts", []);
-            const _signer = _provider.getSigner();
-            const address = await _signer.getAddress();
-      
-            
-            console.log("Connected:", address);
-         
-      const disperseContract = new ethers.Contract(disperseAddress, disperseAbi, _signer);
-      const tokenContract = new ethers.Contract(tokenAddress, erc20Abi, _signer);
-  
-      const recipients = receiversArray
-      const values = new Array(receiversArray.length).fill(inputValue);
-  
-      
-
-      
-  
-      const total = values.reduce((address, val) => address.add(val), ethers.BigNumber.from(0));
-  
-      // Check current allowance
-
-     
-      const owner = await _signer.getAddress();
-
-    
-      const allowance = await tokenContract.allowance(owner, disperseAddress);
-
-      console.log("this")
-  
-      if (allowance.lt(total)) {
-        console.log("Allowance insufficient. Approving tokens now...");
-        const approveTx = await tokenContract.approve(disperseAddress, total);
-       
-        await approveTx.wait();
-        console.log("Tokens approved.");
-      } else {
-        console.log("Sufficient allowance already granted, skipping approval.");
-      }
-  
-      console.log("Dispersing tokens...");
-      const tx = await disperseContract.disperseToken(tokenAddress, recipients, values);
-      setLoading(true)
-      setTxn(tx.hash)
-      await tx.wait();
-
-      setLoading(false)
-  
-  
-
-    } catch (err) {
-      console.error(err);
-      
-    }
-  }
-  
+		  async function disperseTokens() {
+			try {
+			  const _provider = new ethers.providers.Web3Provider(window.ethereum);
+			  await _provider.send("eth_requestAccounts", []);
+			  const _signer = _provider.getSigner();
+			  const address = await _signer.getAddress();
+			  
+			  console.log("Connected:", address);
+			  
+			  const disperseContract = new ethers.Contract(disperseAddress, disperseAbi, _signer);
+			  const tokenContract = new ethers.Contract(tokenAddress, erc20Abi, _signer);
+		  
+			  const decimals = 18; // adjust this if your token has different decimals
+			  const parsedInputValue = ethers.utils.parseUnits(inputValue.toString(), decimals);
+		  
+			  const recipients = receiversArray;
+			  const values = new Array(receiversArray.length).fill(parsedInputValue);
+		  
+			  const total = values.reduce((acc, val) => acc.add(val), ethers.BigNumber.from(0));
+		  
+			  const owner = await _signer.getAddress();
+			  const allowance = await tokenContract.allowance(owner, disperseAddress);
+		  
+			  if (allowance.lt(total)) {
+				console.log("Allowance insufficient. Approving tokens now...");
+				const approveTx = await tokenContract.approve(disperseAddress, total);
+				await approveTx.wait();
+				console.log("Tokens approved.");
+			  } else {
+				console.log("Sufficient allowance already granted, skipping approval.");
+			  }
+		  
+			  console.log("Dispersing tokens...");
+			  const tx = await disperseContract.disperseToken(tokenAddress, recipients, values);
+			  setLoading(true);
+			  setTxn(tx.hash);
+			  await tx.wait();
+			  setLoading(false);
+			} catch (err) {
+			  console.error(err);
+			}
+		  }
+		  
   
     return (
     <div>
