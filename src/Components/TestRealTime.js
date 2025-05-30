@@ -552,11 +552,13 @@ const handleContextMenu = (event) => {
       : null;
 
       
-    const textAfterImage = hasImage
+    let textAfterImage = hasImage
       ? x.Message.slice(x.Message.indexOf(')') + 1).trim()
       : x.Message;
 
       const link = (textAfterImage.match(/https?:\/\/[^\s]+/) || [])[0];
+
+      textAfterImage=textAfterImage.replace(link, "");
 
 
       
@@ -821,8 +823,8 @@ const handleContextMenu = (event) => {
           width: '300px', 
           height: '230px',
           padding: '20px', 
-          backgroundColor: '#fff', 
-          border: '1px solid #ddd', 
+          backgroundColor: 'black', 
+          border: '0.2px solid #ddd', 
           textAlign: 'center', 
           boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
           position: 'absolute', 
@@ -832,7 +834,8 @@ const handleContextMenu = (event) => {
           animation: 'popupAnimation 0.5s ease',
           zIndex:'99999999999999999',
 
-          border:'2px solid #1876d1'
+          border:'2px solid #1876d1',
+          color:'white'
 
         }}>
             <center>
