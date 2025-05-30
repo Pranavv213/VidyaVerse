@@ -73,7 +73,7 @@ function EventPage() {
   const { createWallet, getUserDetails, getPortfolio } = useOkto();
   const [loading, setLoading] = useState(false);
   const [loadingText,setLoadingText]=useState("")
-  
+  const [clicked, setClicked] = useState(false);
 
     // Store answers as an array
   const [answers, setAnswers] = useState([]);
@@ -281,6 +281,8 @@ function EventPage() {
   // Handle submit
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    setClicked(true)
 
    
 
@@ -913,7 +915,7 @@ function EventPage() {
 
   {/* class="buttonInput" variant="contained" style={{height:'3em',borderRadius:'1em',backgroundColor:'black',color:'white',border:'1px solid white'}} */}
 
-  <Button  variant="contained" class="button-85"  style={{width:'100%',height:'2.5em',fontSize:'16px',border:'none',color:'rgb(207,207,207)'}} onClick={handleSubmit} >
+  <Button  variant="contained" class="button-85"  style={{width:'100%',height:'2.5em',fontSize:'16px',border:'none',color:'rgb(207,207,207)'}} onClick={handleSubmit} disabled={clicked} >
       <b> Register </b> 
       </Button>
     
