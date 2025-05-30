@@ -217,7 +217,7 @@ function AdminCreate() {
                 const signer = provider.getSigner();
             
                 // Initialize contract
-                const contract = new ethers.Contract("0x906BC3e88Ff2f3247881D6a4C0cD837bA283E2Fe", abi, signer);
+                const contract = new ethers.Contract("0xbD14dfcE7b683552E7fC42A0f73D3B2b174B4385", abi, signer);
 
               
             
@@ -289,7 +289,7 @@ function AdminCreate() {
            const signer = provider.getSigner();
        
            // Initialize contract
-           const contract = new ethers.Contract("0x906BC3e88Ff2f3247881D6a4C0cD837bA283E2Fe", abi, signer);
+           const contract = new ethers.Contract("0xbD14dfcE7b683552E7fC42A0f73D3B2b174B4385", abi, signer);
 
          
        

@@ -37,7 +37,7 @@ const usersCollectionRef1 = collection(db, "user");
 
 const tokenAddress="0x594BC5879948faf0F9014aEB37E7a5F7B051f4c1"
 
-const eventContractAddress="0x906BC3e88Ff2f3247881D6a4C0cD837bA283E2Fe"
+const eventContractAddress="0xbD14dfcE7b683552E7fC42A0f73D3B2b174B4385"
 
 function Payouts() {
 
@@ -83,14 +83,38 @@ console.log(event_id)
               const signer = provider.getSigner();
               const eventContract = new ethers.Contract(eventContractAddress, eventContractABI, signer);
           
-              const balance = await eventContract.getEventTokenBalance(event_id, tokenAddress);
-              console.log(`Balance of creator for event ${event_id}:`, ethers.utils.formatUnits(balance, 18));
-
-              setBalance( ethers.utils.formatUnits(balance, 18))
+              // 1️⃣ Fetch event details
+              const [creator, attendeeEmails, hasAttendedList, depositedAmounts] = await eventContract.getEventDetails(event_id);
+          
+              // 2️⃣ Remove duplicates based on email (keeping the first occurrence)
+              const uniqueData = new Map();
+              for (let i = 0; i < attendeeEmails.length; i++) {
+                const email = attendeeEmails[i];
+                if (!uniqueData.has(email)) {
+                  uniqueData.set(email, {
+                    hasAttended: hasAttendedList[i],
+                    depositedAmount: depositedAmounts[i],
+                  });
+                }
+              }
+          
+              // 3️⃣ Sum deposits of those who attended
+              let validBalance = ethers.BigNumber.from(0);
+              for (let [email, data] of uniqueData.entries()) {
+                if (data.hasAttended) {
+                  validBalance = validBalance.add(data.depositedAmount);
+                }
+              }
+          
+              console.log(`Total balance for attended emails in event ${event_id}:`, ethers.utils.formatUnits(validBalance, 18));
+              setBalance(ethers.utils.formatUnits(validBalance, 18));
             } catch (err) {
               console.error("Error:", err);
             }
           }
+          
+          
+          
           
           
     

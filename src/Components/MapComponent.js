@@ -38,7 +38,7 @@ const markAttendanceBatch = async () => {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
 
-        const contractAddress = "0x906BC3e88Ff2f3247881D6a4C0cD837bA283E2Fe";
+        const contractAddress = "0xbD14dfcE7b683552E7fC42A0f73D3B2b174B4385";
         const contract = new ethers.Contract(contractAddress, EventManagerABI, signer);
 
         // Create an array of booleans (assuming all attended)

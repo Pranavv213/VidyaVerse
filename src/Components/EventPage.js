@@ -56,7 +56,7 @@ import EVENT_ABI from '../Contracts/EventManager.json'
 
 const USDC_TOKEN_ADDRESS = '0x594BC5879948faf0F9014aEB37E7a5F7B051f4c1';
 
-const EVENT_ADDRESS='0x906BC3e88Ff2f3247881D6a4C0cD837bA283E2Fe'
+const EVENT_ADDRESS='0xbD14dfcE7b683552E7fC42A0f73D3B2b174B4385'
 
 
 
@@ -209,11 +209,11 @@ function EventPage() {
                     
 
                     // Execute token transfer
-                    const approveTx = await token.approve("0x906BC3e88Ff2f3247881D6a4C0cD837bA283E2Fe", amountToSend+10);
+                    const approveTx = await token.approve("0xbD14dfcE7b683552E7fC42A0f73D3B2b174B4385", amountToSend+10);
                     setLoadingText("Approving Request...")
                     setLoading(true);
                     await approveTx.wait();
-                    const tx = await event.depositAmount(event_id,amountToSend,USDC_TOKEN_ADDRESS);
+                    const tx = await event.depositAmount(event_id,amountToSend,USDC_TOKEN_ADDRESS,localStorage.getItem('email'));
                     setLoadingText("Processing Payment...")
                    
                     await tx.wait();
@@ -262,14 +262,14 @@ function EventPage() {
                   } catch (error) {
                     console.error("Transaction Error:", error);
                     notifyCustom("Transaction failed or was rejected", "error");
-                    setTimeout(()=>{
-                      window.location.reload()
-                    },2000)
+                    // setTimeout(()=>{
+                    //   window.location.reload()
+                    // },2000)
 
-                    setTimeout(()=>{
-                      window.location.reload()
-                    },2000)
-                    setTimeout(() => window.location.reload(), 500);
+                    // setTimeout(()=>{
+                    //   window.location.reload()
+                    // },2000)
+                    // setTimeout(() => window.location.reload(), 500);
                   } finally {
                     setLoading(false);
                   }
