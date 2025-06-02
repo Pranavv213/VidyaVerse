@@ -37,6 +37,7 @@ import Testing5 from './Components/Testing5';
 import Faceupload from './Components/Faceupload'
 import Testsolcode from './Components/TestSolCode';
 import Payouts from './Components/Payouts';
+import Token from './Components/Token'
 
 function App() {
   const OKTO_CLIENT_API_KEY = "f144c56d-f768-426c-b123-f7ee71f8cee8";
@@ -182,6 +183,12 @@ function App() {
         
         <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
        <Payouts/>
+    </OktoProvider>} />
+
+    <Route path="/token" element={
+        
+        <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
+       <Token/>
     </OktoProvider>} />
 
            

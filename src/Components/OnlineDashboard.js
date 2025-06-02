@@ -499,12 +499,12 @@ else{
 {createdEvents.length!=0 && createdEvents.map((x)=>{
   return(
 
-    <Card  sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.1px solid rgba(255, 255, 255,0.2)',position:'relative',borderTop:'none'}} onClick={()=>{
-      window.location.href=`/event/${x.id}`
-    }}>
-      <CardActionArea>
-        <br></br>
-        <img style={{width:'20em' ,height:'20em'}} src={x.Image}></img>
+    <Card sx={{ maxWidth: 350,minWidth:300 ,maxHeight:1000  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.5px solid rgba(255, 255, 255,0.2)',position:'relative',borderRadius:'20px'}}>
+         <CardActionArea>
+           
+           <img style={{width:'300px' ,height:'500px',objectFit:'cover', border: '1px solid rgba(255, 255, 255, 0.18)'}} src={x.Image} onClick={()=>{
+             window.location.href=`/event/${x.id}`
+           }}></img>
        
         <CardContent>
           <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
@@ -569,12 +569,12 @@ else{
   return(
     <div style={{border:'2px solid black',color:'white'}}>
       
-      <Card  sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.1px solid rgba(255, 255, 255,0.2)',position:'relative',borderTop:'none'}}onClick={()=>{
-          window.location.href=`/event/${x.id}`
-        }}>
-      <CardActionArea>
-        <br></br>
-        <img style={{width:'20em' ,height:'20em'}} src={x.Image}></img>
+     <Card sx={{ maxWidth: 350,minWidth:300 ,maxHeight:1000  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.5px solid rgba(255, 255, 255,0.2)',position:'relative',borderRadius:'20px'}}>
+          <CardActionArea>
+            
+            <img style={{width:'300px' ,height:'500px',objectFit:'cover', border: '1px solid rgba(255, 255, 255, 0.18)'}} src={x.Image} onClick={()=>{
+              window.location.href=`/event/${x.id}`
+            }}></img>
        
         <CardContent>
           <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
