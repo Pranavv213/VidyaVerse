@@ -38,6 +38,7 @@ import Faceupload from './Components/Faceupload'
 import Testsolcode from './Components/TestSolCode';
 import Payouts from './Components/Payouts';
 import Token from './Components/Token'
+import LiquidityAdder from './Components/LiquidityAdder';
 
 function App() {
   const OKTO_CLIENT_API_KEY = "f144c56d-f768-426c-b123-f7ee71f8cee8";
@@ -189,6 +190,12 @@ function App() {
         
         <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
        <Token/>
+    </OktoProvider>} />
+
+    <Route path="/l" element={
+        
+        <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
+       <LiquidityAdder/>
     </OktoProvider>} />
 
            
