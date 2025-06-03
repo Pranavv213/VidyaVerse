@@ -39,6 +39,7 @@ import Testsolcode from './Components/TestSolCode';
 import Payouts from './Components/Payouts';
 import Token from './Components/Token'
 import LiquidityAdder from './Components/LiquidityAdder';
+import Swap from './Components/Swap'
 
 function App() {
   const OKTO_CLIENT_API_KEY = "f144c56d-f768-426c-b123-f7ee71f8cee8";
@@ -192,12 +193,17 @@ function App() {
        <Token/>
     </OktoProvider>} />
 
-    <Route path="/l" element={
+    <Route path="/liquidityadder" element={
         
         <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
        <LiquidityAdder/>
     </OktoProvider>} />
 
+    <Route path="/swap" element={
+        
+        <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
+       <Swap/>
+    </OktoProvider>} />
            
     </Routes>
   </Router>

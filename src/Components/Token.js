@@ -467,9 +467,9 @@ export default function DeployConnectVerse() {
   const [status, setStatus] = useState("");
   const [contractAddress, setContractAddress] = useState(null);
 
-  const [tokenName, setTokenName] = useState("MyToken");
-  const [tokenSymbol, setTokenSymbol] = useState("MTK");
-  const [premintAmount, setPremintAmount] = useState("1000");
+  const [tokenName, setTokenName] = useState("");
+  const [tokenSymbol, setTokenSymbol] = useState("");
+  const [premintAmount, setPremintAmount] = useState("");
 
   async function deploy() {
     try {
@@ -518,58 +518,77 @@ export default function DeployConnectVerse() {
   }
 
   const containerStyle = {
-    color:'white',
-    maxWidth: "450px",
-    margin: "40px auto",
-    padding: "2rem",
-    border: "1px solid #ddd",
-    borderRadius: "12px",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+    maxWidth: '400px',
+    margin: '40px auto',
+    padding: '20px',
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-    backgroundColor: "#f9f9f9",
+    backgroundColor: 'rgb(24,34,63)',
+    boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+    borderRadius: '20px'
   };
 
   const labelStyle = {
-    display: "block",
-    marginBottom: "6px",
-    fontWeight: "600",
-    color: "#333",
+    display: 'block',
+    marginBottom: '6px',
+   
+    color: 'rgb(117,132,165)',
   };
 
   const inputStyle = {
-    width: "100%",
-    padding: "8px 12px",
-    marginBottom: "16px",
-    borderRadius: "6px",
-    border: "1px solid #ccc",
-    fontSize: "16px",
-    boxSizing: "border-box",
+    color:'white',
+    width: '70%',
+    padding: '10px 12px',
+    fontSize: '1rem',
+    borderRadius: '10px',
+    height:'2.2em',
+    border: '1.5px solid rgb(57,74,122)',
+    outline: 'none',
+    backgroundColor:'rgb(19,25,51)',
+    transition: 'border-color 0.3s ease',
+    
   };
 
   const buttonStyle = {
-    width: "100%",
-    padding: "12px",
-    backgroundColor: "#0070f3",
-    color: "white",
-    fontWeight: "700",
-    fontSize: "16px",
-    border: "none",
-    borderRadius: "8px",
-    cursor: "pointer",
-    transition: "background-color 0.3s ease",
+    padding: '12px 20px',
+    fontSize: '1rem',
+    fontWeight: '700',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    width: '75%',
+    marginBottom: '20px',
+    height:'3.7em',
+    transition: 'background-color 0.3s ease',
+    backgroundColor:'rgb(57,74,122)'
   };
+
 
   const buttonHoverStyle = {
     backgroundColor: "#005bb5",
   };
 
+  const headingStyle = {
+    fontSize: '1.8rem',
+    marginBottom: '0.2em',
+    fontWeight: '700',
+    textAlign: 'center',
+    background: 'linear-gradient(90deg, #9b7fff, #5bd8ff)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+    color: 'transparent',
+  };
+  
+
   const [btnHover, setBtnHover] = useState(false);
 
   return (
     <div style={containerStyle}>
-      <h2 style={{ textAlign: "center", marginBottom: "1.5rem", color: "#111" }}>
+      <h2 style={headingStyle}>
         Deploy Token
       </h2>
+      <br></br>
 
       <label style={labelStyle} htmlFor="tokenName">
         Token Name:
@@ -580,8 +599,9 @@ export default function DeployConnectVerse() {
         style={inputStyle}
         value={tokenName}
         onChange={(e) => setTokenName(e.target.value)}
-        placeholder="Enter token name"
+        placeholder="Dua Lipa"
       />
+      <br></br>  <br></br>
 
       <label style={labelStyle} htmlFor="tokenSymbol">
         Token Symbol:
@@ -592,8 +612,9 @@ export default function DeployConnectVerse() {
         style={inputStyle}
         value={tokenSymbol}
         onChange={(e) => setTokenSymbol(e.target.value)}
-        placeholder="Enter token symbol"
+        placeholder="DLP"
       />
+      <br></br>   <br></br>
 
       <label style={labelStyle} htmlFor="premintAmount">
         Premint Amount:
@@ -606,9 +627,9 @@ export default function DeployConnectVerse() {
         style={inputStyle}
         value={premintAmount}
         onChange={(e) => setPremintAmount(e.target.value)}
-        placeholder="Amount to premint"
+        placeholder="1000000"
       />
-
+<br></br>  <br></br>
       <button
         style={btnHover ? { ...buttonStyle, ...buttonHoverStyle } : buttonStyle}
         onClick={deploy}
@@ -618,12 +639,16 @@ export default function DeployConnectVerse() {
         Deploy Contract
       </button>
 
-      <p style={{ marginTop: "1.5rem", whiteSpace: "pre-line", color: "#444" }}>
+      <p style={{    display: 'block',
+    marginBottom: '6px',
+   
+    color: 'rgb(117,132,165)',
+  }}>
         Status: {status}
       </p>
 
       {contractAddress && (
-        <p style={{ marginTop: "1rem", wordBreak: "break-all" }}>
+        <p style={{ marginTop: "1rem", wordBreak: "break-all", color:'rgb(117,132,165)' }}>
           Contract Address:{" "}
           <a
             href={`https://etherscan.io/address/${contractAddress}`}

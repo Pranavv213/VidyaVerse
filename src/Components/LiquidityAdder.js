@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 
 const AddLiquidity = () => {
@@ -8,8 +8,8 @@ const AddLiquidity = () => {
 
   // State variables
   const [tokenAddress, setTokenAddress] = useState('');
-  const [amountToken, setAmountToken] = useState('100');
-  const [amountBNB, setAmountBNB] = useState('0.1');
+  const [amountToken, setAmountToken] = useState('');
+  const [amountBNB, setAmountBNB] = useState('');
   const [pairAddress, setPairAddress] = useState('');
   const [liquidity, setLiquidity] = useState({ token: 0, wbnb: 0 });
   const [loading, setLoading] = useState(false);
@@ -70,6 +70,7 @@ const AddLiquidity = () => {
     try {
       setApproveLoading(true);
       setError('');
+      setSuccess('');
 
       await window.ethereum.request({ method: 'eth_requestAccounts' });
       const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
@@ -107,6 +108,7 @@ const AddLiquidity = () => {
       setLoading(true);
       setError('');
       setSuccess('');
+      setTxHash('');
 
       await window.ethereum.request({ method: 'eth_requestAccounts' });
       const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
@@ -169,128 +171,233 @@ const AddLiquidity = () => {
     }
   };
 
-  // Check approval when token address or amount changes
-  React.useEffect(() => {
+  useEffect(() => {
     checkApproval();
   }, [tokenAddress, amountToken]);
 
+  // Common styles
+  const containerStyle = {
+    maxWidth: '400px',
+    margin: '40px auto',
+    padding: '20px',
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    backgroundColor: 'rgb(24,34,63)',
+    boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+    borderRadius: '20px'
+  };
+
+  const headingStyle = {
+    fontSize: '1.8rem',
+    marginBottom: '0.2em',
+    fontWeight: '700',
+    textAlign: 'center',
+    background: 'linear-gradient(90deg, #9b7fff, #5bd8ff)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+    color: 'transparent',
+  };
+  
+  
+
+  const subHeadingStyle = {
+    fontSize: '1rem',
+    marginBottom: '1.5em',
+    color: '#555',
+    textAlign: 'center',
+    fontWeight: '500',
+  };
+
+  const labelStyle = {
+    display: 'block',
+    marginBottom: '6px',
+   
+    color: 'rgb(117,132,165)',
+  };
+
+  const inputStyle = {
+    color:'white',
+    width: '70%',
+    padding: '10px 12px',
+    fontSize: '1rem',
+    borderRadius: '10px',
+    height:'2.2em',
+    border: '1.5px solid rgb(57,74,122)',
+    outline: 'none',
+    backgroundColor:'rgb(19,25,51)',
+    transition: 'border-color 0.3s ease',
+    
+  };
+
+  const inputFocusStyle = {
+    borderColor: '#10b981'
+  };
+
+  const buttonBaseStyle = {
+    padding: '12px 20px',
+    fontSize: '1rem',
+    fontWeight: '700',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    width: '75%',
+    marginBottom: '20px',
+    height:'3.7em',
+    transition: 'background-color 0.3s ease',
+  };
+
+  const approveButtonStyle = {
+    ...buttonBaseStyle,
+    backgroundColor: 'rgb(57,74,122)',
+  };
+
+  const addButtonStyle = {
+    ...buttonBaseStyle,
+    backgroundColor: '#10b981',
+  };
+
+  const errorStyle = {
+    color: '#e03e3e',
+    backgroundColor: '#ffe6e6',
+    padding: '10px 15px',
+    borderRadius: '5px',
+    marginBottom: '20px',
+    fontWeight: '600',
+    textAlign: 'center',
+  };
+
+  const successStyle = {
+    color: '#0f5132',
+    backgroundColor: '#d1e7dd',
+    padding: '10px 15px',
+    borderRadius: '5px',
+    marginBottom: '20px',
+    fontWeight: '600',
+    textAlign: 'center',
+  };
+
+  const linkStyle = {
+    color: '#0f5132',
+    textDecoration: 'underline',
+  };
+
+  const pairInfoStyle = {
+    backgroundColor: '#f9fafb',
+    borderRadius: '6px',
+    padding: '15px 20px',
+    marginTop: '30px',
+    boxShadow: 'inset 0 0 10px rgba(0,0,0,0.05)'
+  };
+
+  const noteStyle = {
+    marginTop: '30px',
+    fontSize: '0.9rem',
+    color: 'rgb(162,163,195)',
+  };
+
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>Add Liquidity to BEP20-WBNB Pair</h1>
-      <p>BNB Smart Chain Testnet</p>
-      
-      <div style={{ marginBottom: '15px' }}>
-        <label htmlFor="tokenAddress" style={{ display: 'block', marginBottom: '5px' }}>BEP20 Token Address:</label>
+    <div style={containerStyle}>
+      <h3 style={headingStyle}>Add Liquidity</h3>
+      <br></br>
+    <hr style={{border:'0.4px solid rgb(57,74,122)'}}></hr>
+    <br></br>
+      <div style={{ marginBottom: '20px' }}>
+        <label htmlFor="tokenAddress" style={labelStyle}>BEP20 Token Address:</label>
         <input
           id="tokenAddress"
           type="text"
           value={tokenAddress}
           onChange={(e) => setTokenAddress(e.target.value)}
           placeholder="0x..."
-          style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
+          style={inputStyle}
+          onFocus={(e) => e.target.style.borderColor = inputFocusStyle.borderColor}
+          onBlur={(e) => e.target.style.borderColor = inputStyle.border}
         />
       </div>
 
-      <div style={{ marginBottom: '15px' }}>
-        <label htmlFor="amountToken" style={{ display: 'block', marginBottom: '5px' }}>Amount of Token to Add:</label>
+      <div style={{ marginBottom: '20px' }}>
+        <label htmlFor="amountToken" style={labelStyle}>Amount of Token to Add:</label>
         <input
           id="amountToken"
           type="text"
           value={amountToken}
           onChange={(e) => setAmountToken(e.target.value)}
           placeholder="100"
-          style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
+          style={inputStyle}
+          onFocus={(e) => e.target.style.borderColor = inputFocusStyle.borderColor}
+          onBlur={(e) => e.target.style.borderColor = inputStyle.border}
         />
       </div>
 
-      <div style={{ marginBottom: '20px' }}>
-        <label htmlFor="amountBNB" style={{ display: 'block', marginBottom: '5px' }}>Amount of BNB to Add:</label>
+      <div style={{ marginBottom: '30px' }}>
+        <label htmlFor="amountBNB" style={labelStyle}>Amount of BNB to Add:</label>
         <input
           id="amountBNB"
           type="text"
           value={amountBNB}
           onChange={(e) => setAmountBNB(e.target.value)}
           placeholder="0.1"
-          style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
+          style={inputStyle}
+          onFocus={(e) => e.target.style.borderColor = inputFocusStyle.borderColor}
+          onBlur={(e) => e.target.style.borderColor = inputStyle.border}
         />
       </div>
-      
+
       {!isApproved ? (
-        <button 
-          onClick={approveToken} 
+        <button
+          style={approveButtonStyle}
+          onClick={approveToken}
           disabled={approveLoading}
-          style={{
-            padding: '10px 15px',
-            backgroundColor: '#f0b90b',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            marginBottom: '20px'
-          }}
         >
           {approveLoading ? 'Approving...' : 'Approve Token'}
         </button>
       ) : (
-        <button 
-          onClick={addLiquidity} 
+        <button
+          style={addButtonStyle}
+          onClick={addLiquidity}
           disabled={loading}
-          style={{
-            padding: '10px 15px',
-            backgroundColor: '#10b981',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            marginBottom: '20px'
-          }}
         >
           {loading ? 'Adding Liquidity...' : 'Add Liquidity'}
         </button>
       )}
-      
-      {error && (
-        <div style={{ color: 'red', marginBottom: '20px' }}>
-          {error}
-        </div>
-      )}
-      
+
+      {error && <div style={errorStyle}>{error}</div>}
       {success && (
-        <div style={{ color: 'green', marginBottom: '20px' }}>
+        <div style={successStyle}>
           {success}
           {txHash && (
             <div>
-              <a 
-                href={`https://testnet.bscscan.com/tx/${txHash}`} 
-                target="_blank" 
+              Tx Hash:{" "}
+              <a
+                href={`https://testnet.bscscan.com/tx/${txHash}`}
+                target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: 'green' }}
+                style={linkStyle}
               >
-                View on BscScan
+                {txHash.slice(0, 10)}...
               </a>
             </div>
           )}
         </div>
       )}
-      
+
       {pairAddress && (
-        <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '4px' }}>
-          <h3>Liquidity Pair Information</h3>
-          <p><strong>Pair Address:</strong> {pairAddress}</p>
-          <p><strong>Token Reserve:</strong> {liquidity.token}</p>
-          <p><strong>WBNB Reserve:</strong> {liquidity.wbnb}</p>
+        <div style={pairInfoStyle}>
+          <h3>Pair Address:</h3>
+          <p>{pairAddress}</p>
+
+          <h3>Reserves:</h3>
+          <p>
+            Token: <strong>{liquidity.token}</strong> <br />
+            WBNB: <strong>{liquidity.wbnb}</strong>
+          </p>
         </div>
       )}
 
-      <div style={{ marginTop: '20px', fontSize: '0.9em', color: '#666' }}>
-        <p><strong>Note:</strong> </p>
-        <ul>
-          <li>You need MetaMask connected to BSC Testnet (chainId 97)</li>
-          <li>You must have the BEP20 token and BNB in your wallet</li>
-          <li>First approve the token, then add liquidity</li>
-          <li>Default amounts are set for demonstration</li>
-        </ul>
-      </div>
+      <p style={noteStyle}>
+        Note: Make sure your wallet is connected to BSC Testnet and you have enough tokens and BNB.
+      </p>
     </div>
   );
 };
