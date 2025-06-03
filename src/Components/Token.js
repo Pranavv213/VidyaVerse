@@ -1,5 +1,16 @@
 import React, { useState } from "react";
 import { ethers } from "ethers";
+import { db } from "../firebase-config";
+import { useOkto } from "okto-sdk-react";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  Timestamp,
+} from "firebase/firestore";
 
 // Replace with your actual ABI and bytecode
 const contractABI = [
@@ -513,7 +524,7 @@ export default function DeployConnectVerse() {
       setStatus("Contract deployed successfully!");
     } catch (error) {
       console.error(error);
-      setStatus("Error deploying contract: " + (error.message || error));
+      setStatus("Error deploying contract");
     }
   }
 

@@ -18,6 +18,9 @@ const AddLiquidity = () => {
   const [success, setSuccess] = useState('');
   const [txHash, setTxHash] = useState('');
   const [isApproved, setIsApproved] = useState(false);
+  const [ratio, setRatio] = useState(null); // Added state for liquidity ratio
+  const [ratioLoading, setRatioLoading] = useState(false); // Added loading state for ratio
+  const [ratioError, setRatioError] = useState(''); // Added error state for ratio
 
   // Contract ABIs
   const routerABI = [
@@ -27,7 +30,8 @@ const AddLiquidity = () => {
 
   const tokenABI = [
     "function approve(address spender, uint amount) external returns (bool)",
-    "function allowance(address owner, address spender) external view returns (uint)"
+    "function allowance(address owner, address spender) external view returns (uint)",
+    "function decimals() external view returns (uint8)" // Added decimals function
   ];
 
   const factoryABI = [
@@ -58,6 +62,60 @@ const AddLiquidity = () => {
       setIsApproved(allowance.gte(amountTokenWei));
     } catch (err) {
       console.error('Error checking approval:', err);
+    }
+  };
+
+  // Modified getLiquidityRatio function with proper state handling
+  const getLiquidityRatio = async () => {
+    if (!tokenAddress) {
+      setRatioError('Please enter a token address');
+      return;
+    }
+
+    try {
+      setRatioLoading(true);
+      setRatioError('');
+      setRatio(null);
+
+      const router = new ethers.Contract(PANCAKE_ROUTER_ADDRESS, routerABI, provider);
+      const factoryAddress = await router.factory();
+      const factory = new ethers.Contract(factoryAddress, factoryABI, provider);
+      const pairAddress = await factory.getPair(tokenAddress, WBNB_ADDRESS);
+
+      if (pairAddress === ethers.constants.AddressZero) {
+        setRatioError('No liquidity pool exists for this token');
+        return;
+      }
+
+      const pair = new ethers.Contract(pairAddress, pairABI, provider);
+      const reserves = await pair.getReserves();
+      const token0Address = await pair.token0();
+
+      // Determine reserve order
+      const isTokenA0 = tokenAddress.toLowerCase() === token0Address.toLowerCase();
+      const reserveToken = isTokenA0 ? reserves.reserve0 : reserves.reserve1;
+      const reserveBNB = isTokenA0 ? reserves.reserve1 : reserves.reserve0;
+
+      if (reserveToken.isZero() || reserveBNB.isZero()) {
+        setRatioError('Pool has no liquidity yet');
+        return;
+      }
+
+      // Fetch decimals
+      const tokenContract = new ethers.Contract(tokenAddress, tokenABI, provider);
+      const decimals = await tokenContract.decimals();
+
+      // Calculate ratio (token per BNB)
+      const formattedToken = Number(ethers.utils.formatUnits(reserveToken, decimals));
+      const formattedBNB = Number(ethers.utils.formatUnits(reserveBNB, 18));
+      const calculatedRatio = formattedToken / formattedBNB;
+
+      setRatio(calculatedRatio);
+    } catch (err) {
+      console.error('Error fetching ratio:', err);
+      setRatioError('Failed to get liquidity ratio');
+    } finally {
+      setRatioLoading(false);
     }
   };
 
@@ -198,8 +256,6 @@ const AddLiquidity = () => {
     color: 'transparent',
   };
   
-  
-
   const subHeadingStyle = {
     fontSize: '1rem',
     marginBottom: '1.5em',
@@ -211,7 +267,6 @@ const AddLiquidity = () => {
   const labelStyle = {
     display: 'block',
     marginBottom: '6px',
-   
     color: 'rgb(117,132,165)',
   };
 
@@ -226,7 +281,6 @@ const AddLiquidity = () => {
     outline: 'none',
     backgroundColor:'rgb(19,25,51)',
     transition: 'border-color 0.3s ease',
-    
   };
 
   const inputFocusStyle = {
@@ -257,6 +311,11 @@ const AddLiquidity = () => {
     backgroundColor: '#10b981',
   };
 
+  const ratioButtonStyle = {
+    ...buttonBaseStyle,
+    backgroundColor: '#5b86e5',
+  };
+
   const errorStyle = {
     color: '#e03e3e',
     backgroundColor: '#ffe6e6',
@@ -275,6 +334,22 @@ const AddLiquidity = () => {
     marginBottom: '20px',
     fontWeight: '600',
     textAlign: 'center',
+  };
+
+  const ratioInfoStyle = {
+    backgroundColor: 'rgb(19,25,51)',
+    borderRadius: '6px',
+    padding: '15px 20px',
+    marginTop: '10px',
+    marginBottom: '20px',
+    border: '1px solid rgb(57,74,122)',
+    textAlign: 'center'
+  };
+
+  const ratioTextStyle = {
+    color: '#5bd8ff',
+    fontWeight: 'bold',
+    fontSize: '1.2rem'
   };
 
   const linkStyle = {
@@ -300,8 +375,9 @@ const AddLiquidity = () => {
     <div style={containerStyle}>
       <h3 style={headingStyle}>Add Liquidity</h3>
       <br></br>
-    <hr style={{border:'0.4px solid rgb(57,74,122)'}}></hr>
-    <br></br>
+      <hr style={{border:'0.4px solid rgb(57,74,122)'}}></hr>
+      <br></br>
+      
       <div style={{ marginBottom: '20px' }}>
         <label htmlFor="tokenAddress" style={labelStyle}>BEP20 Token Address:</label>
         <input
@@ -360,6 +436,24 @@ const AddLiquidity = () => {
         >
           {loading ? 'Adding Liquidity...' : 'Add Liquidity'}
         </button>
+      )}
+      
+      <button
+        style={ratioButtonStyle}
+        onClick={getLiquidityRatio}
+        disabled={ratioLoading}
+      >
+        {ratioLoading ? 'Calculating Ratio...' : 'Get Liquidity Ratio'}
+      </button>
+      
+      {ratioError && <div style={errorStyle}>{ratioError}</div>}
+      {ratio !== null && (
+        <div style={ratioInfoStyle}>
+          <div style={{ color: 'rgb(117,132,165)' }}>Current Liquidity Ratio:</div>
+          <div style={ratioTextStyle}>
+            1 BNB = {ratio.toFixed(6)} tokens
+          </div>
+        </div>
       )}
 
       {error && <div style={errorStyle}>{error}</div>}

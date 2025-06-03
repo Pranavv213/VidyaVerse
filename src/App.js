@@ -40,6 +40,7 @@ import Payouts from './Components/Payouts';
 import Token from './Components/Token'
 import LiquidityAdder from './Components/LiquidityAdder';
 import Swap from './Components/Swap'
+import LiquidityDashboard from './Components/Liquiditydasboard';
 
 function App() {
   const OKTO_CLIENT_API_KEY = "f144c56d-f768-426c-b123-f7ee71f8cee8";
@@ -203,6 +204,13 @@ function App() {
         
         <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
        <Swap/>
+    </OktoProvider>} />
+
+
+    <Route path="/liquidity" element={
+        
+        <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
+       <LiquidityDashboard/>
     </OktoProvider>} />
            
     </Routes>
