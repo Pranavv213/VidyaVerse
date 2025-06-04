@@ -275,6 +275,8 @@ const styles = {
   
     gap: '25px',
     maxWidth: '1400px',
+
+    flexWrap:'wrap',
  
     justifyContent:'center',
    
