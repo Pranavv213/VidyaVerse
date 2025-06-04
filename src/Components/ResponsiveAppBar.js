@@ -264,8 +264,8 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
                 </MenuItem>
                 <MenuItem  onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}><Button variant={earnButtonStyle} onClick={()=>{
-                    window.location.href="/rewards"
-                  }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><CardGiftcardIcon fontSize='small'/> <l>Rewards</l></div></Button></Typography>
+                    window.location.href="/tokenlist"
+                  }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><ShowChartIcon fontSize='small'/> <l>Trade</l></div></Button></Typography>
                 </MenuItem>
                 <MenuItem  onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}><Button variant={createButtonStyle} onClick={()=>{

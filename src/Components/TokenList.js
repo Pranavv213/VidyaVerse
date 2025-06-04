@@ -165,12 +165,15 @@ const TokenList = () => {
 
 
   return (
-    <div style={styles.container}>
 
-<br></br>
+    <div>
+        <br></br>
 <ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="contained" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined"/>
 <hr></hr>
 <br></br><br></br>
+    <div style={styles.container}>
+
+
 
       <div style={styles.header}>
         <h1 style={styles.title}>Token Explorer</h1>
@@ -239,6 +242,7 @@ const TokenList = () => {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 };
