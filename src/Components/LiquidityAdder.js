@@ -65,8 +65,27 @@ const AddLiquidity = () => {
     }
   };
 
+
+  const toFullNumber = (num) => {
+    if (!num.toString().includes('e')) return num.toString();
+  
+    let sign = num < 0 ? "-" : "";
+    let [base, exp] = num.toString().replace("-", "").split("e");
+    let [int, dec = ""] = base.split(".");
+    let exponent = parseInt(exp);
+  
+    if (exponent > 0) {
+      dec = dec.padEnd(exponent, "0");
+      return sign + int + dec.slice(0, exponent) + (dec.slice(exponent) ? "." + dec.slice(exponent) : "");
+    } else {
+      return sign + "0." + "0".repeat(Math.abs(exponent) - 1) + int + dec;
+    }
+  };
+
   // Modified getLiquidityRatio function with proper state handling
-  const getLiquidityRatio = async () => {
+  const getLiquidityRatio = async (tokenAmount) => {
+
+   
     if (!tokenAddress) {
       setRatioError('Please enter a token address');
       return;
@@ -111,6 +130,32 @@ const AddLiquidity = () => {
       const calculatedRatio = formattedToken / formattedBNB;
 
       setRatio(calculatedRatio);
+      if(tokenAmount)
+      {
+
+        
+
+        const roundToSigString = (num, sig = 2) => {
+            let rounded = num.toPrecision(sig);
+            if (!rounded.includes('e')) return rounded;
+          
+            let [mantissa, exponent] = rounded.split('e');
+            let [intPart, decPart = ""] = mantissa.split('.');
+            exponent = parseInt(exponent);
+          
+            if (exponent >= 0) {
+              decPart = decPart.padEnd(exponent, '0');
+              return intPart + decPart.slice(0, exponent) + (decPart.slice(exponent) ? '.' + decPart.slice(exponent) : '');
+            } else {
+              return '0.' + '0'.repeat(Math.abs(exponent) - 1) + intPart + decPart;
+            }
+          };
+          
+          let result = roundToSigString((1 / calculatedRatio) * tokenAmount);
+          setAmountBNB(result);
+        
+      }
+      
     } catch (err) {
       console.error('Error fetching ratio:', err);
       setRatioError('Failed to get liquidity ratio');
@@ -398,7 +443,13 @@ const AddLiquidity = () => {
           id="amountToken"
           type="text"
           value={amountToken}
-          onChange={(e) => setAmountToken(e.target.value)}
+          onChange={(e) => {
+            
+            setAmountToken(e.target.value)
+
+            getLiquidityRatio(e.target.value)
+        
+        }}
           placeholder="100"
           style={inputStyle}
           onFocus={(e) => e.target.style.borderColor = inputFocusStyle.borderColor}
@@ -456,7 +507,7 @@ const AddLiquidity = () => {
         </div>
       )}
 
-      {error && <div style={errorStyle}>{error}</div>}
+      {error && <div style={errorStyle}>Transaction failed or was rejected</div>}
       {success && (
         <div style={successStyle}>
           {success}
