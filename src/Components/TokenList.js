@@ -13,6 +13,7 @@ import {
   doc,
   Timestamp,
 } from "firebase/firestore";
+import ResponsiveAppBar from './ResponsiveAppBar';
 const tokensCollectionRef=collection(db,'tokens')
 
 const TokenList = () => {
@@ -165,6 +166,12 @@ const TokenList = () => {
 
   return (
     <div style={styles.container}>
+
+<br></br>
+<ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="contained" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined"/>
+<hr></hr>
+<br></br><br></br>
+
       <div style={styles.header}>
         <h1 style={styles.title}>Token Explorer</h1>
         <div style={styles.subtitle}>Live BSC Token Prices</div>

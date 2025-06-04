@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { db } from "../firebase-config";
+import styled from 'styled-components';
 import { useOkto } from "okto-sdk-react";
 import {
   collection,
@@ -12,6 +13,8 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { useParams } from 'react-router-dom';
+
+import ResponsiveAppBar from './ResponsiveAppBar';
 
 const tokensCollectionRef=collection(db,'tokens')
 
@@ -64,6 +67,44 @@ const AddLiquidity = () => {
 
   // Connect to BSC Testnet
   const provider = new ethers.providers.JsonRpcProvider('https://data-seed-prebsc-1-s1.binance.org:8545/');
+
+
+  const Button = styled.button`
+  width: 100%;
+  padding: 16px;
+  background: ${props => props.disabled ? '#3a4a7a' : 'linear-gradient(90deg, #9b7fff, #5bd8ff)'};
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  
+  &:hover {
+    transform: ${props => props.disabled ? 'none' : 'translateY(-2px)'};
+    box-shadow: ${props => props.disabled ? 'none' : '0 5px 15px rgba(155, 127, 255, 0.4)'};
+  }
+  
+  &:after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 20px;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(25deg);
+    transition: all 0.5s;
+  }
+  
+  &:hover:after {
+    left: 120%;
+  }
+`;
+
 
   const checkApproval = async () => {
     if (!tokenAddress || !window.ethereum) return;
@@ -469,6 +510,28 @@ const AddLiquidity = () => {
   };
 
   return (
+    <div>
+       <ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="contained" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined"/>
+              <hr></hr>
+              <br></br><br></br><br></br><br></br>
+      
+             <br></br>
+                          
+                            
+                     
+      <div style={{color:'white',display:'flex',width:'100%',justifyContent:'center',gap:'20px'}} >
+                  
+                          
+      <Button style={{width:'9em',borderRadius:'5px',background:'rgb(25,35,65)',height:'3em'}} onClick={()=>{
+                           window.location.href=`/swap/${token_address}`
+          }} ><div style={{display:'flex',justifyContent:'center',alignItems:'center',gap:'3px'}}> <l>Swap</l></div></Button>
+       <Button style={{width:'9em',borderRadius:'5px'}} ><div style={{display:'flex',justifyContent:'center',alignItems:'center',gap:'3px'}}> <b>Add Liquidity</b></div></Button>
+                         
+                       
+                  
+                  
+                          </div>
+                        
     <div style={containerStyle}>
       <h3 style={headingStyle}>Add Liquidity</h3>
       <br></br>
@@ -595,6 +658,7 @@ const AddLiquidity = () => {
       <p style={noteStyle}>
         Note: Make sure your wallet is connected to BSC Testnet and you have enough tokens and BNB.
       </p>
+    </div>
     </div>
   );
 };

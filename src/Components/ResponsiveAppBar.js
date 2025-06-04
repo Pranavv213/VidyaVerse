@@ -31,6 +31,7 @@ import GroupIcon from '@mui/icons-material/Group';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { ethers } from "ethers";
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
+import ShowChartIcon from '@mui/icons-material/ShowChart';
 
 import { db } from "../firebase-config";
 import {
@@ -303,8 +304,8 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
             window.location.href="/home2"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><HomeIcon fontSize='small'/> <l>Home</l></div></Button>
           <Button variant={earnButtonStyle} onClick={()=>{
-            window.location.href="/rewards"
-          }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><CardGiftcardIcon fontSize='small'/> <l>Rewards</l></div></Button>
+            window.location.href="/tokenlist"
+          }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><ShowChartIcon fontSize='small'/> <l>Trade</l></div></Button>
           <Button variant={createButtonStyle} onClick={()=>{
             window.location.href="/creator"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><AddCircleOutlineIcon fontSize='small'/> <l>Create</l></div></Button>
@@ -337,7 +338,7 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
 
 {showDashboardDiv &&  <div style={{
           width: '150px', 
-          height: '250px',
+          height: '280px',
           padding: '20px', 
           backgroundColor: 'black', 
           boxShadow: '0 8px 32px 0 rgba(74, 34, 148, 0.3);',
@@ -378,6 +379,12 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
             window.location.href="/community"
           }}><GroupIcon/>Communities</div>
           <br></br>
+
+          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer'}} class="dashboardDivMenu" onClick={()=>{
+            window.location.href="/rewards"
+          }}><CardGiftcardIcon fontSize='small'/>Rewards</div>
+
+            <br></br>
 
           <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer'}} class="dashboardDivMenu" onClick={()=>{
             window.location.href="/profilesettings"

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { useParams } from 'react-router-dom';
+import ResponsiveAppBar from './ResponsiveAppBar';
 
 const TokenInfoDashboard = () => {
 
@@ -189,7 +190,7 @@ const TokenInfoDashboard = () => {
   };
 
   const inputStyle = {
-    width: '100%',
+    width: '70%',
     padding: '14px 20px',
     fontSize: '1rem',
     borderRadius: '12px',
@@ -287,7 +288,15 @@ const TokenInfoDashboard = () => {
   };
 
   return (
+   < div>
+
+<br></br>
+        <ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="contained" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined"/>
+        <hr></hr>
+        <br></br><br></br>
     <div style={containerStyle}>
+
+        
       <div style={headerStyle}>
         <h1 style={titleStyle}>Token Analytics Dashboard</h1>
         <p style={subtitleStyle}>Get real-time market data for any token on BSC Testnet</p>
@@ -391,6 +400,7 @@ const TokenInfoDashboard = () => {
           100% { transform: rotate(360deg); }
         }
       `}</style>
+    </div>
     </div>
   );
 };

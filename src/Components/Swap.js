@@ -12,6 +12,7 @@ import {
   doc,
   Timestamp,
 } from "firebase/firestore";
+import ResponsiveAppBar from './ResponsiveAppBar';
 import { useParams } from 'react-router-dom';
 
 const tokensCollectionRef=collection(db,'tokens')
@@ -391,7 +392,34 @@ const TokenSwap = () => {
   }, [tokenAddress, amount, swapDirection]);
 
   return (
+    <div>
+      <br></br>
+        <ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="contained" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined"/>
+        <hr></hr>
+        <br></br><br></br><br></br><br></br>
+
+       
+                    
+                      
+               
+                    <div style={{color:'white',display:'flex',width:'100%',justifyContent:'center',gap:'20px'}} >
+            
+                    
+                    <Button style={{width:'9em',borderRadius:'5px'}} ><div style={{display:'flex',justifyContent:'center',alignItems:'center',gap:'3px'}}> <l>Swap</l></div></Button>
+                    <Button style={{width:'9em',borderRadius:'5px',background:'rgb(25,35,65)',height:'3em'}} onClick={()=>{
+                     window.location.href=`/liquidityadder/${token_address}`
+                    }}><div style={{display:'flex',justifyContent:'center',alignItems:'center',gap:'3px'}}> <l>Add Liquidity</l></div></Button>
+                   
+                 
+            
+            
+                    </div>
+                  
+                     
+                     
+     
     <SwapContainer>
+      
         <center>
       <Header>
         <Title>Artist Token Swap</Title>
@@ -502,6 +530,11 @@ const TokenSwap = () => {
         </ul>
       </InfoBox>
     </SwapContainer>
+
+    
+         
+    
+    </div>
   );
 };
 
