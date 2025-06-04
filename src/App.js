@@ -196,13 +196,13 @@ function App() {
        <Token/>
     </OktoProvider>} />
 
-    <Route path="/liquidityadder" element={
+    <Route path="/liquidityadder/:token_address" element={
         
         <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
        <LiquidityAdder/>
     </OktoProvider>} />
 
-    <Route path="/swap" element={
+    <Route path="/swap/:token_address" element={
         
         <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
        <Swap/>
@@ -215,7 +215,7 @@ function App() {
        <LiquidityDashboard/>
     </OktoProvider>} />
 
-    <Route path="/tokeninfo" element={
+    <Route path="/tokeninfo/:token_address" element={
         
         <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
       <TokenInfoDashboard/>

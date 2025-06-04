@@ -12,6 +12,8 @@ import {
   Timestamp,
 } from "firebase/firestore";
 
+const usersCollectionRef = collection(db, "tokens");
+
 // Replace with your actual ABI and bytecode
 const contractABI = [
 	{
@@ -520,8 +522,12 @@ export default function DeployConnectVerse() {
       setStatus("Waiting for transaction to be mined...");
       await contract.deployed();
 
+	  await addDoc(usersCollectionRef, {Name: tokenName, Symbol:tokenSymbol, Onwer:userAddress,Address:contract.address});
+
       setContractAddress(contract.address);
       setStatus("Contract deployed successfully!");
+
+	  
     } catch (error) {
       console.error(error);
       setStatus("Error deploying contract");

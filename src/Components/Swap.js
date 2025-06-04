@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import styled from 'styled-components';
+import { db } from "../firebase-config";
+import { useOkto } from "okto-sdk-react";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  Timestamp,
+} from "firebase/firestore";
+import { useParams } from 'react-router-dom';
+
+const tokensCollectionRef=collection(db,'tokens')
 
 const SwapContainer = styled.div`
   max-width: 450px;
@@ -165,12 +179,14 @@ const InfoValue = styled.span`
 `;
 
 const TokenSwap = () => {
+
+  const {token_address}=useParams()
   // BSC Testnet addresses
   const PANCAKE_ROUTER_ADDRESS = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3';
   const WBNB_ADDRESS = '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd';
   
   // State variables
-  const [tokenAddress, setTokenAddress] = useState('');
+  const [tokenAddress, setTokenAddress] = useState(token_address);
   const [amount, setAmount] = useState('');
   const [swapDirection, setSwapDirection] = useState('tokenToWbnb');
   const [loading, setLoading] = useState(false);
@@ -180,6 +196,8 @@ const TokenSwap = () => {
   const [txHash, setTxHash] = useState('');
   const [isApproved, setIsApproved] = useState(false);
   const [estimatedAmount, setEstimatedAmount] = useState('');
+  const [tokens,setTokens]=useState([])
+
 
   // Contract ABIs
   const routerABI = [
@@ -346,6 +364,24 @@ const TokenSwap = () => {
     }
   };
 
+   const tokensGet=async()=>{
+       let data = await getDocs(tokensCollectionRef);
+             
+              let tokensTemp=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+             
+              let filteredArray=tokensTemp.filter(obj => obj.Address === token_address)
+              console.log(filteredArray)
+  
+              setTokens(filteredArray)
+              
+      
+    }
+  
+  
+      useEffect(()=>{
+        tokensGet()
+      },[])
+
   // Check approval when token address or amount changes
   useEffect(() => {
     checkApproval();
@@ -364,7 +400,7 @@ const TokenSwap = () => {
       
       <SwapForm>
         <InputGroup>
-          <Label>Token Address</Label>
+          <Label>{tokens.length!=0 ? tokens[0].Symbol+" Token":'Token'} </Label>
           <Input
             type="text"
             value={tokenAddress}
@@ -375,8 +411,8 @@ const TokenSwap = () => {
         
         <InputGroup>
           <Label>
-            {swapDirection === 'tokenToWbnb' 
-              ? 'Amount of Token to Swap' 
+            {swapDirection === `tokenToWbnb` 
+              ? tokens.length!=0 ? "Amount of "+tokens[0].Symbol+" Tokens to swap":'Amount of Tokens to swap'
               : 'Amount of WBNB to Swap'}
           </Label>
           <Input
@@ -392,13 +428,13 @@ const TokenSwap = () => {
             active={swapDirection === 'tokenToWbnb'}
             onClick={() => setSwapDirection('tokenToWbnb')}
           >
-            Token → WBNB
+            {tokens.length!=0 ? tokens[0].Symbol:"Token"} → WBNB
           </DirectionButton>
           <DirectionButton 
             active={swapDirection === 'wbnbToToken'}
             onClick={() => setSwapDirection('wbnbToToken')}
           >
-            WBNB → Token
+            WBNB → {tokens.length!=0 ? tokens[0].Symbol:"Token"}
           </DirectionButton>
         </DirectionSelector>
         

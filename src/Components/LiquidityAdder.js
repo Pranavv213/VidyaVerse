@@ -1,13 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
+import { db } from "../firebase-config";
+import { useOkto } from "okto-sdk-react";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  Timestamp,
+} from "firebase/firestore";
+import { useParams } from 'react-router-dom';
+
+const tokensCollectionRef=collection(db,'tokens')
 
 const AddLiquidity = () => {
   // BSC Testnet addresses
   const PANCAKE_ROUTER_ADDRESS = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3';
   const WBNB_ADDRESS = '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd';
 
+  const {token_address}=useParams()
+
   // State variables
-  const [tokenAddress, setTokenAddress] = useState('');
+  const [tokenAddress, setTokenAddress] = useState(token_address);
   const [amountToken, setAmountToken] = useState('');
   const [amountBNB, setAmountBNB] = useState('');
   const [pairAddress, setPairAddress] = useState('');
@@ -21,6 +37,8 @@ const AddLiquidity = () => {
   const [ratio, setRatio] = useState(null); // Added state for liquidity ratio
   const [ratioLoading, setRatioLoading] = useState(false); // Added loading state for ratio
   const [ratioError, setRatioError] = useState(''); // Added error state for ratio
+
+  const [tokens,setTokens]=useState([])
 
   // Contract ABIs
   const routerABI = [
@@ -197,6 +215,11 @@ const AddLiquidity = () => {
   };
 
   const addLiquidity = async () => {
+
+    if(tokens.length==0)
+    {
+      return;
+    }
     if (!tokenAddress || !amountToken || !amountBNB) {
       setError('Please fill all fields');
       return;
@@ -233,6 +256,8 @@ const AddLiquidity = () => {
         { value: ethers.utils.parseEther(amountBNB) }
       );
 
+       
+
       setTxHash(tx.hash);
       setSuccess('Liquidity addition transaction sent. Waiting for confirmation...');
 
@@ -243,6 +268,13 @@ const AddLiquidity = () => {
       const factory = new ethers.Contract(factoryAddress, factoryABI, provider);
       const pairAddr = await factory.getPair(tokenAddress, WBNB_ADDRESS);
       setPairAddress(pairAddr);
+
+    
+
+      const tokenDocRef = doc(db, "tokens", tokens[0].id);
+      await updateDoc(tokenDocRef, {
+       PairAddress_BNB:pairAddr
+      });
 
       await checkReserves(pairAddr);
 
@@ -274,8 +306,28 @@ const AddLiquidity = () => {
     }
   };
 
+
+  const tokensGet=async()=>{
+     let data = await getDocs(tokensCollectionRef);
+           
+            let tokensTemp=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+           
+            let filteredArray=tokensTemp.filter(obj => obj.Address === token_address)
+            console.log(filteredArray)
+
+            setTokens(filteredArray)
+            
+    
+  }
+
+
+    useEffect(()=>{
+      tokensGet()
+    },[])
+
   useEffect(() => {
     checkApproval();
+    
   }, [tokenAddress, amountToken]);
 
   // Common styles
@@ -424,7 +476,7 @@ const AddLiquidity = () => {
       <br></br>
       
       <div style={{ marginBottom: '20px' }}>
-        <label htmlFor="tokenAddress" style={labelStyle}>BEP20 Token Address:</label>
+        <label htmlFor="tokenAddress" style={labelStyle}>{tokens.length!=0 ? tokens[0].Symbol :'BEP20'} Token Address:</label>
         <input
           id="tokenAddress"
           type="text"
@@ -438,7 +490,7 @@ const AddLiquidity = () => {
       </div>
 
       <div style={{ marginBottom: '20px' }}>
-        <label htmlFor="amountToken" style={labelStyle}>Amount of Token to Add:</label>
+        <label htmlFor="amountToken" style={labelStyle}>Amount of {tokens.length!=0 ? tokens[0].Symbol :'BEP20'} Token to Add:</label>
         <input
           id="amountToken"
           type="text"

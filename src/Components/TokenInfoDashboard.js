@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
+import { useParams } from 'react-router-dom';
 
 const TokenInfoDashboard = () => {
+
+  const {token_address}=useParams()
   // BSC Testnet addresses
   const PANCAKE_ROUTER_ADDRESS = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3';
   const WBNB_ADDRESS = '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd';
@@ -10,7 +13,7 @@ const TokenInfoDashboard = () => {
   const BNB_PRICE_USD = 300;
   
   // State variables
-  const [tokenAddress, setTokenAddress] = useState('');
+  const [tokenAddress, setTokenAddress] = useState(token_address);
   const [tokenData, setTokenData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -41,6 +44,9 @@ const TokenInfoDashboard = () => {
   const provider = new ethers.providers.JsonRpcProvider('https://data-seed-prebsc-1-s1.binance.org:8545/');
 
   const fetchTokenData = async () => {
+
+    
+    
     if (!tokenAddress || !ethers.utils.isAddress(tokenAddress)) {
       setError('Please enter a valid token address');
       return;
@@ -130,6 +136,11 @@ const TokenInfoDashboard = () => {
       setLoading(false);
     }
   };
+
+
+  useEffect(()=>{
+    fetchTokenData()
+  },[])
 
   // Styles
   const containerStyle = {
@@ -283,7 +294,7 @@ const TokenInfoDashboard = () => {
       </div>
 
       <div style={inputContainerStyle}>
-        <label htmlFor="tokenAddress" style={labelStyle}>Enter Token Address:</label>
+        <label htmlFor="tokenAddress" style={labelStyle}>Address:</label>
         <input
           id="tokenAddress"
           type="text"
@@ -299,18 +310,7 @@ const TokenInfoDashboard = () => {
         />
       </div>
 
-      <button
-        style={buttonStyle}
-        onClick={fetchTokenData}
-        disabled={loading}
-        onMouseOver={(e) => Object.assign(e.target.style, buttonHoverStyle)}
-        onMouseOut={(e) => {
-          e.target.style.backgroundColor = '#4a6cf7';
-          e.target.style.transform = 'none';
-        }}
-      >
-        {loading ? 'Fetching Data...' : 'Get Token Analytics'}
-      </button>
+     
 
       {error && <div style={errorStyle}>{error}</div>}
 
@@ -324,7 +324,7 @@ const TokenInfoDashboard = () => {
       {tokenData && (
         <div style={cardGridStyle}>
           <div style={cardStyle}>
-            <div style={cardTitleStyle}>Token Price</div>
+            <div style={cardTitleStyle}>Price</div>
             <div style={cardValueStyle}>
               ${tokenData.priceUSD > 0.01 ? tokenData.priceUSD.toFixed(4) : tokenData.priceUSD.toFixed(8)}
             </div>
