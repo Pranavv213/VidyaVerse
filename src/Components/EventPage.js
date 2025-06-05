@@ -54,7 +54,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import USDC_TOKEN_ABI from '../Contracts/USDCABI.json'
 import EVENT_ABI from '../Contracts/EventManager.json'
 
-const USDC_TOKEN_ADDRESS = '0x489058E31fAADA526C59561eE858120A816a09C';
+const USDC_TOKEN_ADDRESS = '0x489058E31fAADA526C59561eE858120A816a09C8';
 
 const EVENT_ADDRESS='0x6f9020c5E74623D50a9f30DA2bA34c3f684c235b'
 
@@ -184,6 +184,7 @@ function EventPage() {
                     if (!RECEIVER_ADDRESS || !USDC_TOKEN_ADDRESS || !USDC_TOKEN_ABI) return notifyCustom("Contract details missing.", "error");
                 
                     // Connect to MetaMask
+                  
                     const provider = new ethers.providers.Web3Provider(window.ethereum);
                     await provider.send("eth_requestAccounts", []);
                     const signer = provider.getSigner();
@@ -196,20 +197,28 @@ function EventPage() {
                     }
                 
                     // Prepare token transaction
+                   
                     const token = new ethers.Contract(USDC_TOKEN_ADDRESS, USDC_TOKEN_ABI, signer);
+                   
                     const event = new ethers.Contract(EVENT_ADDRESS, EVENT_ABI, signer);
+                   
                     const decimals = await token.decimals();
+                    
                     const balance = await token.balanceOf(userAddress);
+                   
                     const amountToSend = ethers.utils.parseUnits(amountString, decimals);
-                
+                   
                     if (balance.lt(amountToSend)) {
                       notifyCustom("Insufficient balance.", "error");
                       return setTimeout(() => window.location.reload(), 3000);
                     }
                     
-
+                    
                     // Execute token transfer
+
+                    
                     const approveTx = await token.approve("0x6f9020c5E74623D50a9f30DA2bA34c3f684c235b", amountToSend+10);
+                   
                     setLoadingText("Approving Request...")
                     setLoading(true);
                     await approveTx.wait();

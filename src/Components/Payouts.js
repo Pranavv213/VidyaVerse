@@ -79,12 +79,17 @@ console.log(event_id)
 
           async function getCreatorEventBalance() {
             try {
-              const provider = new ethers.providers.Web3Provider(window.ethereum);
-              const signer = provider.getSigner();
-              const eventContract = new ethers.Contract(eventContractAddress, eventContractABI, signer);
+              const provider = new ethers.providers.JsonRpcProvider('https://data-seed-prebsc-1-s1.binance.org:8545/')
+           
+              const eventContract = new ethers.Contract(eventContractAddress, eventContractABI, provider);
+            
           
               // 1️⃣ Fetch event details
               const [creator, attendeeEmails, hasAttendedList, depositedAmounts] = await eventContract.getEventDetails(event_id);
+
+              console.log(attendeeEmails)
+              console.log(ethers.utils.formatUnits(depositedAmounts[0], 18))
+              console.log(hasAttendedList)
           
               // 2️⃣ Remove duplicates based on email (keeping the first occurrence)
               const uniqueData = new Map();
