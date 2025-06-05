@@ -315,15 +315,16 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
           <Button variant={homeButtonStyle} onClick={()=>{
             window.location.href="/home2"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><HomeIcon fontSize='small'/> <l>Home</l></div></Button>
+          <Button variant={tokenButtonStyle ? tokenButtonStyle : 'outlined'} onClick={()=>{
+            window.location.href="/token"
+          }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><RocketLaunchIcon fontSize='small'/> <l>Launch</l></div></Button>
           <Button variant={earnButtonStyle} onClick={()=>{
             window.location.href="/tokenlist"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><ShowChartIcon fontSize='small'/> <l>Trade</l></div></Button>
             <Button variant='outlined' onClick={()=>{
             window.location.href="/stake"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><GeneratingTokensIcon fontSize='small'/> <l>Stake</l></div></Button>
-          <Button variant={tokenButtonStyle ? tokenButtonStyle : 'outlined'} onClick={()=>{
-            window.location.href="/token"
-          }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><RocketLaunchIcon fontSize='small'/> <l>Launch</l></div></Button>
+          
           <Button variant={createButtonStyle} onClick={()=>{
             window.location.href="/creator"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><AddCircleOutlineIcon fontSize='small'/> <l>Create</l></div></Button>
