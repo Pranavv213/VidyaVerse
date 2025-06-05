@@ -315,6 +315,9 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
           <Button variant={homeButtonStyle} onClick={()=>{
             window.location.href="/home2"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><HomeIcon fontSize='small'/> <l>Home</l></div></Button>
+           <Button variant={createButtonStyle} onClick={()=>{
+            window.location.href="/creator"
+          }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><AddCircleOutlineIcon fontSize='small'/> <l>Create</l></div></Button>
           <Button variant={tokenButtonStyle ? tokenButtonStyle : 'outlined'} onClick={()=>{
             window.location.href="/token"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><RocketLaunchIcon fontSize='small'/> <l>Launch</l></div></Button>
@@ -325,9 +328,7 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
             window.location.href="/stake"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><GeneratingTokensIcon fontSize='small'/> <l>Stake</l></div></Button>
           
-          <Button variant={createButtonStyle} onClick={()=>{
-            window.location.href="/creator"
-          }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><AddCircleOutlineIcon fontSize='small'/> <l>Create</l></div></Button>
+         
           </Box>
           <Box sx={{ flexGrow: 0 }} >
 
@@ -357,7 +358,7 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
 
 {showDashboardDiv &&  <div style={{
           width: '150px', 
-          height: '280px',
+          height: '370px',
           padding: '20px', 
           backgroundColor: 'black', 
           boxShadow: '0 8px 32px 0 rgba(74, 34, 148, 0.3);',
@@ -386,6 +387,17 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
             window.location.href="/dashboard"
           }}><DashboardIcon/> <l>Dashboard</l></div>
           <br></br>
+        
+
+        <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer'}} class="dashboardDivMenu" onClick={()=>{
+          window.location.href="/mytokenlist"
+        }}><PaidIcon/>Created Assets</div>
+        <br></br>
+
+        <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer'}} class="dashboardDivMenu" onClick={()=>{
+          window.location.href="/mytokenlist"
+        }}><AccountBalanceWalletIcon/>Collected Assets</div>
+        <br></br>
           
           <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer'}} class="dashboardDivMenu" onClick={()=>{
             window.location.href="/chat"

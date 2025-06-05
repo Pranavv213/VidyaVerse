@@ -47,6 +47,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import SendIcon from '@mui/icons-material/Send';
 import dayjs from "dayjs";
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import PaidIcon from '@mui/icons-material/Paid';
 
 // import { signInWithGoogle } from "../firebase-config";
 const usersCollectionRef1 = collection(db, "user");
@@ -444,6 +445,7 @@ function Home2() {
 <Button variant="outlined" onClick={()=>{
      window.location.href = '/creator';
 }}>Create Event &nbsp;<AddCircleIcon/></Button>
+
 <Button variant="outlined" onClick={()=>{
 
     if(localStorage.getItem('userName'))
@@ -460,6 +462,8 @@ function Home2() {
     }
      
 }}>My Channel&nbsp;<DashboardIcon/></Button>
+
+
     
 <br></br><br></br>
 {createdEvents.length==0 && <h2 style={{color:'white'}}>Created(0)</h2>}
