@@ -43,6 +43,7 @@ import Swap from './Components/Swap'
 import LiquidityDashboard from './Components/Liquiditydasboard';
 import TokenInfoDashboard from './Components/TokenInfoDashboard';
 import TokenList from './Components/TokenList';
+import Stake from './Components/Stake';
 
 
 function App() {
@@ -226,6 +227,12 @@ function App() {
         
         <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
       <TokenList/>
+    </OktoProvider>} />
+
+    <Route path="/stake" element={
+        
+        <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
+     <Stake/>
     </OktoProvider>} />
            
     </Routes>

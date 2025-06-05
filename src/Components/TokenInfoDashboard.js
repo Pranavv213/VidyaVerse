@@ -433,8 +433,12 @@ const TokenInfoDashboard = () => {
       
       <div style={containerStyle}>
         <div style={headerStyle}>
-          <h1 style={titleStyle}>Token Analytics Dashboard</h1>
-          <p style={subtitleStyle}>Get real-time market data for any token on BSC Testnet</p>
+            <div style={{display:'flex',justifyContent:'center',alignItems:'center',gap:'20px'}}>  <h1 style={titleStyle}>Token Analytics Dashboard</h1>
+            <button style={{height:'2em',borderRadius:'10px',color:'rgb(80,194,247)',border:'0.5px solid rgb(80,194,247)',backgroundColor:'transparent',cursor:'pointer',width:'5em'}} onClick={()=>{
+                window.location.href=`/swap/${token_address}`
+            }}>Trade</button></div>
+        
+        
         </div>
 
         <div style={inputContainerStyle}>
