@@ -54,9 +54,9 @@ import LinearProgress from '@mui/material/LinearProgress';
 import USDC_TOKEN_ABI from '../Contracts/USDCABI.json'
 import EVENT_ABI from '../Contracts/EventManager.json'
 
-const USDC_TOKEN_ADDRESS = '0x594BC5879948faf0F9014aEB37E7a5F7B051f4c1';
+const USDC_TOKEN_ADDRESS = '0x489058E31fAADA526C59561eE858120A816a09C';
 
-const EVENT_ADDRESS='0xbD14dfcE7b683552E7fC42A0f73D3B2b174B4385'
+const EVENT_ADDRESS='0x6f9020c5E74623D50a9f30DA2bA34c3f684c235b'
 
 
 
@@ -209,7 +209,7 @@ function EventPage() {
                     
 
                     // Execute token transfer
-                    const approveTx = await token.approve("0xbD14dfcE7b683552E7fC42A0f73D3B2b174B4385", amountToSend+10);
+                    const approveTx = await token.approve("0x6f9020c5E74623D50a9f30DA2bA34c3f684c235b", amountToSend+10);
                     setLoadingText("Approving Request...")
                     setLoading(true);
                     await approveTx.wait();

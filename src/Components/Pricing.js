@@ -28,7 +28,7 @@ import CON_TOKEN_ABI from '../Contracts/CONABI.json'
 
  const usersCollectionRef1 = collection(db, "user");
 // Replace with your ERC20 token contract address and ABI
-const CON_TOKEN_ADDRESS = '0xD104B06857a572e1a8d3631F467fBc83557Df9F6';
+const CON_TOKEN_ADDRESS = '0x21C7447720ecC4bA6Eef0f2B2C6eb3CF84a201B6';
 
 
 const RECEIVER_ADDRESS = '0x3d8C2b52d2F986B880Aaa786Ff2401B2d3412a41';

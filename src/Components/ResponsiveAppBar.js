@@ -33,6 +33,7 @@ import { ethers } from "ethers";
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import GeneratingTokensIcon from '@mui/icons-material/GeneratingTokens';
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 
 import { db } from "../firebase-config";
 import {
@@ -52,7 +53,7 @@ const usersCollectionRef1 = collection(db, "user");
 
 
 
-function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,dashboardButtonStyle,chatButtonStyle}) {
+function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,dashboardButtonStyle,chatButtonStyle,tokenButtonStyle}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -274,6 +275,11 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
                   }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><GeneratingTokensIcon fontSize='small'/> <l>Stake</l></div></Button></Typography>
                 </MenuItem>
                 <MenuItem  onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: 'center' }}><Button variant="outlined" onClick={()=>{
+                    window.location.href="/token"
+                  }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><RocketLaunchIcon fontSize='small'/> <l>Launch</l></div></Button></Typography>
+                </MenuItem>
+                <MenuItem  onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}><Button variant={createButtonStyle} onClick={()=>{
             window.location.href="/creator"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><AddCircleOutlineIcon fontSize='small'/> <l>Create</l></div></Button></Typography>
@@ -315,6 +321,9 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
             <Button variant='outlined' onClick={()=>{
             window.location.href="/stake"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><GeneratingTokensIcon fontSize='small'/> <l>Stake</l></div></Button>
+          <Button variant={tokenButtonStyle ? tokenButtonStyle : 'outlined'} onClick={()=>{
+            window.location.href="/token"
+          }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><RocketLaunchIcon fontSize='small'/> <l>Launch</l></div></Button>
           <Button variant={createButtonStyle} onClick={()=>{
             window.location.href="/creator"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><AddCircleOutlineIcon fontSize='small'/> <l>Create</l></div></Button>

@@ -35,9 +35,9 @@ import eventContractABI from '../Contracts/EventManager.json'
 const usersCollectionRef = collection(db, "events");
 const usersCollectionRef1 = collection(db, "user");
 
-const tokenAddress="0x594BC5879948faf0F9014aEB37E7a5F7B051f4c1"
+const tokenAddress="0x489058E31fAADA526C59561eE858120A816a09C8"
 
-const eventContractAddress="0xbD14dfcE7b683552E7fC42A0f73D3B2b174B4385"
+const eventContractAddress="0x6f9020c5E74623D50a9f30DA2bA34c3f684c235b"
 
 function Payouts() {
 

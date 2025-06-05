@@ -11,6 +11,7 @@ import {
   doc,
   Timestamp,
 } from "firebase/firestore";
+import ResponsiveAppBar from "./ResponsiveAppBar";
 
 const usersCollectionRef = collection(db, "tokens");
 
@@ -601,9 +602,16 @@ export default function DeployConnectVerse() {
   const [btnHover, setBtnHover] = useState(false);
 
   return (
+	<div>
+		<ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="outlined" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined" tokenButtonStyle="contained"/>
+					  <hr></hr>
+					  <br></br><br></br><br></br><br></br>
+			  
+					 <br></br>
+	
     <div style={containerStyle}>
       <h2 style={headingStyle}>
-        Deploy Token
+        Launch Your Token
       </h2>
       <br></br>
 
@@ -678,5 +686,6 @@ export default function DeployConnectVerse() {
         </p>
       )}
     </div>
+	</div>
   );
 }

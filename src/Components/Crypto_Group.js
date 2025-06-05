@@ -23,14 +23,14 @@ const disperseAbi = [
 
 
 
-const disperseAddress = "0xC39B9C80222eE4DD5CFCbf3D258Ac330E7B3E03D";
+const disperseAddress = "0xFA29d78dbD24D0397e9D5f07E6F6B4050014741F";
 
 export default function DisperseTokenComponent() {
   const [account, setAccount] = useState(null);
   const [provider, setProvider] = useState(null);
   const [signer, setSigner] = useState(null);
 
-  const tokenAddress="0x594BC5879948faf0F9014aEB37E7a5F7B051f4c1"
+  const tokenAddress="0x489058E31fAADA526C59561eE858120A816a09C8"
   const [recipientsText, setRecipientsText] = useState("");
   const [valuesText, setValuesText] = useState("");
 

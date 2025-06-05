@@ -21,7 +21,7 @@ function Crypto() {
 
 
 
-const CON_TOKEN_ADDRESS = '0x594BC5879948faf0F9014aEB37E7a5F7B051f4c1';
+const CON_TOKEN_ADDRESS = '0x489058E31fAADA526C59561eE858120A816a09C8';
 
 
     const notifyCustom = (text,type) =>{

@@ -16,7 +16,7 @@ import {
 import { SocialIcon } from 'react-social-icons';
 import ShareIcon from '@mui/icons-material/Share';
 
-const contractAddress = "0x70f49fe6992c9439bba45663f35c2b15c2127d1d";
+const contractAddress = "0x9Eda1223DD91FFc18BB3Be08C0C889F0C87351e5";
 const contractABI = [
 	{
 		"inputs": [
