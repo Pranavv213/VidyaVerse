@@ -23,6 +23,7 @@ import { Menu, Item, useContextMenu } from 'react-contexify';
 import 'react-contexify/dist/ReactContexify.css';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import { ethers } from "ethers";
 
 import './TestRealTime.css'
 
@@ -110,9 +111,77 @@ const handleContextMenu = (event) => {
 
   }
 
+  async function checkTokenAuthorization() {
+    try {
+      const q = query(collection(db, "community"));
+      
+      const unsubscribe = onSnapshot(q, async (querySnapshot) => {
+        const filteredArray = querySnapshot.docs
+          .map(doc => ({ id: doc.id, ...doc.data() }))
+          .filter(doc => doc.id === community_id);
+  
+        if (filteredArray.length === 0) {
+          alert("Community does not exist");
+          return;
+        }
+  
+        try {
+          const tokenAddress = filteredArray[0].Token;
+  
+          // Check if MetaMask is installed
+          if (typeof window.ethereum === 'undefined') {
+            alert('Please install MetaMask first!');
+            return;
+          }
+  
+          // Request account access
+          const accounts = await window.ethereum.request({ 
+            method: 'eth_requestAccounts' 
+          });
+          const userAddress = accounts[0];
+  
+          // Setup provider and signer
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const signer = provider.getSigner();
+  
+          // ERC20 Token ABI
+          const tokenAbi = [
+            "function balanceOf(address account) view returns (uint256)",
+            "function decimals() view returns (uint8)"
+          ];
+  
+          // Create token contract
+          const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, signer);
+  
+          // Get token decimals
+          const decimals = await tokenContract.decimals();
+          const requiredAmount = ethers.utils.parseUnits("100", decimals);
+  
+          // Get token balance
+          const balance = await tokenContract.balanceOf(userAddress);
+  
+          // Check authorization
+          if (balance.gte(requiredAmount)) {
+           
+          
+          } else {
+              window.location.href="/error/User Not Authorized"
+
+          }
+        } catch (error) {
+          console.error('Token check failed:', error);
+          alert('Error: ' + error.message);
+        }
+      });
+    } catch (error) {
+      console.error('Firestore error:', error);
+      alert('Database error: ' + error.message);
+    }
+  }
+
   useEffect(() => {
 
-   
+  
 
     if(!localStorage.getItem('email'))
     {
@@ -135,6 +204,8 @@ const handleContextMenu = (event) => {
         },3000)
 
     }
+
+    checkTokenAuthorization()
     const q = query(collection(db, "community"))
 
     getAllUsers()
