@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import {
+  getDocs,
   collection,
   onSnapshot,
   addDoc,
@@ -24,6 +25,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import LogoutIcon from '@mui/icons-material/Logout';
 
+
 import { ToastContainer, toast } from 'react-toastify';
 
 
@@ -37,24 +39,38 @@ import uploadImg from '../assets/images/uploadImg.png'
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import backgroundVideo from '../assets/images/eventBackgroundVideo.mp4'
+import { ethers } from "ethers";
 
+import erc20Abi from '../Contracts/CONABI.json'
 const Chat = () => {
  
   const [name,setName]=useState('')
   const [description,setDescription]=useState('')
+  const [allCommunities,setAllCommunities]=useState('')
   const [createdCommunities, setCreatedCommunities] = useState([]);
   const [joinedCommunities, setJoinedCommunities] = useState([]);
   const [showCreateDiv,setShowCreateDiv]=useState(false)
+  const [token,setToken]=useState('')
 
   const scrollRef = useRef(null);
 
   useEffect(() => {
+
+
     const q = query(collection(db, "community"));
+
+   
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const email = localStorage.getItem('email');
 
-      const filteredArray = querySnapshot.docs
+      let allArray = querySnapshot.docs
+      .map(doc => ({ id: doc.id, ...doc.data() }))
+
+      setAllCommunities(allArray)
+      
+
+      let filteredArray = querySnapshot.docs
         .map(doc => ({ id: doc.id, ...doc.data() }))
         .filter(doc => doc.Creator === email);
 
@@ -73,11 +89,88 @@ const Chat = () => {
     return () => unsubscribe();
   }, []);
 
+  async function isTokenOwner(tokenAddress) {
+     try {
+
+             
+             
+      
+              // Check if MetaMask is installed
+              if (typeof window.ethereum === 'undefined') {
+                alert('Please install MetaMask first!');
+                return;
+              }
+             
+      
+              // Request account access
+              const accounts = await window.ethereum.request({ 
+                method: 'eth_requestAccounts' 
+              });
+             
+              const userAddress = accounts[0];
+              
+      
+              // Setup provider and signer
+              const provider = new ethers.providers.Web3Provider(window.ethereum);
+              const signer = provider.getSigner();
+            
+      
+              // ERC20 Token ABI
+              const tokenAbi = [
+                "function balanceOf(address account) view returns (uint256)",
+                "function decimals() view returns (uint8)"
+              ];
+
+              
+      
+              // Create token contract
+              const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, signer);
+
+             
+      
+              // Get token decimals
+              const decimals = await tokenContract.decimals();
+              const requiredAmount = ethers.utils.parseUnits("1000001", decimals);
+
+             
+      
+              // Get token balance
+              const balance = await tokenContract.balanceOf(userAddress);
+           
+              return (balance-requiredAmount)>0
+             
+
+            
+      
+           
+            } catch (error) {
+             
+              console.error('Token check failed:', error);
+            
+              alert('Error: ' + error.message);
+            }
+          }
+    
+  
 
   const createCommunity=async()=>{
 
+
     
                    toast.dismiss()
+
+                  const result=await isTokenOwner(token)
+                  if(!result)
+                  {
+                    toast.dismiss()
+
+                    notifyCustom("You must hold more than 1 Million tokens","error")
+                    return;
+                  }
+
+                 
+
+                  console.log("result",result)
 
                    if((description.length==0 || imageUrl.length==0 || name.length==0) )
                    {
@@ -90,7 +183,7 @@ const Chat = () => {
                    
                     const now = dayjs().format("YYYY-MM-DD HH:mm:ss");
                  
-                      await addDoc(collection(db,"community"), {Name:name,Description:description, Chats:[],Creator:localStorage.getItem('email'),ProfileImage:imageUrl,Timestamp:now,Participants:[localStorage.getItem('email')]});
+                      await addDoc(collection(db,"community"), {Name:name,Description:description, Chats:[],Creator:localStorage.getItem('email'),ProfileImage:imageUrl,Timestamp:now,Participants:[localStorage.getItem('email')],Token:token});
 
                       notifyCustom("Community Created!","success")
 
@@ -150,6 +243,83 @@ const Chat = () => {
            window.location.href = '/manage';
       }}>Manage &nbsp;<EditCalendarIcon/></Button>
       <br></br> <br></br> <br></br>
+
+
+      <br></br>
+
+      <h2 style={{color:'white'}}>All ({allCommunities && allCommunities.length })</h2>
+
+      <br></br>
+      <div style={{display:'flex',flexWrap:'wrap',gap:'2em',justifyContent:'center'}}>
+      {allCommunities && allCommunities.length !== 0 && allCommunities.map((x)=>{
+
+        return (
+         <Card 
+         sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.5px solid rgba(255, 255, 255,0.2)',position:'relative',borderRadius:'20px'}}
+>
+  <CardActionArea
+    onClick={() => {
+      window.location.href = `/testing3/${x.id}`;
+    }}
+  >
+    <img 
+     style={{width:'20em' ,height:'20em'}}
+      src={x.ProfileImage} 
+      alt="Event"
+    />
+
+    <CardContent 
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+       
+        color: 'white',
+        gap: '5px',
+        padding: '1em'
+      }}
+    >
+      <h2>{x.Name}</h2>
+
+      <div style={{display:'flex',gap:'3px',flexWrap:'wrap',justifyContent:'center'}}>
+
+      <Button variant="outlined" onClick={(e)=>{
+
+        e.stopPropagation()
+
+        window.location.href=`/testing3/${x.id}`
+      }}><OpenInNewIcon/></Button>
+
+      <Button variant="outlined" onClick={(e)=>{
+
+        e.stopPropagation()
+
+        navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/testing3/${x.id}`)
+      .then(() => {
+       notifyCustom("Community link copied","success");
+      })
+      .catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+
+      }}><ShareIcon/></Button>
+
+      <Button variant="outlined" style={{border:'0.08px solid red',color:'red'}}><LogoutIcon/></Button>
+
+     
+
+
+      </div>
+     
+     
+    </CardContent>
+  </CardActionArea>
+</Card>
+
+       ) })}
+
+       </div>
+       
 
      
       <br></br>
@@ -465,6 +635,21 @@ const Chat = () => {
           placeholder="Name of the community"
           onChange={(e) => {
             setName(e.target.value);
+          }}
+        />
+         <input
+          style={{
+            fontSize: '16px',
+            width: '15em',
+            backgroundColor: 'black',
+            color: 'white',
+            height: '2em',
+            borderRadius: '6px',
+            border: '0.5px solid #1876d1'
+          }}
+          placeholder="Token Address"
+          onChange={(e) => {
+            setToken(e.target.value);
           }}
         />
 
