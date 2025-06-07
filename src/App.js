@@ -45,6 +45,7 @@ import TokenInfoDashboard from './Components/TokenInfoDashboard';
 import TokenList from './Components/TokenList';
 import Stake from './Components/Stake';
 import MyTokenList from './Components/MyTokenList'
+import Location from './Components/Location'
 
 
 
@@ -241,6 +242,12 @@ function App() {
         
         <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
      <MyTokenList/>
+    </OktoProvider>} />
+
+    <Route path="/location" element={
+        
+        <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
+     <Location/>
     </OktoProvider>} />
            
     </Routes>

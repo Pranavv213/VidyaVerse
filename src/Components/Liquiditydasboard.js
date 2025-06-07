@@ -55,10 +55,7 @@ const LiquidityDashboard = () => {
 
   // Fetch token info
   const fetchTokenInfo = async () => {
-    if (!ethers.utils.isAddress(tokenAddress)) {
-      setTokenInfo({ name: '', symbol: '', decimals: 18 });
-      return;
-    }
+    if (!tokenAddress) return;
     
     try {
       const tokenContract = new ethers.Contract(tokenAddress, tokenABI, provider);
@@ -77,7 +74,7 @@ const LiquidityDashboard = () => {
 
   // Check token approval
   const checkApproval = async () => {
-    if (!tokenAddress || !window.ethereum || !ethers.utils.isAddress(tokenAddress)) return;
+    if (!tokenAddress || !window.ethereum) return;
 
     try {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -86,9 +83,7 @@ const LiquidityDashboard = () => {
       
       const tokenContract = new ethers.Contract(tokenAddress, tokenABI, provider);
       const allowance = await tokenContract.allowance(userAddress, PANCAKE_ROUTER_ADDRESS);
-      // Use the max between amountToken and swapAmount for approval check
-      const maxAmount = Math.max(Number(amountToken), Number(swapAmount));
-      const amountTokenWei = ethers.utils.parseUnits(maxAmount.toString(), tokenInfo.decimals);
+      const amountTokenWei = ethers.utils.parseUnits(amountToken, tokenInfo.decimals);
       
       setIsApproved(allowance.gte(amountTokenWei));
     } catch (err) {
@@ -98,23 +93,20 @@ const LiquidityDashboard = () => {
 
   // Approve token
   const approveToken = async () => {
-    if (!tokenAddress || !ethers.utils.isAddress(tokenAddress)) {
-      setError('Please enter a valid token address');
+    if (!tokenAddress) {
+      setError('Please enter a token address');
       return;
     }
 
     try {
       setApproveLoading(true);
       setError('');
-      setSuccess('');
 
       await window.ethereum.request({ method: 'eth_requestAccounts' });
       const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
 
       const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
-      // Approve max of amountToken and swapAmount so approval covers both addLiquidity and swap
-      const maxAmount = Math.max(Number(amountToken), Number(swapAmount));
-      const amountTokenWei = ethers.utils.parseUnits(maxAmount.toString(), tokenInfo.decimals);
+      const amountTokenWei = ethers.utils.parseUnits(amountToken, tokenInfo.decimals);
 
       const tx = await tokenContract.approve(PANCAKE_ROUTER_ADDRESS, amountTokenWei);
       setTxHash(tx.hash);
@@ -147,7 +139,6 @@ const LiquidityDashboard = () => {
       setLoading(true);
       setError('');
       setSuccess('');
-      setTxHash('');
 
       await window.ethereum.request({ method: 'eth_requestAccounts' });
       const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
@@ -172,7 +163,7 @@ const LiquidityDashboard = () => {
       setTxHash(tx.hash);
       setSuccess('Liquidity addition transaction sent. Waiting for confirmation...');
 
-      await tx.wait();
+      const receipt = await tx.wait();
       setSuccess('Liquidity successfully added!');
 
       const factoryAddress = await router.factory();
@@ -192,61 +183,49 @@ const LiquidityDashboard = () => {
 
   // Check reserves
   const checkReserves = async (pairAddr) => {
-    if (!pairAddr || pairAddr === ethers.constants.AddressZero) {
-      setLiquidity({ token: 0, bnb: 0 });
-      return;
-    }
-
     try {
       const pairContract = new ethers.Contract(pairAddr, pairABI, provider);
       const [reserves, token0Address] = await Promise.all([
         pairContract.getReserves(),
         pairContract.token0()
       ]);
-      // Reserves are returned as BigNumber in order: reserve0, reserve1
-      let reserveToken, reserveBNB;
 
-      if (token0Address.toLowerCase() === tokenAddress.toLowerCase()) {
-        reserveToken = reserves.reserve0;
-        reserveBNB = reserves.reserve1;
-      } else {
-        reserveToken = reserves.reserve1;
-        reserveBNB = reserves.reserve0;
-      }
-
+      const isToken0WBNB = token0Address.toLowerCase() === WBNB_ADDRESS.toLowerCase();
+      
       setLiquidity({
-        token: parseFloat(ethers.utils.formatUnits(reserveToken, tokenInfo.decimals)),
-        bnb: parseFloat(ethers.utils.formatEther(reserveBNB))
+        token: ethers.utils.formatUnits(isToken0WBNB ? reserves.reserve1 : reserves.reserve0, tokenInfo.decimals),
+        bnb: ethers.utils.formatUnits(isToken0WBNB ? reserves.reserve0 : reserves.reserve1, 18)
       });
+
     } catch (err) {
-      console.error('Error fetching reserves:', err);
-      setLiquidity({ token: 0, bnb: 0 });
+      console.error('Error checking reserves:', err);
     }
   };
 
-  // Estimate swap output (swap token for BNB)
+  // Estimate swap
   const estimateSwap = async () => {
-    if (!tokenAddress || !swapAmount || !ethers.utils.isAddress(tokenAddress)) {
-      setEstimatedSwap('');
-      return;
-    }
-
+    if (!tokenAddress || !swapAmount) return;
+    
     try {
       const router = new ethers.Contract(PANCAKE_ROUTER_ADDRESS, routerABI, provider);
-      const amountInWei = ethers.utils.parseUnits(swapAmount, tokenInfo.decimals);
-      const amountsOut = await router.getAmountsOut(amountInWei, [tokenAddress, WBNB_ADDRESS]);
-      const amountOutEth = ethers.utils.formatEther(amountsOut[1]);
-      setEstimatedSwap(amountOutEth);
+      
+      const amountIn = ethers.utils.parseUnits(swapAmount, tokenInfo.decimals);
+      const path = [tokenAddress, WBNB_ADDRESS];
+      
+      const amounts = await router.getAmountsOut(amountIn, path);
+      const amountOut = ethers.utils.formatEther(amounts[1]);
+      
+      setEstimatedSwap(amountOut);
     } catch (err) {
       console.error('Error estimating swap:', err);
-      setEstimatedSwap('');
+      setEstimatedSwap('Error estimating');
     }
   };
 
-  // Execute token swap (token to BNB)
-  const executeSwap = async () => {
+  // Swap tokens for WBNB
+  const swapTokens = async () => {
     if (!tokenAddress || !swapAmount) {
-      setError('Please fill all swap fields');
+      setError('Please fill all fields');
       return;
     }
 
@@ -259,22 +238,23 @@ const LiquidityDashboard = () => {
       setLoading(true);
       setError('');
       setSuccess('');
-      setTxHash('');
 
       await window.ethereum.request({ method: 'eth_requestAccounts' });
       const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
       const router = new ethers.Contract(PANCAKE_ROUTER_ADDRESS, routerABI, signer);
-
-      const amountInWei = ethers.utils.parseUnits(swapAmount, tokenInfo.decimals);
-      const amountsOut = await router.getAmountsOut(amountInWei, [tokenAddress, WBNB_ADDRESS]);
-      const amountOutMin = amountsOut[1].mul(90).div(100); // slippage 10%
-      const deadline = Math.floor(Date.now() / 1000) + 1200;
-
+      
+      const deadline = Math.floor(Date.now() / 1000) + 300;
+      const userAddress = await signer.getAddress();
+      
+      const amountIn = ethers.utils.parseUnits(swapAmount, tokenInfo.decimals);
+      const amountOutMin = ethers.utils.parseEther(estimatedSwap).mul(95).div(100); // 5% slippage
+      const path = [tokenAddress, WBNB_ADDRESS];
+      
       const tx = await router.swapExactTokensForETH(
-        amountInWei,
+        amountIn,
         amountOutMin,
-        [tokenAddress, WBNB_ADDRESS],
-        await signer.getAddress(),
+        path,
+        userAddress,
         deadline
       );
 
@@ -284,175 +264,353 @@ const LiquidityDashboard = () => {
       await tx.wait();
       setSuccess('Swap successful!');
     } catch (err) {
-      console.error('Swap error:', err);
+      console.error('Error:', err);
       setError(err.message || 'Failed to execute swap');
     } finally {
       setLoading(false);
     }
   };
 
-  // Effects
+  // Check approval when token address or amount changes
   useEffect(() => {
     fetchTokenInfo();
-  }, [tokenAddress]);
-
-  useEffect(() => {
     checkApproval();
-  }, [tokenAddress, amountToken, swapAmount, tokenInfo.decimals]);
-
-  useEffect(() => {
-    if (activeTab === 'swap') {
+    if (tokenAddress && swapAmount) {
       estimateSwap();
-    } else {
-      setEstimatedSwap('');
     }
-  }, [swapAmount, tokenAddress, activeTab]);
+  }, [tokenAddress, amountToken, swapAmount]);
 
   return (
-    <div style={{ padding: 20 }}>
-      <h2>Liquidity Dashboard (BSC Testnet)</h2>
-
-      <div style={{ marginBottom: 20 }}>
-        <button
-          onClick={() => setActiveTab('liquidity')}
-          style={{ marginRight: 10, backgroundColor: activeTab === 'liquidity' ? '#4caf50' : '#ddd', color: activeTab === 'liquidity' ? '#fff' : '#000', padding: '10px 20px', border: 'none', cursor: 'pointer' }}
-        >
-          Add Liquidity
-        </button>
-        <button
-          onClick={() => setActiveTab('swap')}
-          style={{ backgroundColor: activeTab === 'swap' ? '#4caf50' : '#ddd', color: activeTab === 'swap' ? '#fff' : '#000', padding: '10px 20px', border: 'none', cursor: 'pointer' }}
-        >
-          Swap Tokens
-        </button>
+    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+        <h1 style={{ fontSize: '2.5rem', color: '#1a237e', marginBottom: '10px' }}>
+          BEP20 Token Liquidity Dashboard
+        </h1>
+        <p style={{ fontSize: '1.1rem', color: '#5c6bc0' }}>
+          Add liquidity or swap tokens on PancakeSwap (BSC Testnet)
+        </p>
       </div>
 
-      <div style={{ marginBottom: 15 }}>
-        <label>
-          Token Address:{' '}
+      <div style={{ 
+        backgroundColor: '#f5f7ff', 
+        borderRadius: '15px', 
+        padding: '25px',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+        marginBottom: '30px'
+      }}>
+        <div style={{ display: 'flex', marginBottom: '20px', borderBottom: '1px solid #e0e0e0' }}>
+          <button 
+            onClick={() => setActiveTab('liquidity')}
+            style={{
+              padding: '12px 24px',
+              backgroundColor: activeTab === 'liquidity' ? '#1a237e' : 'transparent',
+              color: activeTab === 'liquidity' ? 'white' : '#1a237e',
+              border: 'none',
+              borderRadius: '8px 8px 0 0',
+              cursor: 'pointer',
+              fontSize: '1rem',
+              fontWeight: '600',
+              transition: 'all 0.3s',
+              marginRight: '5px'
+            }}
+          >
+            Add Liquidity
+          </button>
+          <button 
+            onClick={() => setActiveTab('swap')}
+            style={{
+              padding: '12px 24px',
+              backgroundColor: activeTab === 'swap' ? '#1a237e' : 'transparent',
+              color: activeTab === 'swap' ? 'white' : '#1a237e',
+              border: 'none',
+              borderRadius: '8px 8px 0 0',
+              cursor: 'pointer',
+              fontSize: '1rem',
+              fontWeight: '600',
+              transition: 'all 0.3s'
+            }}
+          >
+            Swap Tokens
+          </button>
+        </div>
+
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ display: 'block', marginBottom: '8px', color: '#1a237e', fontWeight: '500' }}>
+            Token Address:
+          </label>
           <input
             type="text"
             value={tokenAddress}
-            onChange={(e) => setTokenAddress(e.target.value.trim())}
+            onChange={(e) => setTokenAddress(e.target.value)}
             placeholder="0x..."
-            style={{ width: '400px' }}
+            style={{ 
+              width: '100%', 
+              padding: '14px', 
+              borderRadius: '10px',
+              border: '1px solid #c5cae9',
+              fontSize: '1rem',
+              boxSizing: 'border-box',
+              transition: 'border-color 0.3s',
+              backgroundColor: '#fff'
+            }}
           />
-        </label>
-        {tokenInfo.name && (
+          {tokenInfo.name && (
+            <div style={{ marginTop: '8px', color: '#3949ab', fontSize: '0.9rem' }}>
+              Token: {tokenInfo.name} ({tokenInfo.symbol})
+            </div>
+          )}
+        </div>
+
+        {activeTab === 'liquidity' ? (
           <div>
-            Token: {tokenInfo.name} ({tokenInfo.symbol}), Decimals: {tokenInfo.decimals}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', color: '#1a237e', fontWeight: '500' }}>
+                  Amount of Token to Add:
+                </label>
+                <input
+                  type="text"
+                  value={amountToken}
+                  onChange={(e) => setAmountToken(e.target.value)}
+                  placeholder="100"
+                  style={{ 
+                    width: '100%', 
+                    padding: '14px', 
+                    borderRadius: '10px',
+                    border: '1px solid #c5cae9',
+                    fontSize: '1rem',
+                    boxSizing: 'border-box',
+                    backgroundColor: '#fff'
+                  }}
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', color: '#1a237e', fontWeight: '500' }}>
+                  Amount of BNB to Add:
+                </label>
+                <input
+                  type="text"
+                  value={amountBNB}
+                  onChange={(e) => setAmountBNB(e.target.value)}
+                  placeholder="0.1"
+                  style={{ 
+                    width: '100%', 
+                    padding: '14px', 
+                    borderRadius: '10px',
+                    border: '1px solid #c5cae9',
+                    fontSize: '1rem',
+                    boxSizing: 'border-box',
+                    backgroundColor: '#fff'
+                  }}
+                />
+              </div>
+            </div>
+
+            {!isApproved ? (
+              <button 
+                onClick={approveToken} 
+                disabled={approveLoading || !tokenAddress}
+                style={{
+                  width: '100%',
+                  padding: '16px',
+                  backgroundColor: '#3949ab',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '1.1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s',
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                  marginBottom: '20px',
+                  opacity: approveLoading || !tokenAddress ? 0.7 : 1
+                }}
+              >
+                {approveLoading ? 'Approving...' : 'Approve Token'}
+              </button>
+            ) : (
+              <button 
+                onClick={addLiquidity} 
+                disabled={loading}
+                style={{
+                  width: '100%',
+                  padding: '16px',
+                  background: 'linear-gradient(135deg, #1a237e, #3949ab)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '1.1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s',
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                  marginBottom: '20px',
+                  opacity: loading ? 0.7 : 1
+                }}
+              >
+                {loading ? 'Adding Liquidity...' : 'Add Liquidity'}
+              </button>
+            )}
+          </div>
+        ) : (
+          <div>
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', color: '#1a237e', fontWeight: '500' }}>
+                Amount of Token to Swap:
+              </label>
+              <input
+                type="text"
+                value={swapAmount}
+                onChange={(e) => setSwapAmount(e.target.value)}
+                placeholder="100"
+                style={{ 
+                  width: '100%', 
+                  padding: '14px', 
+                  borderRadius: '10px',
+                  border: '1px solid #c5cae9',
+                  fontSize: '1rem',
+                  boxSizing: 'border-box',
+                  backgroundColor: '#fff'
+                }}
+              />
+            </div>
+
+            {estimatedSwap && (
+              <div style={{ 
+                backgroundColor: '#e8eaf6', 
+                padding: '15px', 
+                borderRadius: '10px',
+                marginBottom: '20px'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ color: '#1a237e', fontWeight: '500' }}>Estimated WBNB:</span>
+                  <span style={{ color: '#1a237e', fontWeight: '600' }}>{estimatedSwap} WBNB</span>
+                </div>
+              </div>
+            )}
+
+            {!isApproved ? (
+              <button 
+                onClick={approveToken} 
+                disabled={approveLoading || !tokenAddress}
+                style={{
+                  width: '100%',
+                  padding: '16px',
+                  backgroundColor: '#3949ab',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '1.1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s',
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                  marginBottom: '20px',
+                  opacity: approveLoading || !tokenAddress ? 0.7 : 1
+                }}
+              >
+                {approveLoading ? 'Approving...' : 'Approve Token'}
+              </button>
+            ) : (
+              <button 
+                onClick={swapTokens} 
+                disabled={loading}
+                style={{
+                  width: '100%',
+                  padding: '16px',
+                  background: 'linear-gradient(135deg, #1a237e, #3949ab)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '1.1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s',
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                  marginBottom: '20px',
+                  opacity: loading ? 0.7 : 1
+                }}
+              >
+                {loading ? 'Swapping...' : 'Swap to WBNB'}
+              </button>
+            )}
+          </div>
+        )}
+
+        {(error || success) && (
+          <div style={{ 
+            padding: '15px', 
+            borderRadius: '10px',
+            marginBottom: '20px',
+            backgroundColor: error ? '#ffebee' : '#e8f5e9',
+            border: `1px solid ${error ? '#f44336' : '#4caf50'}`
+          }}>
+            <div style={{ color: error ? '#f44336' : '#4caf50', fontWeight: '500' }}>
+              {error || success}
+              {txHash && (
+                <div style={{ marginTop: '10px' }}>
+                  <a 
+                    href={`https://testnet.bscscan.com/tx/${txHash}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{ color: '#1a237e' }}
+                  >
+                    View on BscScan
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {pairAddress && (
+          <div style={{ 
+            backgroundColor: '#e8eaf6', 
+            padding: '20px', 
+            borderRadius: '10px',
+            marginTop: '20px'
+          }}>
+            <h3 style={{ color: '#1a237e', marginTop: '0', marginBottom: '15px' }}>Liquidity Pair Information</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+              <div>
+                <div style={{ color: '#5c6bc0', marginBottom: '5px' }}>Pair Address:</div>
+                <div style={{ wordBreak: 'break-all', fontWeight: '500' }}>{pairAddress}</div>
+              </div>
+              <div>
+                <div style={{ color: '#5c6bc0', marginBottom: '5px' }}>Token Reserve:</div>
+                <div style={{ fontWeight: '500' }}>{liquidity.token} {tokenInfo.symbol}</div>
+              </div>
+              <div>
+                <div style={{ color: '#5c6bc0', marginBottom: '5px' }}>BNB Reserve:</div>
+                <div style={{ fontWeight: '500' }}>{liquidity.bnb} BNB</div>
+              </div>
+            </div>
           </div>
         )}
       </div>
 
-      {activeTab === 'liquidity' && (
-        <>
-          <div style={{ marginBottom: 10 }}>
-            <label>
-              Amount Token ({tokenInfo.symbol}):{' '}
-              <input
-                type="number"
-                value={amountToken}
-                onChange={(e) => setAmountToken(e.target.value)}
-                min="0"
-              />
-            </label>
-          </div>
-          <div style={{ marginBottom: 10 }}>
-            <label>
-              Amount BNB:{' '}
-              <input
-                type="number"
-                value={amountBNB}
-                onChange={(e) => setAmountBNB(e.target.value)}
-                min="0"
-                step="0.0001"
-              />
-            </label>
-          </div>
-
-          {!isApproved ? (
-            <button
-              onClick={approveToken}
-              disabled={approveLoading}
-              style={{ marginRight: 10, padding: '10px 20px', cursor: approveLoading ? 'not-allowed' : 'pointer' }}
-            >
-              {approveLoading ? 'Approving...' : 'Approve Token'}
-            </button>
-          ) : (
-            <button
-              onClick={addLiquidity}
-              disabled={loading}
-              style={{ padding: '10px 20px', cursor: loading ? 'not-allowed' : 'pointer' }}
-            >
-              {loading ? 'Adding Liquidity...' : 'Add Liquidity'}
-            </button>
-          )}
-
-          {pairAddress && pairAddress !== ethers.constants.AddressZero && (
-            <div style={{ marginTop: 20 }}>
-              <h4>Liquidity Pool Address:</h4>
-              <p>{pairAddress}</p>
-              <p>
-                Reserves: {liquidity.token.toFixed(4)} {tokenInfo.symbol} / {liquidity.bnb.toFixed(4)} BNB
-              </p>
-            </div>
-          )}
-        </>
-      )}
-
-      {activeTab === 'swap' && (
-        <>
-          <div style={{ marginBottom: 10 }}>
-            <label>
-              Swap Amount ({tokenInfo.symbol}):{' '}
-              <input
-                type="number"
-                value={swapAmount}
-                onChange={(e) => setSwapAmount(e.target.value)}
-                min="0"
-              />
-            </label>
-          </div>
-
-          <div>
-            Estimated BNB Received: {estimatedSwap ? `${estimatedSwap} BNB` : 'N/A'}
-          </div>
-
-          {!isApproved ? (
-            <button
-              onClick={approveToken}
-              disabled={approveLoading}
-              style={{ marginRight: 10, padding: '10px 20px', cursor: approveLoading ? 'not-allowed' : 'pointer' }}
-            >
-              {approveLoading ? 'Approving...' : 'Approve Token'}
-            </button>
-          ) : (
-            <button
-              onClick={executeSwap}
-              disabled={loading}
-              style={{ padding: '10px 20px', cursor: loading ? 'not-allowed' : 'pointer' }}
-            >
-              {loading ? 'Swapping...' : 'Swap Tokens'}
-            </button>
-          )}
-        </>
-      )}
-
-      {error && <p style={{ color: 'red', marginTop: 15 }}>{error}</p>}
-      {success && <p style={{ color: 'green', marginTop: 15 }}>{success}</p>}
-      {txHash && (
-        <p style={{ marginTop: 15 }}>
-          Transaction Hash:{' '}
-          <a
-            href={`https://testnet.bscscan.com/tx/${txHash}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {txHash}
-          </a>
-        </p>
-      )}
+      <div style={{ 
+        backgroundColor: '#e8eaf6', 
+        borderRadius: '15px', 
+        padding: '20px',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)'
+      }}>
+        <h3 style={{ color: '#1a237e', marginTop: '0' }}>Important Information</h3>
+        <ul style={{ paddingLeft: '20px', color: '#5c6bc0' }}>
+          <li style={{ marginBottom: '10px' }}>
+            <strong>Any wallet holder can add liquidity</strong> - You don't need to be the token creator
+          </li>
+          <li style={{ marginBottom: '10px' }}>
+            Ensure you're connected to <strong>Binance Smart Chain Testnet</strong> (chainId: 97)
+          </li>
+          <li style={{ marginBottom: '10px' }}>
+            You need test BNB for gas fees and token balances for swaps
+          </li>
+          <li>
+            Token approval is required before adding liquidity or swapping
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };

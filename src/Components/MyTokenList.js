@@ -24,7 +24,8 @@ const TokenList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [tokens, setTokens] = useState([]);
-  const [search,setSearch]=useState('')
+  const [search, setSearch] = useState('');
+  const [filteredTokens, setFilteredTokens] = useState([]);
   
   // Contract ABIs
   const routerABI = [
@@ -78,8 +79,9 @@ const TokenList = () => {
     try {
       // Fetch token metadata
       const tokenContract = new ethers.Contract(tokenAddress, tokenABI, provider);
-      const [symbol, decimals] = await Promise.all([
+      const [symbol, name, decimals] = await Promise.all([
         tokenContract.symbol(),
+        tokenContract.name(),
         tokenContract.decimals()
       ]);
       setTokenSymbol(symbol);
@@ -131,7 +133,8 @@ const TokenList = () => {
 
       return {
         price: priceInUSD,
-        liquidity: liquidityUSD
+        liquidity: liquidityUSD,
+        name: name
       };
 
     } catch (err) {
@@ -143,8 +146,7 @@ const TokenList = () => {
   const tokensGet = async () => {
     let data = await getDocs(tokensCollectionRef);
     let tokensTemp = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-
-    tokensTemp=tokensTemp.filter(obj=>obj.Email==localStorage.getItem('email'))
+     tokensTemp=tokensTemp.filter(obj=>obj.Email==localStorage.getItem('email'))
   
     const roundToSigString = (num, sig = 2) => {
       let rounded = num.toPrecision(sig);
@@ -165,7 +167,10 @@ const TokenList = () => {
     for (let i = 0; i < tokensTemp.length; i++) {
       try {
         setLoading(true);
-        const { price, liquidity } = await fetchTokenPrice(tokensTemp[i].Address);
+        const { price, liquidity, name } = await fetchTokenPrice(tokensTemp[i].Address);
+        
+        // Store token name for searching
+        tokensTemp[i].Name = name;
         
         // Format price
         tokensTemp[i].Price = roundToSigString(price);
@@ -174,22 +179,17 @@ const TokenList = () => {
         tokensTemp[i].Liquidity = formatCurrency(liquidity);
         
         // Calculate APY using real liquidity
-        // Formula: APY = (Annual Trading Fees / Total Liquidity) * 100
-        const dailyVolume = liquidity * 0.20;         // 20% of liquidity as daily volume
-        const dailyFees = dailyVolume * 0.0025;       // 0.25% trading fee
-        const annualFees = dailyFees * 365;           // Annualize fees
-           // Calculate APY percentage
-
         const random = Math.random() * (25.5 - 18.5) + 18.5;
-        const apy=parseFloat(random.toFixed(1));
+        const apy = parseFloat(random.toFixed(1));
         
-        tokensTemp[i].APY = apy
+        tokensTemp[i].APY = apy;
         
       } catch (err) {
         console.error(`Error for token ${tokensTemp[i].Symbol}:`, err);
         tokensTemp[i].Price = '0.0000';
         tokensTemp[i].Liquidity = '$0';
         tokensTemp[i].APY = '0.00';
+        tokensTemp[i].Name = tokensTemp[i].Symbol; // Fallback to symbol
       } finally {
         setLoading(false);
       }
@@ -197,11 +197,28 @@ const TokenList = () => {
   
     console.log(tokensTemp);
     setTokens(tokensTemp);
+    setFilteredTokens(tokensTemp); // Initialize filtered tokens
   };
   
   useEffect(() => {
     tokensGet();
   }, []);
+
+  // Filter tokens based on search input
+  useEffect(() => {
+    if (!search) {
+      setFilteredTokens(tokens);
+      return;
+    }
+    
+    const searchTerm = search.toLowerCase();
+    const filtered = tokens.filter(token => 
+      token.Symbol.toLowerCase().includes(searchTerm) || 
+      (token.Name && token.Name.toLowerCase().includes(searchTerm))
+    );
+    
+    setFilteredTokens(filtered);
+  }, [search, tokens]);
 
   return (
     <div>
@@ -234,147 +251,87 @@ const TokenList = () => {
             <p style={styles.errorText}>{error}</p>
           </div>
         )}
-       {!loading  && <div style={styles.grid}>
-        <input placeholder='Search Token' style={{borderRadius:'10px',border:'none',height:'2em',width:'12em',fontSize:'12px'}} onChange={(e)=>{
-            setSearch(e.target.value)
-        }}></input>
-        </div>
 
-    }
-        <br></br>
+        {/* Search input field */}
+        {!loading && tokens.length > 0 && (
+          <div style={styles.searchContainer}>
+            <input 
+              placeholder='Search by token symbol or name...' 
+              style={styles.searchInput}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+        )}
+
         <div style={styles.grid}>
-  {tokens.length > 0 && search.length>0 &&
-    tokens
-      .filter((token) => {
-        const query = search.toLowerCase().replace(/\s/g, '');
-        const name = token.Name.toLowerCase().replace(/\s/g, '');
-        const symbol = token.Symbol.toLowerCase().replace(/\s/g, '');
-        return name.includes(query) || symbol.includes(query);
-      })
-      .map((token) => (
-        <div 
-          key={token.id} 
-          style={styles.card}
-          className="token-card"
-          onClick={() => {
-            window.location.href = `/tokeninfo/${token.Address}`;
-          }}
-        >
-          <div style={styles.cardHeader}>
-            <div style={styles.tokenSymbol}>{token.Symbol}</div>
-            <div style={styles.tokenAddress}>
-              {token.Address.substring(0, 6)}...{token.Address.substring(token.Address.length - 4)}
-            </div>
-          </div>
-          
-          <div style={styles.priceContainer}>
-            <div style={styles.priceLabel}>PRICE</div>
-            <div style={styles.priceValue}>
-              {token.Price ? `$${token.Price}` : 'Loading...'}
-            </div>
-          </div>
-          
-          <div style={styles.apyContainer}>
-            <div style={styles.apyLabel}>LIQUIDITY</div>
-            <div style={styles.apyValue}>{token.Liquidity}</div>
-          </div>
-          
-          <div style={styles.apyContainer}>
-            <div style={styles.apyLabel}>APY</div>
-            <div style={styles.apyValue}>{token.APY}%</div>
-          </div>
-          
-          <div style={styles.divider}></div>
-          
-          <div style={styles.metaContainer}>
-            <div style={styles.metaItem}>
-              <div style={styles.metaLabel}>Fee Rate</div>
-              <div style={styles.metaValue}>0.25%</div>
-            </div>
-            <div style={styles.metaItem}>
-              <div style={styles.metaLabel}>Volume</div>
-              <div style={styles.metaValue}>Active</div>
-            </div>
-            <div style={styles.metaItem}>
-              <button 
-                style={styles.tradeButton}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  window.location.href = `/swap/${token.Address}`;
+          {filteredTokens.length > 0 ? (
+            filteredTokens.map((token) => (
+              <div 
+                key={token.id} 
+                style={styles.card}
+                className="token-card"
+                onClick={() => {
+                  window.location.href = `/tokeninfo/${token.Address}`
                 }}
               >
-                Trade
-              </button>
-            </div>
-          </div>
+                <div style={styles.cardHeader}>
+                  <div style={styles.tokenSymbol}>{token.Symbol}</div>
+                  <div style={styles.tokenAddress}>
+                    {token.Address.substring(0, 6)}...{token.Address.substring(token.Address.length - 4)}
+                  </div>
+                </div>
+                
+                <div style={styles.priceContainer}>
+                  <div style={styles.priceLabel}>PRICE</div>
+                  <div style={styles.priceValue}>
+                    {token.Price ? `$${token.Price}` : 'Loading...'}
+                  </div>
+                </div>
+                
+                <div style={styles.apyContainer}>
+                  <div style={styles.apyLabel}>LIQUIDITY</div>
+                  <div style={styles.apyValue}>{token.Liquidity}</div>
+                </div>
+                
+                <div style={styles.apyContainer}>
+                  <div style={styles.apyLabel}>APY</div>
+                  <div style={styles.apyValue}>{token.APY}%</div>
+                </div>
+                
+                <div style={styles.divider}></div>
+                
+                <div style={styles.metaContainer}>
+                  <div style={styles.metaItem}>
+                    <div style={styles.metaLabel}>Fee Rate</div>
+                    <div style={styles.metaValue}>0.25%</div>
+                  </div>
+                  <div style={styles.metaItem}>
+                    <div style={styles.metaLabel}>Volume</div>
+                    <div style={styles.metaValue}>Active</div>
+                  </div>
+                  <div style={styles.metaItem}>
+                    <button 
+                      style={styles.tradeButton}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.location.href = `/swap/${token.Address}`;
+                      }}
+                    >
+                      Trade
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            !loading && tokens.length > 0 && (
+              <div style={styles.noResults}>
+                No tokens found for "{search}"
+              </div>
+            )
+          )}
         </div>
-      ))}
-</div>
-
-
-       
-
-       {search.length==0 && <div style={styles.grid}>
-          {tokens.length > 0 &&  tokens.map((token) => (
-            <div 
-              key={token.id} 
-              style={styles.card}
-              className="token-card"
-              onClick={() => {
-                window.location.href = `/tokeninfo/${token.Address}`
-              }}
-            >
-              <div style={styles.cardHeader}>
-                <div style={styles.tokenSymbol}>{token.Symbol}</div>
-                <div style={styles.tokenAddress}>
-                  {token.Address.substring(0, 6)}...{token.Address.substring(token.Address.length - 4)}
-                </div>
-              </div>
-              
-              <div style={styles.priceContainer}>
-                <div style={styles.priceLabel}>PRICE</div>
-                <div style={styles.priceValue}>
-                  {token.Price ? `$${token.Price}` : 'Loading...'}
-                </div>
-              </div>
-              
-              <div style={styles.apyContainer}>
-                <div style={styles.apyLabel}>LIQUIDITY</div>
-                <div style={styles.apyValue}>{token.Liquidity}</div>
-              </div>
-              
-              <div style={styles.apyContainer}>
-                <div style={styles.apyLabel}>APY</div>
-                <div style={styles.apyValue}>{token.APY}%</div>
-              </div>
-              
-              <div style={styles.divider}></div>
-              
-              <div style={styles.metaContainer}>
-                <div style={styles.metaItem}>
-                  <div style={styles.metaLabel}>Fee Rate</div>
-                  <div style={styles.metaValue}>0.25%</div>
-                </div>
-                <div style={styles.metaItem}>
-                  <div style={styles.metaLabel}>Volume</div>
-                  <div style={styles.metaValue}>Active</div>
-                </div>
-                <div style={styles.metaItem}>
-                  <button 
-                    style={styles.tradeButton}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      window.location.href = `/swap/${token.Address}`;
-                    }}
-                  >
-                    Trade
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-}
       </div>
     </div>
   );
@@ -413,6 +370,27 @@ const styles = {
     fontSize: '1rem',
     marginTop: '8px',
     fontWeight: '300',
+  },
+  searchContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '25px',
+  },
+  searchInput: {
+    width: '100%',
+    maxWidth: '500px',
+    padding: '12px 20px',
+    borderRadius: '25px',
+    border: '1px solid rgba(108, 99, 255, 0.3)',
+    backgroundColor: 'rgba(26, 24, 48, 0.7)',
+    color: '#fffffe',
+    fontSize: '16px',
+    outline: 'none',
+    transition: 'all 0.3s ease',
+    '&:focus': {
+      borderColor: '#6c63ff',
+      boxShadow: '0 0 15px rgba(108, 99, 255, 0.4)',
+    }
   },
   grid: {
     display: 'flex',
@@ -566,6 +544,14 @@ const styles = {
   errorText: {
     color: '#ff5757',
     margin: '0',
+  },
+  noResults: {
+    color: '#a7a9be',
+    fontSize: '1.2rem',
+    textAlign: 'center',
+    width: '100%',
+    padding: '40px',
+    gridColumn: '1 / -1',
   },
 };
 

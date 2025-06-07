@@ -213,7 +213,7 @@ border-style: solid;
       
 
       .buttonTop {
-        width: 8em;
+       
         height:1em;
         
         border-radius: 7px;
@@ -294,7 +294,7 @@ border-style: solid;
       @media (min-width: 768px) {
         .buttonTop {
         
-         width: 10em;
+        
           height:1em;
           font-size: 14px;
           border-radius: 7px;

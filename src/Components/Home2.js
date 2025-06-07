@@ -67,6 +67,16 @@ import SendIcon from '@mui/icons-material/Send';
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
 import backgroundVideo from '../assets/images/eventBackgroundVideo.mp4'
+import Badge from 'react-bootstrap/Badge';
+
+const buttons = [
+  { id: 1, label: 'Standup', icon: null },
+  { id: 2, label: 'Concerts', icon: null },
+  { id: 4, label: 'Movies', icon: null},
+  { id: 5, label: 'Sports', icon: null},
+  { id: 3, label: '', icon: <CategoryIcon fontSize="large" /> },
+];
+
 
 
 
@@ -213,6 +223,7 @@ function Home2() {
     const [buttonHight,setButtonHighlight]=useState(1)
     const [trendingEvents,setTrendingEvents]=useState([])
     const [city,setCity]=useState('')
+    const [search,setSearch]=useState('')
     const [category,setCategory]=useState('')
     const [showLeaderboarddDiv,setShowLeaderboardboardDiv]=useState(false)
     const [leaderboardArray,setLeaderboardArray]=useState([])
@@ -618,6 +629,11 @@ function Home2() {
                
 
               }
+
+              if(!localStorage.getItem('userLocationData'))
+              {
+                window.location.href="/location"
+              }
           
           }
         })
@@ -786,56 +802,219 @@ function Home2() {
             }}
             src={backgroundVideo}
           /> */}
-<div style={{display:'flex',justifyContent:'center', gap:'5px',position:'relative',zIndex:1}}>
+<div style={{ display: 'flex', justifyContent: 'center', gap: '1px', position: 'relative', zIndex: 1 }}>
+  {buttons.map(({ id, label, icon }) => {
+    const isActive = buttonHight === id;
 
-  {buttonHight==1 && <button class="buttonTop" style={{border:'none',display:'flex',flexWrap:'wrap',justifyContent:'center',alignItems:'center',backgroundColor:'#1876d1',color:'white'}} onClick={()=>{
-    
-}}>All </button>}
- {buttonHight!=1 && <button class="buttonTop"  variant="outlined" style={{border:'none', color:'#1876d1',display:'flex',flexWrap:'wrap',justifyContent:'center',alignItems:'center',background:'transparent',border:'0.2px solid #1876d1'}} onClick={()=>{
-     setButtonHighlight(1)
-     setCategory("")
-}}>All </button>}
-{buttonHight==2 && <button class="buttonTop" style={{border:'none',display:'flex',flexWrap:'wrap',justifyContent:'center',alignItems:'center',backgroundColor:'#1876d1',color:'white'}} onClick={()=>{
-    
-}}><l>Trending </l>&nbsp;<WhatshotIcon fontSize='small' style={{color:'red'}}/></button>}
-{buttonHight!=2 && <button class="buttonTop" variant="outlined" style={{border:'none', color:'#1876d1',background:'transparent',border:'0.2px solid #1876d1',display:'flex',flexWrap:'wrap',justifyContent:'center',alignItems:'center'}} onClick={()=>{
-      setButtonHighlight(2)
-      setCategory("")
-      
-}}><l>Trending </l>&nbsp;<WhatshotIcon fontSize='small' style={{color:'red'}}/></button>}
-
-  {buttonHight==3 && <button class="buttonTop" style={{border:'none',display:'flex',flexWrap:'wrap',justifyContent:'center',alignItems:'center',backgroundColor:'#1876d1',color:'white'}}  onClick={()=>{
-       
-  }}>Category &nbsp;<CategoryIcon fontSize='small'/></button>}
-
-
-    {buttonHight!=3 &&  <button class="buttonTop" variant="outlined" style={{border:'none', color:'#1876d1',display:'flex',flexWrap:'wrap',justifyContent:'center',alignItems:'center',background:'transparent',border:'0.2px solid #1876d1'}} onClick={()=>{
-      if(open==false)
-      {
-        setOpen(true)
+    const handleClick = () => {
+      if (id === 3) {
+        setOpen((prev) => !prev);
       }
-      else{
-        setOpen(false)
-      }
-       
-       setButtonHighlight(3)
-      
-      }
-      }>Category &nbsp;<CategoryIcon fontSize='small' style={{color:'white'}} /></button>}
+      setButtonHighlight(id);
+      setCategory('');
+    };
 
+    return (
+      <button
+        key={id}
+        className="buttonTop"
+        style={{
+          border: 'none',
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: isActive ? '#1876d1' : 'transparent',
+          color: isActive ? 'white' : '#1876d1',
+        }}
+        onClick={handleClick}
+      >
+        <span>{label}</span>
+        {icon && <>&nbsp;{icon}</>}
+      </button>
+    );
+  })}
 </div>
 <br></br><br></br>
 
 
      
      
-<input style={{background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '15px', border: '1px solid rgba(255, 255, 255, 0.18)',paddingLeft:'1em',paddingRight:'1em'}} class="inputLocation" onChange={(e)=>{
-  setCity(e.target.value)
-}} placeholder="🔍 Search by location"></input>
+<input style={{ width: '100%',
+    maxWidth: '400px',
+    padding: '12px 20px',
+    borderRadius: '25px',
+    border: '1px solid rgba(108, 99, 255, 0.3)',
+    backgroundColor: 'rgba(26, 24, 48, 0.7)',
+    color: '#fffffe',
+    fontSize: '16px',
+    outline: 'none',
+    transition: 'all 0.3s ease',
+    '&:focus': {
+      borderColor: '#6c63ff',
+      boxShadow: '0 0 15px rgba(108, 99, 255, 0.4)',
+    }}} class="inputLocation" onChange={(e)=>{
+  setSearch(e.target.value)
+}} placeholder="🔍 Search Movies,Concerts,Events,Sports"></input>
 
 <br></br>
 
 <br></br> <br></br>
+
+<div className="events">
+
+{allEvents.length!=0 && search.length!=0 && allEvents.map((x)=>{
+   const input=search.toLowerCase().replace(/[^\w\s]/g, '').trim();
+
+   
+   if (x.Name.toLowerCase().replace(/[^\w\s]/g, '').includes(input) && x.Type!="online")
+  return(
+
+    <Card sx={{ maxWidth: 350,minWidth:300 ,maxHeight:1000  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.5px solid rgba(255, 255, 255,0.2)',position:'relative',borderRadius:'20px'}}>
+      <CardActionArea>
+        
+        <img style={{width:'300px' ,height:'500px',objectFit:'cover', border: '1px solid rgba(255, 255, 255, 0.18)'}} src={x.Image} onClick={()=>{
+          window.location.href=`/event/${x.id}`
+        }}></img>
+{localStorage.getItem('email') && x.Creator==localStorage.getItem('email') && 
+                      <button variant='contained' style={{backgroundColor:'#1876d0',border:'none',position:'absolute',top:'20px',left:'85%',borderRadius:'50%',height:'3em',width:'3em'}} onClick={()=>{
+                      window.location.href=`/manage/${x.id}`
+                      }}> <EditIcon style={{color:'white'}}/> </button>
+                      }
+     
+      <CardContent>
+
+     
+        <Typography gutterBottom variant="h6" component="div" style={{ color: 'white', textAlign: 'center' }}>
+
+          <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between'}}> 
+
+            
+            <div style={{display:'flex',gap:'10px' }}>
+            
+            {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <img onClick={()=>{
+  window.location.href=`/channel/${allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}`
+}} src={allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage} style={{width:'3em',height:'3em',borderRadius:'50%',objectFit:'cover'}}></img> :<img style={{width:'2.5em',height:'2.5em',borderRadius:'50%',objectFit:'cover'}} src='https://i.pinimg.com/564x/66/ff/cb/66ffcb56482c64bdf6b6010687938835.jpg'></img> }  
+          
+          <div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'0px'}}>
+            
+            <l style={{fontSize:'18px'}}>{x.Name}</l>
+
+            
+
+            <l>
+              
+              {allUsersArray.length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage).length!=0 && allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].ProfileImage ? <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>{allUsersArray.filter(obj=>obj.EventsCreated.includes(x.id) && obj.UserName && obj.ProfileImage)[0].UserName}   </l></Typography>  : <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'15px',color:'rgb(200,200,200'}}>Anonymous User </l></Typography>}
+            
+            </l>
+            <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}><l style={{fontSize:'14px',color:'rgb(200,200,200'}}>{x.RegistrationsCount} Registrations .   {x.Timestamp && dayjs(x.Timestamp).fromNow() }</l></Typography>
+
+          
+            
+            <Typography gutterBottom sx={{  fontSize: 14 }} style={{color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'flex-start',gap:'3px'}}> 
+
+            <div className="coinimg-perspective">
+              <div className="coinimg-container">
+                <img
+                  src={coinImg}
+                  alt="Coin"
+                  style={{ width: '4em', height: '4em', objectFit: 'cover' }}
+                />
+              </div>
+              </div>
+
+                      <l style={{fontSize:'24px',color:'rgb(200,200,200'}}>  {x.Coins}</l>
+                     
+                      </Typography>
+         
+                      </div>
+
+            
+                     
+            
+
+          
+            </div>
+
+            <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+
+                      <Button  onClick={(e)=>{
+                      e.stopPropagation()
+                      window.location.href=`/event/${x.id}`
+                      }}><LaunchIcon/>  </Button>
+
+                      <Button  onClick={(e)=>{
+                      e.stopPropagation()
+
+                      setEvent_id(x.id)
+
+                      getComments(x.id)
+
+
+
+
+                      }}><CommentIcon/>  </Button>
+
+                      <Button  onClick={(e)=>{
+                      e.stopPropagation()
+                      navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/event/${x.id}`)
+                      notifyClipboard()
+                      }}><ShareIcon/>  </Button>
+
+                      
+                      </div>
+
+
+
+            
+            </div>
+     
+        </Typography>    
+
+
+       
+            
+        <Typography gutterBottom sx={{  fontSize: 14 }} style={{position:'absolute',left:'20%',bottom:'7%',color:'white', textAlign: 'center',display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
+          
+          <div style={{display:'flex',alignItems:'flex-start',gap:'5px'}}>
+        <CalendarMonthIcon fontSize='small'/><l>{x.StartDateTime && formatDate(x.StartDateTime.substring(0,10))}</l>
+        </div>
+
+        &nbsp;&nbsp;{!x.Type && <> <LocationPinIcon fontSize='small'/>
+           <l>{ x.Address.slice(x.Address.lastIndexOf(",") + 1).length>7 ? x.Address.slice(x.Address.lastIndexOf(",") + 1):x.Address.slice(x.Address.lastIndexOf(",") + 1) } </l> </>}
+
+
+            {x.Type=="online" && <> <VideoCallIcon fontSize='small'/>
+              <l>Online</l> </>}
+      </Typography>
+      <br></br>
+
+                    
+      
+                 
+
+                            
+
+  
+
+
+
+        <br></br>
+
+        
+
+      <br></br> <br></br>
+      
+      </CardContent>
+    </CardActionArea>
+  </Card>
+   
+  )
+})}
+
+</div>
+    
+
 <div className="events">
 
 {allEvents.length!=0 && city.length!=0 && allEvents.map((x)=>{
@@ -990,8 +1169,8 @@ function Home2() {
 </div>
     
 
-{trendingEvents.length==0 && buttonHight==2 && <h2 style={{color:'white'}}>Trending</h2>}
-{trendingEvents.length!=0 && buttonHight==2 && <h2 style={{color:'white'}}>Trending</h2>}
+{/* {trendingEvents.length==0 && buttonHight==2 && <h2 style={{color:'white'}}>Trending</h2>}
+{trendingEvents.length!=0 && buttonHight==2 && <h2 style={{color:'white'}}>Trending</h2>} */}
 
 <div className="events">
 
@@ -1297,8 +1476,8 @@ function Home2() {
 
 
 
-{allEvents.length==0 && <h2 style={{color:'white'}}>All</h2>}
-{allEvents.length!=0 && <h2 style={{color:'white'}}>All</h2>}
+{/* {allEvents.length==0 && <h2 style={{color:'white'}}>All</h2>}
+{allEvents.length!=0 && <h2 style={{color:'white'}}>All</h2>} */}
 
 <div className="events">
 
