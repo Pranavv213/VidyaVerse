@@ -36,13 +36,14 @@ const Chat = () => {
   const [search,setSearch]=useState('')
   const [showAirdrop,setShowAirdrop]=useState(false)
   const [airdropToArray,setAirdropToArray]=useState([])
+  const [communityToken,setCommunityToken]=useState('')
 
   const scrollRef = useRef(null);
 
 
   const getUsers=async(Participants)=>{
 
-    const data = await getDocs(collection(db, "user"));
+    let data = await getDocs(collection(db, "user"));
                                     
     let users=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
 
@@ -50,6 +51,7 @@ const Chat = () => {
 
     let membersArray1=[]
 
+   
     for(let i=0;i<filteredArray.length;i++)
     {
         if(Participants.includes(filteredArray[i].Email))
@@ -62,7 +64,20 @@ const Chat = () => {
     const arr = new Array(membersArray1.length).fill(true);
     setAirdropToArray(arr)
 
- 
+    data=await getDocs(collection(db, "community"));
+
+    let communities=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+
+    filteredArray=communities.filter(obj=>obj.id==community_id )
+
+    if(filteredArray.length!=0)
+    {
+    
+      console.log(filteredArray)
+      setCommunityToken(filteredArray[0].Token)
+    } 
+
+
    
   }
 
@@ -341,6 +356,7 @@ const Chat = () => {
               
 
               localStorage.setItem("receivers",JSON.stringify(arr))
+              localStorage.setItem('communityToken',communityToken)
               window.location.href="/crypto_group"
 
             }}>Done</Button>

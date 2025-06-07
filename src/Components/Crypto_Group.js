@@ -14,6 +14,17 @@ import backgroundVideo from '../assets/images/eventBackgroundVideo.mp4'
 import { useAccordionButton } from 'react-bootstrap';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { db } from "../firebase-config";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  increment,
+  arrayUnion
+} from "firebase/firestore";
 
 import erc20Abi from '../Contracts/USDCABI.json'
 
@@ -30,12 +41,34 @@ export default function DisperseTokenComponent() {
   const [provider, setProvider] = useState(null);
   const [signer, setSigner] = useState(null);
 
-  const tokenAddress="0x489058E31fAADA526C59561eE858120A816a09C8"
+  const [tokenAddress,setTokenAddress]=useState("0x489058E31fAADA526C59561eE858120A816a09C8")
+  const [tokenSymbol,setTokenSymbol]=useState('USDC')
   const [recipientsText, setRecipientsText] = useState("");
   const [valuesText, setValuesText] = useState("");
 
+
+  const getTokenDetails=async()=>{
+     let data = await getDocs(collection(db, "tokens"));
+                                        
+        let tokens=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    
+        let filteredArray=tokens.filter(obj=>obj.Address==localStorage.getItem('communityToken') )
+
+        console.log(filteredArray)
+
+        if(filteredArray.length!=0)
+        {
+          setTokenSymbol(filteredArray[0].Symbol)
+        }
+
+
+  }
+  
+
       useEffect(()=>{
 
+          
+        getTokenDetails()
         const storedReceivers = localStorage.getItem('receivers');
 
         if (storedReceivers) {
@@ -45,6 +78,8 @@ export default function DisperseTokenComponent() {
 
         const arr = temp.map(item => item?.WalletAddress);
         setReceiversArray(arr);
+
+        setTokenAddress(localStorage.getItem('communityToken'))
         console.log("arr",arr)
         }
        
@@ -147,7 +182,7 @@ export default function DisperseTokenComponent() {
   
 
     {loading==true &&  <Box sx={{position:'absolute', width: '50%' ,top:'40%',left:'25%',zIndex:'9999999999999'}}>
-        <l style={{color:'white',fontSize:'20px'}}>Sending {inputValue} USDC...</l>
+        <l style={{color:'white',fontSize:'20px'}}>Airdropping {inputValue} {tokenSymbol} to each...</l>
         <br></br>
         <br></br> 
       <LinearProgress />
@@ -216,12 +251,10 @@ export default function DisperseTokenComponent() {
                         border: "none",
                       }}
                     >
-                      <option style={{ color: "white" }} value="USDC">
-                        USDC
+                      <option style={{ color: "white" }} value={tokenSymbol}>
+                        {tokenSymbol}
                       </option>
-                      <option style={{ color: "white" }} value="ETH">
-                        ETH
-                      </option>
+                     
                     </select>
                   </label>
                 </div>
@@ -272,7 +305,7 @@ export default function DisperseTokenComponent() {
                       style={{ width: "100%", border: "0.1px solid white" }}
                     />
                     <div style={{ display: "flex", gap: "10px" }}>
-                      <b>Sent {inputValue} USDC</b>
+                      <b>Sent {tokenSymbol}</b>
                       <CheckCircleIcon style={{ color: "green" }} />
                     </div>
                     <div style={{ display: "flex", gap: "10px" }}>
