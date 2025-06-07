@@ -24,6 +24,7 @@ const TokenList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [tokens, setTokens] = useState([]);
+  const [search,setSearch]=useState()
   
   // Contract ABIs
   const routerABI = [
@@ -231,9 +232,88 @@ const TokenList = () => {
             <p style={styles.errorText}>{error}</p>
           </div>
         )}
+       {!loading  && <div style={styles.grid}>
+        <input placeholder='Search Token' style={{borderRadius:'10px',border:'none',height:'2em',width:'12em',fontSize:'12px'}} onChange={(e)=>{
+            setSearch(e.target.value)
+        }}></input>
+        </div>
 
+    }
+        <br></br>
         <div style={styles.grid}>
-          {tokens.length > 0 && tokens.map((token) => (
+  {tokens.length > 0 && search.length>0 &&
+    tokens
+      .filter((token) => {
+        const query = search.toLowerCase().replace(/\s/g, '');
+        const name = token.Name.toLowerCase().replace(/\s/g, '');
+        const symbol = token.Symbol.toLowerCase().replace(/\s/g, '');
+        return name.includes(query) || symbol.includes(query);
+      })
+      .map((token) => (
+        <div 
+          key={token.id} 
+          style={styles.card}
+          className="token-card"
+          onClick={() => {
+            window.location.href = `/tokeninfo/${token.Address}`;
+          }}
+        >
+          <div style={styles.cardHeader}>
+            <div style={styles.tokenSymbol}>{token.Symbol}</div>
+            <div style={styles.tokenAddress}>
+              {token.Address.substring(0, 6)}...{token.Address.substring(token.Address.length - 4)}
+            </div>
+          </div>
+          
+          <div style={styles.priceContainer}>
+            <div style={styles.priceLabel}>PRICE</div>
+            <div style={styles.priceValue}>
+              {token.Price ? `$${token.Price}` : 'Loading...'}
+            </div>
+          </div>
+          
+          <div style={styles.apyContainer}>
+            <div style={styles.apyLabel}>LIQUIDITY</div>
+            <div style={styles.apyValue}>{token.Liquidity}</div>
+          </div>
+          
+          <div style={styles.apyContainer}>
+            <div style={styles.apyLabel}>APY</div>
+            <div style={styles.apyValue}>{token.APY}%</div>
+          </div>
+          
+          <div style={styles.divider}></div>
+          
+          <div style={styles.metaContainer}>
+            <div style={styles.metaItem}>
+              <div style={styles.metaLabel}>Fee Rate</div>
+              <div style={styles.metaValue}>0.25%</div>
+            </div>
+            <div style={styles.metaItem}>
+              <div style={styles.metaLabel}>Volume</div>
+              <div style={styles.metaValue}>Active</div>
+            </div>
+            <div style={styles.metaItem}>
+              <button 
+                style={styles.tradeButton}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.location.href = `/swap/${token.Address}`;
+                }}
+              >
+                Trade
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
+</div>
+
+
+       
+
+       {search.length==0 && <div style={styles.grid}>
+          {tokens.length > 0 &&  tokens.map((token) => (
             <div 
               key={token.id} 
               style={styles.card}
@@ -292,6 +372,7 @@ const TokenList = () => {
             </div>
           ))}
         </div>
+}
       </div>
     </div>
   );
