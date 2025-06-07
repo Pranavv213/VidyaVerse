@@ -841,7 +841,7 @@ function Home2() {
      
      
 <input style={{ width: '100%',
-    maxWidth: '400px',
+    maxWidth: '20em',
     padding: '12px 20px',
     borderRadius: '25px',
     border: '1px solid rgba(108, 99, 255, 0.3)',
