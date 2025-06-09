@@ -872,7 +872,7 @@ function Home2() {
 
 <br></br> <br></br>
 
-{buttonHight==1 && <MoviesComponent allEvents={allMovies} allUsersArray={allUsersArray} search={ search}event_id={event_id} setEvent_id={setEvent_id} getComments={getComments} notifyClipboard={notifyClipboard} formatDate={formatDate}></MoviesComponent>
+{buttonHight==1 && <MoviesComponent allEvents={allMovies} allUsersArray={allUsersArray} search={ search}event_id={event_id} setEvent_id={setEvent_id} getComments={getComments} notifyClipboard={notifyClipboard} formatDate={formatDate} notifyCustom={notifyCustom}></MoviesComponent>
 }
 
 {buttonHight==2 && <EventComponent allEvents={allEvents} allUsersArray={allUsersArray} search={ search}event_id={event_id} setEvent_id={setEvent_id} getComments={getComments} notifyClipboard={notifyClipboard} formatDate={formatDate} Category={"Standup"}></EventComponent> }

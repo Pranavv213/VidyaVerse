@@ -107,7 +107,7 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
                   else if(localStorage.getItem('walletAddress')){
 
                        if (!window.ethereum) {
-                                            alert("MetaMask not detected!");
+                                            window.location.href="https://metamask.io/"
                                             return;
                                           }
                                       
@@ -119,6 +119,7 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
                                             let address
                                        
                                                 provider = new ethers.providers.Web3Provider(window.ethereum);
+                                              
                                                 await provider.send("eth_requestAccounts", []);
                                                 signer = provider.getSigner();
                                                 address = await signer.getAddress();
@@ -159,11 +160,15 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
                                           } } 
                                         
                                         else{
+                                          if (!window.ethereum) {
+                                           window.location.href="https://metamask.io/"
+                                            return;
+                                          }
                                           let provider
                                           let signer
                                           let address
-                                     
-                                              provider = new ethers.providers.Web3Provider(window.ethereum);
+                                          
+                                          provider(window.ethereum);
                                               await provider.send("eth_requestAccounts", []);
                                               signer = provider.getSigner();
                                               address = await signer.getAddress();

@@ -70,7 +70,7 @@ import backgroundVideo from '../assets/images/eventBackgroundVideo.mp4'
 import Badge from 'react-bootstrap/Badge';
 import EventComponent from './EventComponent';
 
-function MoviesComponent({allEvents,allUsersArray,search,setEvent_id,getComments,notifyClipboard,formatDate}) {
+function MoviesComponent({allEvents,allUsersArray,search,setEvent_id,getComments,notifyClipboard,formatDate,notifyCustom}) {
 
     const productionHouses = [
         "Marvel Studios",
@@ -220,7 +220,9 @@ function MoviesComponent({allEvents,allUsersArray,search,setEvent_id,getComments
                    <br></br>
            
                                  
-                   <Button variant='outlined' style={{backgroundColor:'rgb(236,16,52)',color:'white',borderRadius:'20px'}}>Book Tickets</Button>
+                   <Button variant='outlined' style={{backgroundColor:'rgb(236,16,52)',color:'white',borderRadius:'20px'}} onClick={()=>{
+                    notifyCustom("Movies coming soon! Till then checkout standup and concerts")
+                   }}>Book Tickets</Button>
                               
            
                                          
