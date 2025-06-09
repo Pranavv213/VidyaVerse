@@ -192,15 +192,15 @@ const addSpecificImagesToEvents = async () => {
     let a;
     do {
       a = Math.floor(Math.random() * (specificImages.length - 1)) + 1;
-    } while (a === previousIndex); // Repeat if it's the same as the previous
+    } while (a === previousIndex); 
   
-    previousIndex = a; // Update previous index
+    previousIndex = a; 
   
-    // Get the specific image for the current event (or fallback to null if not enough images)
-    const imageUrl = specificImages[a] || null;
+   
+    const imageUrl = specificImages[i%specificImages.length] || null;
   
     const userDoc = doc(db, "events", eventsTemp[i].id);
-    const newFields = { Image: imageUrl };
+    const newFields = { Image: imageUrl, Category:'Standup' };
   
     await updateDoc(userDoc, newFields);
   }
@@ -383,23 +383,127 @@ const addSpecificCategoryToEvents = async () => {
   
   let previousIndex = -1; // Initialize with a value that cannot be a valid index
 
+  const imageUrls = [
+    "https://assets-in.bmscdn.com/discovery-catalog/events/tr:w-400,h-600,bg-CCCCCC:w-400.0,h-660.0,cm-pad_resize,bg-000000,fo-top:l-text,ie-U2F0LCAyNiBKdWw%3D,fs-29,co-FFFFFF,ly-612,lx-24,pa-8_0_0_0,l-end/et00438839-bvfgnglcuw-portrait.jpg",
+    "https://assets-in.bmscdn.com/discovery-catalog/events/tr:w-400,h-600,bg-CCCCCC:w-400.0,h-660.0,cm-pad_resize,bg-000000,fo-top:l-text,ie-U2F0LCAxNCBKdW4%3D,fs-29,co-FFFFFF,ly-612,lx-24,pa-8_0_0_0,l-end/et00441959-rwznwbccqt-portrait.jpg",
+    "https://assets-in.bmscdn.com/discovery-catalog/events/tr:w-400,h-600,bg-CCCCCC:w-400.0,h-660.0,cm-pad_resize,bg-000000,fo-top:l-text,ie-U2F0LCA3IEp1bg%3D%3D,fs-29,co-FFFFFF,ly-612,lx-24,pa-8_0_0_0,l-end/et00392009-jxvnjshmlw-portrait.jpg",
+    "https://assets-in.bmscdn.com/discovery-catalog/events/tr:w-400,h-600,bg-CCCCCC:w-400.0,h-660.0,cm-pad_resize,bg-000000,fo-top:l-text,ie-U3VuLCAxMCBBdWc%3D,fs-29,co-FFFFFF,ly-612,lx-24,pa-8_0_0_0,l-end/et00447081-ndpgfpbfde-portrait.jpg",
+    "https://assets-in.bmscdn.com/discovery-catalog/events/tr:w-400,h-600,bg-CCCCCC:w-400.0,h-660.0,cm-pad_resize,bg-000000,fo-top:l-text,ie-U2F0LCAxMiBKdWw%3D,fs-29,co-FFFFFF,ly-612,lx-24,pa-8_0_0_0,l-end/et00442637-lzkfkjeztp-portrait.jpg"
+  ];
+  
+
   for (let i = 0; i < eventsTemp.length; i++) {
-    let a;
-    do {
-      a = Math.floor(Math.random() * (category.length - 1)) + 1;
-    } while (a === previousIndex); // Repeat if it's the same as the previous
-  
-    previousIndex = a; // Update previous index
-  
-    // Get the specific image for the current event (or fallback to null if not enough images)
-    const name = category[a] || null;
+   
+ 
   
     const userDoc = doc(db, "events", eventsTemp[i].id);
-    const newFields = { Category: name};
+
+    if(imageUrls.includes(eventsTemp[i].Image))
+    {
+      const newFields = { Category: "Concert"};
   
-    await updateDoc(userDoc, newFields);
+      await updateDoc(userDoc, newFields);
+    }
+    else
+    {
+      const newFields = { Category: "Standup"};
+  
+      await updateDoc(userDoc, newFields);
+    }
+    
   }
   
+};
+
+const addMovies=async()=>{
+ 
+
+  const movies = [
+    {
+      Title: "Demented",
+      Image: "https://amc-theatres-res.cloudinary.com/image/upload/c_limit,w_272/f_auto/q_auto/v1744328908/amc-cdn/production/2/movies/79400/79436/PosterDynamic/170735.jpg"
+    },
+    {
+      Title: "The Rituals",
+      Image: "https://amc-theatres-res.cloudinary.com/image/upload/c_limit,w_272/f_auto/q_auto/v1746645734/amc-cdn/production/2/movies/79500/79517/PosterDynamic/171285.jpg"
+    },
+    {
+      Title: "Dan Da Dan",
+      Image: "https://amc-theatres-res.cloudinary.com/image/upload/c_limit,w_272/f_auto/q_auto/v1744041310/amc-cdn/production/2/movies/80000/79957/PosterDynamic/170404.jpg"
+    },
+    {
+      Title: "Bring Her Back",
+      Image: "https://amc-theatres-res.cloudinary.com/image/upload/c_limit,w_272/f_auto/q_auto/v1746826558/amc-cdn/production/2/movies/79500/79459/PosterDynamic/171320.jpg"
+    },
+    {
+      Title: "Mission Impossible",
+      Image: "https://amc-theatres-res.cloudinary.com/image/upload/c_limit,w_272/f_auto/q_auto/v1744040840/amc-cdn/production/2/movies/59500/59505/PosterDynamic/170393.jpg"
+    },
+    {
+      Title: "Lilo and Stitch",
+      Image: "https://amc-theatres-res.cloudinary.com/image/upload/c_limit,w_272/f_auto/q_auto/v1746540045/amc-cdn/production/2/movies/72500/72470/PosterDynamic/171252.jpg"
+    },
+    {
+      Title: "Final Destination",
+      Image: "https://amc-theatres-res.cloudinary.com/image/upload/c_limit,w_272/f_auto/q_auto/v1746755483/amc-cdn/production/2/movies/79000/78990/PosterDynamic/171305.jpg"
+    },
+    {
+      Title: "The Thunderbolts",
+      Image: "https://amc-theatres-res.cloudinary.com/image/upload/c_limit,w_272/f_auto/q_auto/v1746461039/amc-cdn/production/2/movies/67500/67481/PosterDynamic/171249.jpg"
+    },
+    {
+      Title: "Ballerina",
+      Image: "https://amc-theatres-res.cloudinary.com/image/upload/c_limit,w_272/f_auto/q_auto/v1745939726/amc-cdn/production/2/movies/73200/73197/PosterDynamic/171162.jpg"
+    },
+    {
+      Title: "Karate Kid",
+      Image: "https://amc-theatres-res.cloudinary.com/image/upload/c_limit,w_272/f_auto/q_auto/v1729259508/amc-cdn/production/2/movies/71200/71237/PosterDynamic/167674.jpg"
+    },
+    {
+      Title: "Friendship",
+      Image: "https://amc-theatres-res.cloudinary.com/image/upload/c_limit,w_272/f_auto/q_auto/v1740756588/amc-cdn/production/2/movies/79600/79556/PosterDynamic/169946.jpg"
+    },
+    {
+      Title: "The Pheonician Sceme",
+      Image: "https://amc-theatres-res.cloudinary.com/image/upload/c_limit,w_272/f_auto/q_auto/v1748874458/amc-cdn/production/2/movies/79500/79486/PosterDynamic/171620.jpg"
+    }
+  ];
+  // const data = await getDocs(collection(db, "movies"));
+
+  // let moviesTemp = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
+  for(let i=0;i<movies.length;i++)
+  {
+    // let a= Math.floor(Math.random() * (movies.length - 1)) + 1;
+
+    const randomDate = dayjs().subtract(Math.random() * 7 * 24 * 60 * 60 * 1000, 'millisecond').format("YYYY-MM-DD HH:mm:ss");
+
+    // const userDoc = doc(db, "movies", moviesTemp[i].id);
+    // deleteDoc(userDoc)
+
+
+    await addDoc(collection(db, "movies"), { Name:movies[i%movies.length].Title ,Registrations:[],AttendeesCount:0,RegistrationsCount:0,Image:movies[i%movies.length].Image,Timestamp:randomDate,Coins:100 });
+    
+  }
+
+
+
+
+}
+
+const addCreatorToMovies = async () => {
+  const data = await getDocs(collection(db, "movies"));
+
+  let moviesTemp = await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
+  for (let i = 0; i < moviesTemp.length; i++) {
+     
+
+      const userDoc = doc(db, "movies", moviesTemp[i].id);
+      const newFields = { Creator:'events.connectverse@gmail.com'};
+
+      await updateDoc(userDoc, newFields);
+  }
 };
 
 
@@ -436,7 +540,16 @@ const addSpecificCategoryToEvents = async () => {
 <button onClick={()=>{
      addSpecificCategoryToEvents()
       }}>Add Specific category to all events</button>
+      
+      <button onClick={()=>{
+     addMovies()
+      }}>Add Movies</button>
 
+<button onClick={()=>{
+     addCreatorToMovies()
+      }}>Add Creator to Movies</button>
+
+      
 <br></br>
     <a href={twitterUrl} target="_blank" rel="noopener noreferrer">
   <button>Share on LinkedIn</button>
