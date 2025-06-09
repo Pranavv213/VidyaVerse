@@ -540,10 +540,14 @@ export default function DeployConnectVerse() {
     margin: '40px auto',
     padding: '20px',
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-    backgroundColor: 'rgb(24,34,63)',
     boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-    borderRadius: '20px'
-  };
+    borderRadius: '20px',
+	background: 'linear-gradient(145deg, #16152a 0%, #1c1a36 100%)',
+    border: '1px solid rgba(94, 92, 230, 0.15)',
+    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+    cursor: 'pointer',
+    
+  }
 
   const labelStyle = {
     display: 'block',
@@ -602,7 +606,7 @@ export default function DeployConnectVerse() {
   const [btnHover, setBtnHover] = useState(false);
 
   return (
-	<div>
+	<div style={{backgroundColor:'#100E17'}}>
 		<ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="outlined" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined" tokenButtonStyle="contained"/>
 					  <hr></hr>
 					  <br></br><br></br><br></br><br></br>

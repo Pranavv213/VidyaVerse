@@ -233,7 +233,7 @@ const TokenList = () => {
       <br /><br />
       <div style={styles.container}>
         <div style={styles.header}>
-          <h1 style={styles.title}>Token Explorer</h1>
+          <h1 style={styles.title}>IP Token Explorer</h1>
           <div style={styles.subtitle}>Live Token Prices & Analytics</div>
         </div>
 
