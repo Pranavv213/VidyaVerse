@@ -611,7 +611,7 @@ export default function DeployConnectVerse() {
 	
     <div style={containerStyle}>
       <h2 style={headingStyle}>
-        Launch Your Token
+        Launch IP Token
       </h2>
       <br></br>
 
