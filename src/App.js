@@ -46,6 +46,9 @@ import TokenList from './Components/TokenList';
 import Stake from './Components/Stake';
 import MyTokenList from './Components/MyTokenList'
 import Location from './Components/Location'
+import Presale from './Components/Presale';
+
+import PresaleInteraction from './Components/PresaleInteract';
 
 
 
@@ -248,6 +251,18 @@ function App() {
         
         <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
      <Location/>
+    </OktoProvider>} />
+
+    <Route path="/presale" element={
+        
+        <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
+     <Presale/>
+    </OktoProvider>} />
+
+    <Route path="/presaleinteraction" element={
+        
+        <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
+     <PresaleInteraction/>
     </OktoProvider>} />
            
     </Routes>
