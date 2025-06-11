@@ -1110,13 +1110,14 @@ const PresaleInteraction = () => {
   return (
     <div>
       <ResponsiveAppBar 
-        homeButtonStyle="outlined" 
-        earnButtonStyle="outlined" 
-        createButtonStyle="outlined" 
-        chatButtonStyle="contained" 
-        dashboardButtonStyle="outlined" 
-        tokenButtonStyle="outlined"
-      />
+          homeButtonStyle="outlined" 
+          earnButtonStyle="outlined" 
+          createButtonStyle="outlined" 
+          chatButtonStyle="contained" 
+          dashboardButtonStyle="outlined" 
+          tokenButtonStyle="outlined"
+          presaleButtonStyle="contained"
+        />
       <br></br> <br></br> <br></br> <br></br>
       
       <Container>

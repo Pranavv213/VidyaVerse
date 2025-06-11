@@ -49,7 +49,13 @@ function PresaleList() {
 
     return (
         <div >
-            <ResponsiveAppBar />
+            <ResponsiveAppBar   homeButtonStyle="outlined" 
+          earnButtonStyle="outlined" 
+          createButtonStyle="outlined" 
+          chatButtonStyle="outlined" 
+          dashboardButtonStyle="outlined" 
+          tokenButtonStyle="outlined"
+          presaleButtonStyle="contained"/>
             <br></br><br></br><br></br><br></br><br></br><br></br><br></br>
             <div style={{backgroundColor:'rgb(16,14,23)',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
                 <div style={{width:'90%',borderRadius:'20px',color:'white', background: 'linear-gradient(135deg, #0f0e17 0%, #1a1830 100%)',
@@ -71,7 +77,7 @@ function PresaleList() {
                             <p>No active presales available at the moment.</p>
                         </div>
                     ) : (
-                        <div style={{display:'flex',flexDirection:'column',justifyContent:'center',gap:'15px',width:'70%',textAlign: 'center',
+                        <div style={{display:'flex',flexDirection:'column',justifyContent:'center',gap:'15px',width:'60%',textAlign: 'center',
                            
                            }}>
                             {/* Header */}
@@ -85,7 +91,7 @@ function PresaleList() {
                                         <span style={{color:'white',fontSize:'18px'}}><b>{x.Symbol}</b></span>
                                     </div>
                                     <div style={{color: '#6c63ff',
-                                                fontSize: '1.2rem',
+                                                fontSize: '18px',
                                                 fontWeight: '700',}}>
                                        {x.Rate} {x.Symbol} / BNB 
                                     </div>

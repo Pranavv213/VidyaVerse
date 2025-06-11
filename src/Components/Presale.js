@@ -804,6 +804,7 @@ const Presale = () => {
           chatButtonStyle="contained" 
           dashboardButtonStyle="outlined" 
           tokenButtonStyle="outlined"
+          presaleButtonStyle="contained"
         />
         
         <MainContent>

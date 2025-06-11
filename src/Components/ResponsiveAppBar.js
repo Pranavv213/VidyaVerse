@@ -53,7 +53,7 @@ const usersCollectionRef1 = collection(db, "user");
 
 
 
-function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,dashboardButtonStyle,chatButtonStyle,tokenButtonStyle}) {
+function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,dashboardButtonStyle,chatButtonStyle,tokenButtonStyle,presaleButtonStyle}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -291,7 +291,7 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
                 </MenuItem> */}
 
             <MenuItem  onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}><Button variant="outlined" onClick={()=>{
+                  <Typography sx={{ textAlign: 'center' }}><Button variant={presaleButtonStyle ? presaleButtonStyle : "outlined"} onClick={()=>{
                     window.location.href="/presalelist"
                   }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><RocketLaunchIcon fontSize='small'/> <l>Presale</l></div></Button></Typography>
                 </MenuItem>
@@ -336,10 +336,10 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
             window.location.href="/tokenlist"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><ShowChartIcon fontSize='small'/> <l>Trade</l></div></Button>
 
-        <Button variant='outlined' onClick={()=>{
+        <Button variant={presaleButtonStyle ? presaleButtonStyle : "outlined"} onClick={()=>{
             window.location.href="/presalelist"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><GeneratingTokensIcon fontSize='small'/> <l>Presale</l></div></Button>
-            <Button variant='outlined' onClick={()=>{
+            <Button variant="outlined" onClick={()=>{
             window.location.href="/stake"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><GeneratingTokensIcon fontSize='small'/> <l>Stake</l></div></Button>
           
