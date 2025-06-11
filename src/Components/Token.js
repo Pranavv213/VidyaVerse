@@ -526,6 +526,7 @@ export default function DeployConnectVerse() {
 	  await addDoc(usersCollectionRef, {Name: tokenName, Symbol:tokenSymbol, Onwer:userAddress,Address:contract.address,Email:localStorage.getItem('email')});
 
       setContractAddress(contract.address);
+	  window.location.href=`/presale/${contract.address}`
       setStatus("Contract deployed successfully!");
 
 	  

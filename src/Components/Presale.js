@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import styled, { createGlobalStyle } from 'styled-components';
+import ResponsiveAppBar from './ResponsiveAppBar';
+import { useParams } from 'react-router-dom';
 
 // Styled Components
 const GlobalStyle = createGlobalStyle`
@@ -95,7 +97,7 @@ const Main = styled.main`
 
 const Section = styled.section`
   margin-bottom: 3rem;
-  background: #1e1e2d;
+  background:  'linear-gradient(90deg, #9b7fff, #5bd8ff)';
   border-radius: 16px;
   padding: 2rem;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -105,7 +107,7 @@ const Section = styled.section`
 const SectionTitle = styled.h2`
   margin-top: 0;
   margin-bottom: 1.5rem;
-  color: #9a6aff;
+  color: 'linear-gradient(90deg, #9b7fff, #5bd8ff)';
   font-size: 1.5rem;
   position: relative;
   padding-bottom: 0.5rem;
@@ -117,7 +119,7 @@ const SectionTitle = styled.h2`
     left: 0;
     width: 60px;
     height: 3px;
-    background: linear-gradient(to right, #6e3ffd, #00ffaa);
+    background:  background: 'linear-gradient(90deg, #9b7fff, #5bd8ff)';
     border-radius: 3px;
   }
 `;
@@ -232,6 +234,8 @@ const Footer = styled.footer`
 
 // Main Component
 const Presale = () => {
+
+  const {token_address}=useParams()
   const [provider, setProvider] = useState(null);
   const [signer, setSigner] = useState(null);
   const [account, setAccount] = useState('');
@@ -239,7 +243,7 @@ const Presale = () => {
   const [presaleAddress, setPresaleAddress] = useState('');
   const [balance, setBalance] = useState('0');
   const [presaleParams, setPresaleParams] = useState({
-    tokenAddress: '',
+    tokenAddress: token_address,
     tokenRate: '1000',
     durationDays: '7',
    
@@ -650,6 +654,11 @@ const bytecode="608060405234801561000f575f5ffd5b50604051612012380380612012833981
       setProvider(ethersProvider);
       setSigner(signer);
       setAccount(address);
+      if(address!=localStorage.getItem('walletAddress'))
+      {
+        alert('Wallet address does not match')
+        return;
+      }
       fetchBalance(ethersProvider, address);
 
       window.ethereum.on('accountsChanged', handleAccountsChanged);
@@ -701,7 +710,7 @@ const bytecode="608060405234801561000f575f5ffd5b50604051612012380380612012833981
 
       setPresaleAddress(contract.address);
       setContract(contract);
-      alert(`Presale deployed at: ${contract.address}`);
+      window.location.href=`/presaleinteraction/${contract.address}`
     } catch (error) {
       console.error("Deployment failed:", error);
       alert(`Deployment failed: ${error.message}`);
@@ -736,35 +745,24 @@ const bytecode="608060405234801561000f575f5ffd5b50604051612012380380612012833981
 
   useEffect(() => {
     connectWallet()
-    return () => {
-      if (window.ethereum) {
-        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
-        window.ethereum.removeListener('chainChanged', handleChainChanged);
-      }
-    };
+    
+
   }, []);
 
   return (
     <>
+    <ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="outlined" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined" tokenButtonStyle="outlined"/>
+                          <hr></hr>
+                          <br></br><br></br><br></br><br></br>
+                  
+                         <br></br>
       <GlobalStyle />
       <Container>
-        <Header>
-          <Title>Token Presale DApp</Title>
-          {!account ? (
-            <ConnectButton onClick={connectWallet}>
-              <span>🦊</span> Connect MetaMask
-            </ConnectButton>
-          ) : (
-            <WalletInfo>
-              <Balance>{parseFloat(balance).toFixed(4)} ETH</Balance>
-              <Address>{`${account.substring(0, 6)}...${account.substring(38)}`}</Address>
-            </WalletInfo>
-          )}
-        </Header>
+        
 
         <Main>
           <Section>
-            <SectionTitle>Deploy Presale Contract</SectionTitle>
+            <SectionTitle >Lauch Presale for your IP Token</SectionTitle>
             <FormGrid>
               {Object.entries(presaleParams).map(([key, value]) => (
                 <FormGroup key={key}>
@@ -802,36 +800,11 @@ const bytecode="608060405234801561000f575f5ffd5b50604051612012380380612012833981
             )}
           </Section>
 
-          {contract && (
-            <Section>
-              <SectionTitle>Interact with Presale</SectionTitle>
-              <ActionCard>
-                <h3>Buy Tokens</h3>
-                <InputGroup>
-                  <Input
-                    type="number"
-                    placeholder="ETH amount"
-                    id="buyAmount"
-                    step="0.01"
-                    min={presaleParams.minDeposit}
-                    max={presaleParams.maxDeposit}
-                  />
-                  <ActionButton
-                    onClick={() => {
-                      const amount = document.getElementById('buyAmount').value;
-                      if (amount) buyTokens(amount);
-                    }}
-                  >
-                    Buy Tokens
-                  </ActionButton>
-                </InputGroup>
-              </ActionCard>
-            </Section>
-          )}
+         
         </Main>
 
         <Footer>
-          <p>Token Presale DApp - Direct MetaMask Integration</p>
+          <p>Note: Presale begins from the time of creation. Scheduling feature coming soon!</p>
         </Footer>
       </Container>
     </>

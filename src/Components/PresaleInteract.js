@@ -1,34 +1,66 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ethers } from 'ethers';
-import styled from 'styled-components';
-import tokenABI from '../Contracts/CONABI.json'
+import styled, { keyframes } from 'styled-components';
+import tokenABI from '../Contracts/CONABI.json';
+import { useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
+import ResponsiveAppBar from './ResponsiveAppBar';
 
-// Reuse the styled components from the previous component (or import them)
+const gradientAnimation = keyframes`
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+`;
+
+const pulseAnimation = keyframes`
+  0% { box-shadow: 0 0 0 0 rgba(138, 43, 226, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(138, 43, 226, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(138, 43, 226, 0); }
+`;
+
+// Styled components with Web3 aesthetic
 const Container = styled.div`
-  max-width: 800px;
+  max-width: 900px;
   margin: 2rem auto;
-  background: #1e1e2d;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  border: 1px solid #4b2d99;
+  background: rgba(30, 30, 45, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(154, 106, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(154, 106, 255, 0.1) 0%, rgba(154, 106, 255, 0) 70%);
+    z-index: -1;
+  }
 `;
 
 const Title = styled.h2`
   margin-top: 0;
-  color: #9a6aff;
-  font-size: 1.5rem;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
   position: relative;
-  padding-bottom: 0.5rem;
-
+  padding-bottom: 1rem;
+  text-shadow: 0 0 10px rgba(154, 106, 255, 0.5);
+  
   &::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(to right, #6e3ffd, #00ffaa);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(to right, #9a6aff, #00ffaa);
     border-radius: 3px;
   }
 `;
@@ -37,22 +69,29 @@ const InputGroup = styled.div`
   display: flex;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  align-items: center;
 `;
 
 const Input = styled.input`
   flex: 1;
-  padding: 0.8rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #2a2a3d;
-  background: #12121a;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(154, 106, 255, 0.3);
+  background: rgba(18, 18, 26, 0.7);
   color: #e0e0ff;
   font-size: 1rem;
   transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
 
   &:focus {
     outline: none;
-    border-color: #6e3ffd;
-    box-shadow: 0 0 0 2px rgba(110, 63, 253, 0.3);
+    border-color: #9a6aff;
+    box-shadow: 0 0 0 2px rgba(154, 106, 255, 0.3);
+    background: rgba(18, 18, 26, 0.9);
+  }
+
+  &::placeholder {
+    color: rgba(224, 224, 255, 0.5);
   }
 `;
 
@@ -60,79 +99,180 @@ const Button = styled.button`
   background: linear-gradient(135deg, #6e3ffd 0%, #9a6aff 100%);
   color: white;
   border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
+  padding: 1rem 2rem;
+  border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 20px rgba(154, 106, 255, 0.4);
   }
 
   &:disabled {
-    background: #2a2a3d;
-    color: #b8b8d6;
+    background: rgba(42, 42, 61, 0.7);
+    color: rgba(184, 184, 214, 0.5);
     cursor: not-allowed;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #9a6aff 0%, #00ffaa 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+
+  &:hover::before {
+    opacity: 1;
   }
 `;
 
 const InfoCard = styled.div`
-  background: #2a2a3d;
-  border-radius: 12px;
+  background: rgba(42, 42, 61, 0.5);
+  border-radius: 16px;
   padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  border: 1px solid #4b2d99;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(154, 106, 255, 0.2);
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    border-color: rgba(154, 106, 255, 0.4);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  h3 {
+    margin-top: 0;
+    color: #9a6aff;
+    font-size: 1.3rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #9a6aff;
+      margin-right: 0.8rem;
+      box-shadow: 0 0 10px #9a6aff;
+    }
+  }
 `;
 
 const InfoGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 `;
 
 const InfoItem = styled.div`
-  background: rgba(110, 63, 253, 0.1);
-  padding: 1rem;
-  border-radius: 8px;
-  border: 1px solid rgba(110, 63, 253, 0.3);
+  background: rgba(110, 63, 253, 0.15);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(154, 106, 255, 0.2);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: rgba(154, 106, 255, 0.4);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const InfoLabel = styled.div`
   font-size: 0.8rem;
   color: #b8b8d6;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  font-weight: 500;
 `;
 
 const InfoValue = styled.div`
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  color: #e0e0ff;
+  color: #fff;
   word-break: break-all;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
 `;
 
 const ActionGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-top: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
 `;
 
 const ErrorMessage = styled.div`
   color: #ff4d4d;
-  background: rgba(255, 77, 77, 0.1);
-  padding: 1rem;
-  border-radius: 8px;
-  margin-top: 1rem;
+  background: rgba(255, 77, 77, 0.15);
+  padding: 1.2rem;
+  border-radius: 12px;
+  margin: 1.5rem 0;
   border: 1px solid rgba(255, 77, 77, 0.3);
+  backdrop-filter: blur(5px);
+  animation: ${pulseAnimation} 2s infinite;
 `;
 
-// Presale ABI (simplified example - replace with your actual ABI)
-const PRESALE_ABI = [
+const WalletAddress = styled.div`
+  background: rgba(154, 106, 255, 0.1);
+  padding: 0.8rem 1.2rem;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(154, 106, 255, 0.2);
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #9a6aff;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00ffaa;
+    margin-right: 0.8rem;
+    box-shadow: 0 0 8px #00ffaa;
+  }
+`;
+
+const LoadingIndicator = styled.div`
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(154, 106, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #9a6aff;
+  animation: spin 1s ease-in-out infinite;
+  margin-left: 10px;
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+`;
+// Presale ABI (same as before)
+const PRESALE_ABI  = [
 	{
 		"inputs": [],
 		"name": "buyTokens",
@@ -517,9 +657,8 @@ const PRESALE_ABI = [
 ]
 
 
-
 const PresaleInteraction = () => {
-  const [contractAddress, setContractAddress] = useState('');
+  const { contract_address } = useParams();
   const [provider, setProvider] = useState(null);
   const [signer, setSigner] = useState(null);
   const [account, setAccount] = useState('');
@@ -528,276 +667,156 @@ const PresaleInteraction = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [ethAmount, setEthAmount] = useState('');
-  const [tokenAmount,setTokenAmount]=useState('')
+  const [tokenAmount, setTokenAmount] = useState('');
+  const [isProcessing,setIsProcessing]=useState('Deposit IP Tokens')
+  const [isProcessing1,setIsProcessing1]=useState('Buy IP Tokens')
 
-
-  useEffect(()=>{
-
-    connectWallet()
-
-  },[])
-
-  // Connect to wallet
-  const connectWallet = async () => {
-    if (!window.ethereum) {
-      setError('Please install MetaMask!');
-      return;
-    }
-
-    try {
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
-      const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = ethersProvider.getSigner();
-      const address = await signer.getAddress();
-
-      setProvider(ethersProvider);
-      setSigner(signer);
-      setAccount(address);
-      setError('');
-    } catch (err) {
-      setError('Failed to connect wallet: ' + err.message);
-    }
-  };
-
-  // Load contract
-  const loadContract = async () => {
-    if (!ethers.utils.isAddress(contractAddress)) {
-      setError('Invalid contract address');
-      return;
-    }
-
-    setLoading(true);
-    setError('');
-
-    try {
-      if (!provider) {
-        await connectWallet();
+  useEffect(() => {
+    const connectWallet = async () => {
+      if (!window.ethereum) {
+        setError('Please install MetaMask!');
+        return;
       }
 
-      const presaleContract = new ethers.Contract(
-        contractAddress,
-        PRESALE_ABI,
-        signer || provider
-      );
+      try {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = ethersProvider.getSigner();
+        const address = await signer.getAddress();
 
-      // Fetch presale details
-      const [
-        tokenAddress,
-        tokenRate,
-        
-        hardCap,
-        owner,
-       
-        endTime
-      ] = await Promise.all([
-        presaleContract.token(),
-        presaleContract.rate(),
-        presaleContract.hardCap(),
-        
-        presaleContract.getOwner(),
-       
-       
-        presaleContract.endTime()
-      ]);
+        setProvider(ethersProvider);
+        setSigner(signer);
+        setAccount(address);
+        setError('');
+      } catch (err) {
+        setError('Failed to connect wallet: ' + err.message);
+      }
+    };
 
-      console.log("owner",owner)
+    connectWallet();
+  }, []);
 
-      setPresaleInfo({
-        tokenAddress,
-        tokenRate: ethers.utils.formatEther(tokenRate),
+  // Load contract after signer is set
+  useEffect(() => {
+    const loadContract = async () => {
+      if (!signer || !ethers.utils.isAddress(contract_address)) return;
+
+      setLoading(true);
+      try {
+        const presaleContract = new ethers.Contract(contract_address, PRESALE_ABI, signer);
+
+        // Fetch contract details
+        const [tokenAddress, owner, endTime, hardCap, tokenRate] = await Promise.all([
+          presaleContract.token(),
+          presaleContract.getOwner(),
+          presaleContract.endTime(),
+          presaleContract.hardCap(),
+          presaleContract.rate()
+        ]);
+        
+        // Set contract for future usage
+        setContract(presaleContract);
        
-        hardCap: ethers.utils.formatEther(hardCap),
         
+        // Format and store the results
+        const details = {
+          tokenAddress,
+          owner,
+          endTime:  dayjs.unix(endTime.toString()).format('DD/MM/YYYY HH:mm:ss'), // Convert BigNumber to Date
+          hardCap: hardCap.toString(),
+          tokenRate: tokenRate.toString()
+        };
         
-        endTime: new Date(endTime * 1000).toLocaleString(),
-        isEnded: Date.now() > endTime * 1000,
-        owner
+        console.log(details);
+        
+      
+
+        setPresaleInfo(details);
+        setError('');
+      } catch (err) {
+        setError('Failed to load contract: ' + err.message);
+      } 
+    };
+
+    loadContract();
+  }, [signer, contract_address]);
+
+  const handleBuyTokens = async () => {
+    if (!contract || !ethAmount) return;
+    try {
+      const tx = await contract.buyTokens({
+        value: ethers.utils.parseEther(ethAmount.toString())
       });
 
-      setContract(presaleContract);
+      setIsProcessing1('Buying IP Tokens.....');
+      await tx.wait();
+      setIsProcessing1('Buy Successful!');
     } catch (err) {
-      setError('Failed to load contract: ' + err.message);
-      setPresaleInfo(null);
-    } finally {
-      setLoading(false);
+      setError('Failed to buy tokens: ' + err.message);
     }
   };
-  function formatForEthers(amount) {
-    // 1. Convert to string if it isn't
-    let amountStr = amount.toString();
-    
-    // 2. Remove all commas and whitespace
-    amountStr = amountStr.replace(/,|\s/g, '');
-    
-    // 3. Handle scientific notation (e.g., 1e18)
-    if (/e/i.test(amountStr)) {
-      amountStr = Number(amountStr).toFixed(18).replace(/\.?0+$/, '');
-    }
-    
-    // 4. Ensure proper decimal format
-    if (amountStr === '.') amountStr = '0';
-    if (amountStr.startsWith('.')) amountStr = `0${amountStr}`;
-    if (amountStr.endsWith('.')) amountStr = amountStr.slice(0, -1);
-    
-    // 5. Final validation
-    if (!/^\d+\.?\d*$/.test(amountStr)) {
-      throw new Error(`Invalid number format: ${amountStr}`);
-    }
-    
-    return amountStr;
-  }
-  // Buy tokens
-  async function handleBuyTokens() {
 
-    const amountInEth=ethAmount
-    if (!window.ethereum) {
-      throw new Error("MetaMask is not installed");
-    }
-  
-    try {
-      // Connect provider and signer
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      await provider.send("eth_requestAccounts", []); // Prompt wallet connection
-     
-  
-     
-      
-  
-      // Send transaction with ETH
-      const tx = await contract.buyTokens({
-        value: ethers.utils.parseEther(amountInEth.toString())
-      });
-  
-      console.log(`Transaction sent: ${tx.hash}`);
-  
-      const receipt = await tx.wait();
-      console.log("Transaction confirmed:", receipt.transactionHash);
-    } catch (error) {
-      console.error("Transaction failed:", error);
-    }
-  }
-  // Deposit Tokens
-  async function handleDepositTokens() {
-    try {
+  const handleDepositTokens = async () => {
+    if (!signer || !presaleInfo?.tokenAddress || !tokenAmount) return;
 
-        const amountStr=tokenAmount
-      if (!window.ethereum) throw new Error("MetaMask not detected");
-  
-      // Connect wallet
-      await window.ethereum.request({ method: "eth_requestAccounts" });
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-  
-      // Convert amount to smallest unit
-      const amount = ethers.utils.parseUnits(amountStr, 18); // Adjust decimals if not 18
-  
-      // Contract instances
-     
+    try {
       const token = new ethers.Contract(presaleInfo.tokenAddress, tokenABI, signer);
       const userAddress = await signer.getAddress();
-  
-      // Check current allowance
-      const allowance = await token.allowance(userAddress, contractAddress);
-  
-      // If not approved, approve first
+      const amount = ethers.utils.parseUnits(tokenAmount, 18);
+
+      const allowance = await token.allowance(userAddress, contract_address);
+
       if (allowance.lt(amount)) {
-        console.log("Approving token...");
-        const approveTx = await token.approve(contractAddress, amount);
+        setIsProcessing('Approving IP Token.....');
+        const approveTx = await token.approve(contract_address, amount);
         await approveTx.wait();
-        console.log("Token approved");
-      } else {
-        console.log("Sufficient allowance already granted");
       }
-  
-      // Call depositTokens
-      console.log("Calling depositTokens...");
+
+      setIsProcessing('Depositing IP Tokens.....');
       const tx = await contract.depositTokens(amount);
       await tx.wait();
-      console.log("Deposit successful!");
+      setIsProcessing('Deposit Successful!');
     } catch (err) {
-      console.error("Error during deposit:", err);
-    }
-  }
- 
-  // Claim tokens
-  const handleClaimTokens = async () => {
-    if (!contract) return;
-
-    setLoading(true);
-    setError('');
-
-    try {
-      const tx = await contract.claimTokens();
-      await tx.wait();
-    } catch (err) {
-      setError('Failed to claim tokens: ' + err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Get refund
-  const handleGetRefund = async () => {
-    if (!contract) return;
-
-    setLoading(true);
-    setError('');
-
-    try {
-      const tx = await contract.getRefund();
-      await tx.wait();
-    } catch (err) {
-      setError('Failed to get refund: ' + err.message);
-    } finally {
-      setLoading(false);
+      setError('Failed to deposit tokens: ' + err.message);
     }
   };
 
   return (
-    <Container>
-      <Title>Presale Contract Interaction</Title>
+    <div>
+         <ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="outlined" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined" tokenButtonStyle="outlined"/>
+                          <hr></hr>
+                          <br></br><br></br><br></br><br></br>
+                  
+                         <br></br>
+    {contract_address && <Container>
+      <Title>PRESALE DASHBOARD</Title>
       
-      {!account ? (
-        <Button onClick={connectWallet}>Connect Wallet</Button>
-      ) : (
-        <div style={{ marginBottom: '1rem', color: '#00ffaa' }}>
-          Connected: {`${account.substring(0, 6)}...${account.substring(38)}`}
-        </div>
-      )}
-
-      <InputGroup>
-        <Input
-          type="text"
-          placeholder="Enter Presale Contract Address"
-          value={contractAddress}
-          onChange={(e) => setContractAddress(e.target.value)}
-        />
-        <Button 
-          onClick={loadContract}
-          disabled={!contractAddress || loading}
-        >
-          {loading ? 'Loading...' : 'Load Contract'}
-        </Button>
-      </InputGroup>
+      {account &&
+        <WalletAddress>
+          {`${account.substring(0, 6)}...${account.substring(38)}`}
+        </WalletAddress>
+      }
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
       {presaleInfo && (
         <>
+       
           <InfoCard>
-            <h3>Presale Details</h3>
+            <h3>PRESALE DETAILS</h3>
             <InfoGrid>
               <InfoItem>
                 <InfoLabel>Token Address</InfoLabel>
-                <InfoValue>{presaleInfo.tokenAddress}</InfoValue>
+                <InfoValue>{presaleInfo.tokenAddress.substring(0, 6)}...{presaleInfo.tokenAddress.substring(presaleInfo.tokenAddress.length - 4)}</InfoValue>
               </InfoItem>
               <InfoItem>
                 <InfoLabel>Token Rate</InfoLabel>
                 <InfoValue>{presaleInfo.tokenRate} tokens/ETH</InfoValue>
               </InfoItem>
-             
-              
-              
+              <InfoItem>
+                <InfoLabel>Hard Cap</InfoLabel>
+                <InfoValue>{presaleInfo.hardCap} ETH</InfoValue>
+              </InfoItem>
               <InfoItem>
                 <InfoLabel>End Time</InfoLabel>
                 <InfoValue>{presaleInfo.endTime}</InfoValue>
@@ -806,61 +825,50 @@ const PresaleInteraction = () => {
           </InfoCard>
 
           <InfoCard>
-            <h3>Participate in Presale</h3>
-            {account==presaleInfo.owner && 
-            <InputGroup>
-            <Input
-              type="number"
-              placeholder="Token amount"
-              value={tokenAmount}
-              onChange={(e) => setTokenAmount(e.target.value)}
-             
-            />
-            <Button
-              onClick={handleDepositTokens}
-              disabled={!tokenAmount || loading}
-            >
-              Deposit Tokens
-            </Button>
-          </InputGroup>}
+            <h3>PARTICIPATE</h3>
+            {account === presaleInfo.owner && 
+              <InputGroup>
+                <Input
+                  type="number"
+                  placeholder="Token amount to deposit"
+                  value={tokenAmount}
+                  onChange={(e) => setTokenAmount(e.target.value)}
+                />
+                <Button
+                  onClick={handleDepositTokens}
+                  
+                >
+                  {isProcessing}
+                </Button>
+              </InputGroup>
+            }
             
             <InputGroup>
               <Input
                 type="number"
-                placeholder="ETH amount"
+                placeholder="ETH amount to invest"
                 value={ethAmount}
                 onChange={(e) => setEthAmount(e.target.value)}
-                min={presaleInfo.minDeposit}
-                max={presaleInfo.maxDeposit}
               />
               <Button
                 onClick={handleBuyTokens}
-                disabled={!ethAmount || loading}
+               
               >
-                Buy Tokens
+                {isProcessing1}
               </Button>
             </InputGroup>
-            
           </InfoCard>
 
-          <ActionGrid>
-            <Button
-              onClick={handleClaimTokens}
-              disabled={loading || !presaleInfo.isEnded}
-            >
-              Claim Tokens
-            </Button>
-            <Button
-              onClick={handleGetRefund}
-              disabled={loading || !presaleInfo.isEnded}
-            >
-              Get Refund
-            </Button>
-          </ActionGrid>
+        
         </>
       )}
     </Container>
+    }
+    </div>
   );
 };
 
 export default PresaleInteraction;
+
+
+

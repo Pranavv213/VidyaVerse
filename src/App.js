@@ -253,13 +253,13 @@ function App() {
      <Location/>
     </OktoProvider>} />
 
-    <Route path="/presale" element={
+    <Route path="/presale/:token_address" element={
         
         <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
      <Presale/>
     </OktoProvider>} />
 
-    <Route path="/presaleinteraction" element={
+    <Route path="/presaleinteraction/:contract_address" element={
         
         <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
      <PresaleInteraction/>
