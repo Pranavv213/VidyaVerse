@@ -56,9 +56,9 @@ function PresaleList() {
           dashboardButtonStyle="outlined" 
           tokenButtonStyle="outlined"
           presaleButtonStyle="contained"/>
-            <br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+            <br></br><br></br><br></br><br></br>
             <div style={{backgroundColor:'rgb(16,14,23)',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
-                <div style={{width:'90%',borderRadius:'20px',color:'white', background: 'linear-gradient(135deg, #0f0e17 0%, #1a1830 100%)',
+                <div style={{width:'90%',borderRadius:'20px',color:'white',
                             borderRadius: '16px',
                            
                             boxShadow: '0 4px 30px rgba(94, 92, 230, 0.1)',padding:'1em'}}>
