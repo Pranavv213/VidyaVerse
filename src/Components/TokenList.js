@@ -274,42 +274,35 @@ const TokenList = () => {
                   window.location.href = `/tokeninfo/${token.Address}`
                 }}
               >
-                <div style={styles.cardHeader}>
-                  <div style={styles.tokenSymbol}>{token.Symbol}</div>
-                  <div style={styles.tokenAddress}>
-                    {token.Address.substring(0, 6)}...{token.Address.substring(token.Address.length - 4)}
+                <div style={styles.cardContent}>
+                  <div style={styles.cardLeft}>
+                    {token.ImageUrl && <img src={token.ImageUrl} style={styles.tokenImage} alt={token.Symbol} />}
+                    <div style={styles.tokenInfo}>
+                      <div style={styles.tokenSymbol}>{token.Symbol}</div>
+                      <div style={styles.tokenAddress}>
+                        {token.Address.substring(0, 6)}...{token.Address.substring(token.Address.length - 4)}
+                      </div>
+                    </div>
                   </div>
-                </div>
-                
-                <div style={styles.priceContainer}>
-                  <div style={styles.priceLabel}>PRICE</div>
-                  <div style={styles.priceValue}>
-                    {token.Price ? `$${token.Price}` : 'Loading...'}
-                  </div>
-                </div>
-                
-                <div style={styles.apyContainer}>
-                  <div style={styles.apyLabel}>LIQUIDITY</div>
-                  <div style={styles.apyValue}>{token.Liquidity}</div>
-                </div>
-                
-                <div style={styles.apyContainer}>
-                  <div style={styles.apyLabel}>APY</div>
-                  <div style={styles.apyValue}>{token.APY}%</div>
-                </div>
-                
-                <div style={styles.divider}></div>
-                
-                <div style={styles.metaContainer}>
-                  <div style={styles.metaItem}>
-                    <div style={styles.metaLabel}>Fee Rate</div>
-                    <div style={styles.metaValue}>0.25%</div>
-                  </div>
-                  <div style={styles.metaItem}>
-                    <div style={styles.metaLabel}>Volume</div>
-                    <div style={styles.metaValue}>Active</div>
-                  </div>
-                  <div style={styles.metaItem}>
+                  
+                  <div style={styles.cardRight}>
+                    <div style={styles.priceContainer}>
+                      <div style={styles.priceLabel}>PRICE</div>
+                      <div style={styles.priceValue}>
+                        {token.Price ? `$${token.Price}` : 'Loading...'}
+                      </div>
+                    </div>
+                    
+                    <div style={styles.apyContainer}>
+                      <div style={styles.apyLabel}>LIQUIDITY</div>
+                      <div style={styles.apyValue}>{token.Liquidity}</div>
+                    </div>
+                    
+                    <div style={styles.apyContainer}>
+                      <div style={styles.apyLabel}>APY</div>
+                      <div style={styles.apyValue}>{token.APY}%</div>
+                    </div>
+                    
                     <button 
                       style={styles.tradeButton}
                       onClick={(e) => {
@@ -392,115 +385,109 @@ const styles = {
     }
   },
   grid: {
-    display: 'flex',
-    gap: '25px',
+    display: 'grid',
+    gap: '15px',
     maxWidth: '1400px',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
     margin: '0 auto',
   },
   card: {
     background: 'linear-gradient(145deg, #16152a 0%, #1c1a36 100%)',
     borderRadius: '16px',
-    padding: '25px',
+    padding: '20px',
     border: '1px solid rgba(94, 92, 230, 0.15)',
     boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
     transition: 'all 0.3s ease',
-    width: '300px',
     cursor: 'pointer',
     '&:hover': {
-      transform: 'translateY(-5px)',
+      transform: 'translateY(-3px)',
       boxShadow: '0 15px 35px rgba(108, 99, 255, 0.3)',
     }
   },
-  cardHeader: {
+  cardContent: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '20px',
+    width: '100%',
+  },
+  cardLeft: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '15px',
+    flex: 1,
+  },
+  cardRight: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '30px',
+  },
+  tokenImage: {
+    width: '40px',
+    height: '40px',
+    objectFit: 'cover',
+    borderRadius: '50%',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+  },
+  tokenInfo: {
+    display: 'flex',
+    flexDirection: 'column',
   },
   tokenSymbol: {
     color: '#fffffe',
-    fontSize: '1.8rem',
+    fontSize: '1.2rem',
     fontWeight: '700',
-    letterSpacing: '1px',
+    marginBottom: '4px',
   },
   tokenAddress: {
     color: '#4fc3f7',
     fontSize: '0.75rem',
     backgroundColor: 'rgba(79, 195, 247, 0.1)',
-    padding: '4px 8px',
-    borderRadius: '12px',
+    padding: '3px 6px',
+    borderRadius: '8px',
     fontFamily: 'monospace',
   },
   priceContainer: {
-    marginBottom: '15px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
   },
   priceLabel: {
     color: '#a7a9be',
-    fontSize: '0.9rem',
+    fontSize: '0.8rem',
     textTransform: 'uppercase',
-    letterSpacing: '1px',
-    marginBottom: '5px',
+    marginBottom: '4px',
   },
   priceValue: {
     color: '#6c63ff',
-    fontSize: '2.2rem',
-    fontWeight: '800',
-    textShadow: '0 0 10px rgba(108, 99, 255, 0.4)',
+    fontSize: '1.2rem',
+    fontWeight: '700',
   },
   apyContainer: {
     display: 'flex',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
     alignItems: 'center',
-    marginBottom: '10px',
-    padding: '8px 12px',
-    backgroundColor: 'rgba(108, 99, 255, 0.1)',
-    borderRadius: '12px',
+    minWidth: '100px',
   },
   apyLabel: {
     color: '#a7a9be',
-    fontSize: '0.9rem',
-    fontWeight: '600',
+    fontSize: '0.8rem',
+    textTransform: 'uppercase',
+    marginBottom: '4px',
   },
   apyValue: {
     color: '#4fc3f7',
-    fontSize: '1.1rem',
-    fontWeight: '700',
-    textShadow: '0 0 8px rgba(79, 195, 247, 0.5)',
-  },
-  divider: {
-    height: '1px',
-    background: 'linear-gradient(90deg, transparent, rgba(108, 99, 255, 0.5), transparent)',
-    margin: '20px 0',
-  },
-  metaContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  metaItem: {
-    textAlign: 'center',
-    flex: 1,
-  },
-  metaLabel: {
-    color: '#a7a9be',
-    fontSize: '0.8rem',
-    marginBottom: '4px',
-    textTransform: 'uppercase',
-  },
-  metaValue: {
-    color: '#fffffe',
     fontSize: '1rem',
-    fontWeight: '600',
+    fontWeight: '700',
   },
   tradeButton: {
     background: 'transparent',
     border: '1px solid #4fc3f7',
     color: '#4fc3f7',
-    borderRadius: '10px',
-    padding: '6px 12px',
+    borderRadius: '8px',
+    padding: '8px 16px',
     cursor: 'pointer',
     transition: 'all 0.2s ease',
+    fontWeight: '600',
+    fontSize: '0.9rem',
     '&:hover': {
       background: 'rgba(79, 195, 247, 0.1)',
     }
@@ -550,7 +537,6 @@ const styles = {
     textAlign: 'center',
     width: '100%',
     padding: '40px',
-    gridColumn: '1 / -1',
   },
 };
 

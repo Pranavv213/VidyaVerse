@@ -21,7 +21,7 @@ const SwapContainer = styled.div`
   max-width: 450px;
   margin: 40px auto;
   padding: 30px;
-  background: linear-gradient(145deg, #1e2a4a, #0d1429);
+  background: rgb(21,23,50);
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -178,7 +178,11 @@ const InfoValue = styled.span`
   color: #e0e0ff;
   font-weight: 500;
 `;
-
+const Background = styled.div`
+  background: radial-gradient(circle at 10% 20%, rgba(22, 21, 42, 0.8) 0%, #100e17 60%);
+  min-height: 100vh;
+  padding: 2rem;
+`;
 const TokenSwap = () => {
 
   const {token_address}=useParams()
@@ -392,7 +396,7 @@ const TokenSwap = () => {
   }, [tokenAddress, amount, swapDirection]);
 
   return (
-    <div>
+    <Background>
       <br></br>
         <ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="contained" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined"/>
         <hr></hr>
@@ -420,11 +424,7 @@ const TokenSwap = () => {
      
     <SwapContainer>
       
-        <center>
-      <Header>
-        <Title>Artist Token Swap</Title>
-      </Header>
-      </center>
+        
       
       <SwapForm>
         <InputGroup>
@@ -534,7 +534,7 @@ const TokenSwap = () => {
     
          
     
-    </div>
+    </Background>
   );
 };
 

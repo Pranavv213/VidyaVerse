@@ -292,7 +292,7 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
 
             <MenuItem  onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}><Button variant="outlined" onClick={()=>{
-                    window.location.href="/presale"
+                    window.location.href="/presalelist"
                   }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><RocketLaunchIcon fontSize='small'/> <l>Presale</l></div></Button></Typography>
                 </MenuItem>
             
@@ -337,7 +337,7 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><ShowChartIcon fontSize='small'/> <l>Trade</l></div></Button>
 
         <Button variant='outlined' onClick={()=>{
-            window.location.href="/presale"
+            window.location.href="/presalelist"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><GeneratingTokensIcon fontSize='small'/> <l>Presale</l></div></Button>
             <Button variant='outlined' onClick={()=>{
             window.location.href="/stake"

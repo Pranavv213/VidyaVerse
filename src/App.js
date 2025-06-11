@@ -49,6 +49,7 @@ import Location from './Components/Location'
 import Presale from './Components/Presale';
 
 import PresaleInteraction from './Components/PresaleInteract';
+import PresaleList from './Components/PresaleList';
 
 
 
@@ -263,6 +264,12 @@ function App() {
         
         <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
      <PresaleInteraction/>
+    </OktoProvider>} />
+
+    <Route path="/presalelist" element={
+        
+        <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
+     <PresaleList/>
     </OktoProvider>} />
            
     </Routes>

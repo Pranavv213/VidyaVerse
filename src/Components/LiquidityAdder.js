@@ -377,7 +377,7 @@ const AddLiquidity = () => {
     margin: '40px auto',
     padding: '20px',
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-    backgroundColor: 'rgb(24,34,63)',
+    backgroundColor: 'rgb(21,23,50)',
     boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
     borderRadius: '20px'
   };
@@ -505,12 +505,19 @@ const AddLiquidity = () => {
 
   const noteStyle = {
     marginTop: '30px',
-    fontSize: '0.9rem',
-    color: 'rgb(162,163,195)',
+    fontSize: '18px',
+    color: 'rgb(128, 129, 153)',
+    cursor:'pointer'
   };
 
+  const Background = styled.div`
+    background: radial-gradient(circle at 10% 20%, rgba(22, 21, 42, 0.8) 0%, #100e17 60%);
+    min-height: 100vh;
+    padding: 2rem;
+  `;
+
   return (
-    <div>
+   <Background>
        <ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="contained" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined"/>
               <hr></hr>
               <br></br><br></br><br></br><br></br>
@@ -533,10 +540,7 @@ const AddLiquidity = () => {
                           </div>
                         
     <div style={containerStyle}>
-      <h3 style={headingStyle}>Add Liquidity</h3>
-      <br></br>
-      <hr style={{border:'0.4px solid rgb(57,74,122)'}}></hr>
-      <br></br>
+     <br></br> 
       
       <div style={{ marginBottom: '20px' }}>
         <label htmlFor="tokenAddress" style={labelStyle}>{tokens.length!=0 ? tokens[0].Symbol :'BEP20'} Token Address:</label>
@@ -655,11 +659,14 @@ const AddLiquidity = () => {
         </div>
       )}
 
-      <p style={noteStyle}>
-        Note: Make sure your wallet is connected to BSC Testnet and you have enough tokens and BNB.
+     
+    </div>
+    <p style={noteStyle} onClick={()=>{
+      window.location.href=`/mytokenlist`
+    }}>
+       Add Liquidity Later
       </p>
-    </div>
-    </div>
+    </Background>
   );
 };
 
