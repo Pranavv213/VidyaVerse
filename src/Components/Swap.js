@@ -48,7 +48,8 @@ const Title = styled.h1`
 `;
 
 const SwapForm = styled.div`
-  background: rgba(25, 33, 64, 0.7);
+  
+
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 25px;
@@ -66,7 +67,7 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  width: 100%;
+  width: 92%;
   padding: 16px 14px;
   background: rgba(15, 22, 46, 0.7);
   border: 1px solid #3a4a7a;
@@ -396,11 +397,13 @@ const TokenSwap = () => {
   }, [tokenAddress, amount, swapDirection]);
 
   return (
-    <Background>
+    <div>
       <br></br>
-        <ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="contained" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined"/>
-        <hr></hr>
-        <br></br><br></br><br></br><br></br>
+    <ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="contained" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined"/>
+    <hr></hr>
+    <br></br><br></br><br></br><br></br>
+    <Background>
+      
 
        
                     
@@ -535,6 +538,7 @@ const TokenSwap = () => {
          
     
     </Background>
+    </div>
   );
 };
 

@@ -517,12 +517,13 @@ const AddLiquidity = () => {
   `;
 
   return (
+    <div><ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="contained" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined"/>
+    <hr></hr>
+    <br></br><br></br><br></br><br></br>
+
+   <br></br>
    <Background>
-       <ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="contained" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined"/>
-              <hr></hr>
-              <br></br><br></br><br></br><br></br>
-      
-             <br></br>
+       
                           
                             
                      
@@ -667,6 +668,7 @@ const AddLiquidity = () => {
        Add Liquidity Later
       </p>
     </Background>
+    </div>
   );
 };
 

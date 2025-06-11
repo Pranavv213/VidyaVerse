@@ -778,8 +778,8 @@ export default function DeployConnectVerse() {
   }
 
   return (
-    <Background>
-      <ResponsiveAppBar 
+	<div>
+		<ResponsiveAppBar 
         homeButtonStyle="outlined" 
         earnButtonStyle="outlined" 
         createButtonStyle="outlined" 
@@ -787,6 +787,9 @@ export default function DeployConnectVerse() {
         dashboardButtonStyle="outlined" 
         tokenButtonStyle="contained"
       />
+
+    <Background>
+      
 	  <br></br> <br></br> <br></br>
       
       <Container>
@@ -868,5 +871,6 @@ export default function DeployConnectVerse() {
         )}
       </Container>
     </Background>
+	</div>
   );
 }
