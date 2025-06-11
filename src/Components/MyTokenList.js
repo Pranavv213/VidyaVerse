@@ -295,10 +295,7 @@ const TokenList = () => {
                       </div>
                     </div>
                     
-                    <div style={styles.apyContainer}>
-                      <div style={styles.apyLabel}>LIQUIDITY</div>
-                      <div style={styles.apyValue}>{token.Liquidity}</div>
-                    </div>
+                    
                     
                     <div style={styles.apyContainer}>
                       <div style={styles.apyLabel}>APY</div>
@@ -338,6 +335,7 @@ const styles = {
     minHeight: '100vh',
     padding: '20px',
     fontFamily: "'Segoe UI', 'Roboto', sans-serif",
+   
   },
   header: {
     textAlign: 'center',
@@ -387,12 +385,18 @@ const styles = {
     }
   },
   grid: {
-    display: 'grid',
+    display: 'flex',
+    flexDirection:'column',
+    alignItems:'center',
+   
     gap: '15px',
-    maxWidth: '1400px',
+    
     margin: '0 auto',
+   
   },
   card: {
+    width:'80%',
+    maxWidth:'50em',
     background: 'linear-gradient(145deg, #16152a 0%, #1c1a36 100%)',
     borderRadius: '16px',
     padding: '20px',
@@ -407,18 +411,23 @@ const styles = {
   },
   cardContent: {
     display: 'flex',
+    
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
   },
   cardLeft: {
     display: 'flex',
+    flexWrap:'wrap',
+    justifyContent:'flex-start',
     alignItems: 'center',
-    gap: '15px',
+    gap: '30px',
     flex: 1,
   },
   cardRight: {
     display: 'flex',
+    flexWrap:'wrap',
+    justifyContent:'center',
     alignItems: 'center',
     gap: '30px',
   },
@@ -432,6 +441,7 @@ const styles = {
   tokenInfo: {
     display: 'flex',
     flexDirection: 'column',
+    alignItems:'flex-start'
   },
   tokenSymbol: {
     color: '#fffffe',
@@ -450,7 +460,8 @@ const styles = {
   priceContainer: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-end',
+    justifyContent:'flex-end',
+    alignItems:'center'
   },
   priceLabel: {
     color: '#a7a9be',
