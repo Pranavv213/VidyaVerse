@@ -92,7 +92,7 @@ function PresaleList() {
                                     </div>
                                     <div style={{color: '#6c63ff',
                                                 fontSize: '18px',
-                                                fontWeight: '700',}}>
+                                                fontWeight: '300',}}>
                                        {x.Rate} {x.Symbol} / BNB 
                                     </div>
                                     <div >
