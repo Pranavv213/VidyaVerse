@@ -168,7 +168,8 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
                                           let signer
                                           let address
                                           
-                                          provider(window.ethereum);
+                                           provider = new ethers.providers.Web3Provider(window.ethereum);
+                                        
                                               await provider.send("eth_requestAccounts", []);
                                               signer = provider.getSigner();
                                               address = await signer.getAddress();

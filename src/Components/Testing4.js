@@ -506,6 +506,50 @@ const addCreatorToMovies = async () => {
   }
 };
 
+const deleteUserData=async()=>{
+
+  const data = await getDocs(collection(db, "user"));
+
+  let usersTemp = await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
+  for (let i = 0; i < usersTemp.length; i++) {
+     
+
+      const userDoc = doc(db, "user", usersTemp[i].id);
+
+      if(usersTemp[i].Email!='quantumworld394@gmail.com')
+      {
+        const newFields = { EventsRegistered:[],EventsCreated:[], EventsApproved:[],EventsAttended:[]};
+
+      await updateDoc(userDoc, newFields);
+      }
+      
+  }
+
+}
+
+const deleteEventsData=async()=>{
+
+  const data = await getDocs(collection(db, "user"));
+
+  let usersTemp = await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
+  for (let i = 0; i < usersTemp.length; i++) {
+     
+
+      const userDoc = doc(db, "user", usersTemp[i].id);
+
+     
+    
+        const newFields = { EventsRegistered:[],EventsCreated:[], EventsApproved:[],EventsAttended:[]};
+
+      await updateDoc(userDoc, newFields);
+     
+      
+  }
+
+}
+
 
 
   return (
@@ -548,6 +592,10 @@ const addCreatorToMovies = async () => {
 <button onClick={()=>{
      addCreatorToMovies()
       }}>Add Creator to Movies</button>
+
+      <button onClick={()=>{
+    deleteUserData()
+      }}>Delete User Data</button>
 
       
 <br></br>
