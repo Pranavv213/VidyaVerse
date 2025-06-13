@@ -196,7 +196,7 @@ function Home() {
           padding: '20px', 
           backgroundColor: 'rgb(25,25,25)', 
           borderRadius:'10px',
-          border: '0.1px solid white', 
+          border: '0.1px solid #6f6aff', 
           textAlign: 'center', 
           boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
           position: 'absolute', 
@@ -293,14 +293,14 @@ function Home() {
       </style>
 
       <div className="full-width-bar" >
-        <div class="logo" >  <img src={logo} style={{width:'3em'}} alt="Logo" /></div>
+        <div class="logo" >  <img src={logo} style={{width:'6em'}} alt="Logo" /></div>
 
         <div style={{color:'white'}} >
 
-        
-      <Button variant="outlined" onClick={notify} >Events</Button>
-      <Button variant="outlined" onClick={notify} >Movies</Button>
-      <Button variant="outlined" onClick={notify} >Concerts</Button>
+      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Launch</Button>
+      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Trade</Button>
+      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Presale</Button>
+      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Stake</Button>
 
 
         </div>

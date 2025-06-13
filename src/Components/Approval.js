@@ -289,17 +289,17 @@ function EventManage() {
 
 
       <div style={{display:'flex',justifyContent:'center'}}>
-      <Button variant="outlined" style={{borderRadius:'0'}}  onClick={()=>{
+      <Button variant="outlined" style={{borderRadius:'0',color:'#6f6aff',border:'0.2px solid #6f6aff'}}  onClick={()=>{
      window.location.href = `/manage/${event_id}`;
 }}>Edit </Button>
-<Button variant="contained" style={{borderRadius:'0'}} onClick={()=>{
+<Button variant="contained" style={{borderRadius:'0',backgroundColor:'#6f6aff',color:'white'}} onClick={()=>{
      window.location.href = '/manage';
 }}>Guests </Button>
 
-<Button variant="outlined" style={{borderRadius:'0'}} onClick={()=>{
+<Button variant="outlined" style={{borderRadius:'0',color:'#6f6aff',border:'0.2px solid #6f6aff'}} onClick={()=>{
      window.location.href = `/map/${event_id}`;
 }} >Check In</Button>
-<Button variant="outlined" style={{borderRadius:'0'}} onClick={()=>{
+<Button variant="outlined" style={{borderRadius:'0',color:'#6f6aff',border:'0.2px solid #6f6aff'}} onClick={()=>{
       window.location.href = `/payouts/${event_id}`;
 }}>Payouts</Button>
 

@@ -681,10 +681,10 @@ else{
                    <div style={{color:'white'}} >
            
                    
-                   <Button  style={{borderRadius:'0'}}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}} onClick={()=>{
+                   <Button  style={{borderRadius:'0',color:'#6f6aff'}}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}} onClick={()=>{
                     window.location.href="/dashboard"
                    }}><LocationPinIcon fontSize='small'/> <l>Offline Events</l></div></Button>
-                   <Button variant="contained"><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><VideoCallIcon   fontSize='small'/> <l>Online Events</l></div></Button>
+                   <Button variant="contained" style={{backgroundColor:'#6f6aff',color:'white'}}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><VideoCallIcon   fontSize='small'/> <l>Online Events</l></div></Button>
                   
                 
            

@@ -435,17 +435,17 @@ function AdminCreate() {
        
        
              <div style={{display:'flex',justifyContent:'center'}}>
-             <Button variant="contained" style={{borderRadius:'0'}}  onClick={()=>{
+             <Button variant="contained" style={{borderRadius:'0',backgroundColor:'#6f6aff',color:'white'}}  onClick={()=>{
             window.location.reload();
        }}>Edit</Button>
-       <Button variant="outlined" style={{borderRadius:'0'}} onClick={()=>{
+       <Button variant="outlined" style={{borderRadius:'0',color:'#6f6aff',border:'0.2px solid #6f6aff'}} onClick={()=>{
             window.location.href = `/approve/${event_id}`;
        }}>Guests </Button>
        
-       <Button variant="outlined" style={{borderRadius:'0'}} onClick={()=>{
+       <Button variant="outlined" style={{borderRadius:'0',color:'#6f6aff', border:'0.2px solid #6f6aff'}} onClick={()=>{
             window.location.href = `/map/${event_id}`;
        }} >Check In</Button>
-       <Button variant="outlined" style={{borderRadius:'0'}} onClick={()=>{
+       <Button variant="outlined" style={{borderRadius:'0',color:'#6f6aff',border:'0.2px solid #6f6aff'}} onClick={()=>{
             window.location.href = `/payouts/${event_id}`;
        }}>Payouts</Button>
        

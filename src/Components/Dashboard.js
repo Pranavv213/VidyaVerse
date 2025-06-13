@@ -442,11 +442,11 @@ function Home2() {
 <br></br>
 
 
-<Button variant="outlined" onClick={()=>{
+<Button variant="outlined" style={{color:'#6f6aff',border:'0.2px solid #6f6aff'}} onClick={()=>{
      window.location.href = '/creator';
-}}>Create Event &nbsp;<AddCircleIcon/></Button>
+}}>Host Event &nbsp;<AddCircleIcon/></Button>
 
-<Button variant="outlined" onClick={()=>{
+<Button variant="outlined" style={{color:'#6f6aff',border:'0.2px solid #6f6aff'}} onClick={()=>{
 
     if(localStorage.getItem('userName'))
     {
@@ -633,7 +633,7 @@ function Home2() {
     window.location.href="/creator"
   }}
 >
-  <Fab color="primary" aria-label="add"  size="large">
+  <Fab color="primary" aria-label="add"  size="large" style={{backgroundColor:'#6f6aff'}}>
     <AddIcon />
   </Fab>
 </Box>
@@ -651,8 +651,8 @@ function Home2() {
                    <div style={{color:'white'}} >
            
                    
-                   <Button variant="contained" style={{borderRadius:'0'}}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><LocationPinIcon fontSize='small'/> <l>Offline Events</l></div></Button>
-                   <Button onClick={()=>{
+                   <Button variant="contained" style={{borderRadius:'0',backgroundColor:'#6f6aff',color:'white'}}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><LocationPinIcon fontSize='small'/> <l>Offline Events</l></div></Button>
+                   <Button style={{color:'#6f6aff'}} onClick={()=>{
                     window.location.href="onlinedashboard"
                    }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><VideoCallIcon   fontSize='small'/> <l>Online Events</l></div></Button>
                   

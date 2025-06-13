@@ -678,7 +678,7 @@ function Home2() {
           height: '400px',
           padding: '20px', 
           backgroundColor: 'black', 
-          border: '0.2px solid white', 
+          border: '0.2px solid #6f6aff', 
           textAlign: 'center', 
           boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
           position: 'absolute', 
