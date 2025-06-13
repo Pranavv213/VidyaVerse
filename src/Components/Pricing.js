@@ -28,7 +28,7 @@ import CON_TOKEN_ABI from '../Contracts/CONABI.json'
 
  const usersCollectionRef1 = collection(db, "user");
 // Replace with your ERC20 token contract address and ABI
-const CON_TOKEN_ADDRESS = '0x21C7447720ecC4bA6Eef0f2B2C6eb3CF84a201B6';
+const CON_TOKEN_ADDRESS = '0x2f9aC69aF261c511352CD0a6B0Aed9D849B5856f';
 
 
 const RECEIVER_ADDRESS = '0x3d8C2b52d2F986B880Aaa786Ff2401B2d3412a41';
@@ -82,7 +82,7 @@ function Pricing() {
   
         setTimeout(() => window.location.reload(), 3000);
       } else {
-        notifyCustom(`Insufficient $CON balance.`, "error");
+        notifyCustom(`Insufficient $FNF balance.`, "error");
         setTimeout(() => window.location.reload(), 3000);
       }
     } catch (error) {
@@ -212,7 +212,7 @@ function Pricing() {
          </div>
           <br></br><br></br>
 
-          <l style={{fontSize:'28px'}}><b>0 $CON</b></l> <l style={{fontSize:'16px',color:'rgb(200,200,200'}}>/ month</l>
+          <l style={{fontSize:'28px'}}><b>0 $FNF</b></l> <l style={{fontSize:'16px',color:'rgb(200,200,200'}}>/ month</l>
         </Typography>
         <br></br>  
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -303,7 +303,7 @@ function Pricing() {
             </div>
           <br></br><br></br>
 
-          <l style={{fontSize:'28px',color:'white'}}><b>100 $CON</b></l> <l style={{fontSize:'16px',color:'white'}}>/ month</l>
+          <l style={{fontSize:'28px',color:'white'}}><b>100 $FNF</b></l> <l style={{fontSize:'16px',color:'white'}}>/ month</l>
         </Typography>
         <br></br>  
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -393,7 +393,7 @@ function Pricing() {
             </div>
           <br></br><br></br>
 
-          <l style={{fontSize:'28px'}}><b>150 $CON</b></l> <l style={{fontSize:'16px',color:'rgb(200,200,200'}}>/ month</l>
+          <l style={{fontSize:'28px'}}><b>150 $FNF</b></l> <l style={{fontSize:'16px',color:'rgb(200,200,200'}}>/ month</l>
         </Typography>
         <br></br>  
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
