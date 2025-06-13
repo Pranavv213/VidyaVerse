@@ -225,7 +225,7 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
               textDecoration: 'none',
             }}
           >
-           <img src={logo} style={{width:'2em'}} ></img>
+           <img src={logo} style={{width:'6em'}} ></img>
            
           </Typography>
 
@@ -237,6 +237,8 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
+
+              style={{color:'#6f6aff'}}
 
             >
               <MenuIcon />
@@ -265,36 +267,38 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
             >
              
                 <MenuItem  onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }} ><Button variant={homeButtonStyle} onClick={()=>{
+                  <Typography sx={{ textAlign: 'center' }} ><Button variant={homeButtonStyle} style={{color:homeButtonStyle=='contained'?'white':'#6f6aff',backgroundColor:homeButtonStyle=='contained'?'#6f6aff':'transparent',border:'none'}} onClick={()=>{
             window.location.href="/home2"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><HomeIcon fontSize='small'/> <l>Home</l></div></Button></Typography>
                 </MenuItem>
-                <MenuItem  onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}><Button variant={earnButtonStyle} onClick={()=>{
-                    window.location.href="/tokenlist"
-                  }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><ShowChartIcon fontSize='small'/> <l>Trade</l></div></Button></Typography>
-                </MenuItem>
-                <MenuItem  onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}><Button variant="outlined" onClick={()=>{
-                    window.location.href="/stake"
-                  }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><GeneratingTokensIcon fontSize='small'/> <l>Stake</l></div></Button></Typography>
-                </MenuItem>
-                <MenuItem  onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}><Button variant="outlined" onClick={()=>{
+                 <MenuItem  onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: 'center' }}><Button variant="outlined" style={{color:tokenButtonStyle=='contained'?'white':'#6f6aff',backgroundColor:tokenButtonStyle=='contained'?'#6f6aff':'transparent',border:'none'}} onClick={()=>{
                     window.location.href="/token"
                   }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><RocketLaunchIcon fontSize='small'/> <l>Launch</l></div></Button></Typography>
                 </MenuItem>
+                <MenuItem  onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: 'center' }}><Button variant={earnButtonStyle} style={{color:earnButtonStyle=='contained'?'white':'#6f6aff',backgroundColor:earnButtonStyle=='contained'?'#6f6aff':'transparent',border:'none'}}onClick={()=>{
+                    window.location.href="/tokenlist"
+                  }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><ShowChartIcon fontSize='small'/> <l>Trade</l></div></Button></Typography>
+                </MenuItem>
+                 <MenuItem  onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: 'center' }}><Button variant={presaleButtonStyle ? presaleButtonStyle : "outlined"}  style={{color:presaleButtonStyle=='contained'?'white':'#6f6aff',backgroundColor:presaleButtonStyle=='contained'?'#6f6aff':'transparent',border:'none'}} onClick={()=>{
+                    window.location.href="/presalelist"
+                  }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><RocketLaunchIcon fontSize='small'/> <l>Presale</l></div></Button></Typography>
+                </MenuItem>
+                <MenuItem  onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: 'center' }}><Button variant="outlined" style={{color:'#6f6aff',border:'none'}} onClick={()=>{
+                    window.location.href="/stake"
+                  }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><GeneratingTokensIcon fontSize='small'/> <l>Stake</l></div></Button></Typography>
+                </MenuItem>
+               
                 {/* <MenuItem  onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}><Button variant={createButtonStyle} onClick={()=>{
             window.location.href="/creator"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><AddCircleOutlineIcon fontSize='small'/> <l>Create</l></div></Button></Typography>
                 </MenuItem> */}
 
-            <MenuItem  onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}><Button variant={presaleButtonStyle ? presaleButtonStyle : "outlined"} onClick={()=>{
-                    window.location.href="/presalelist"
-                  }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><RocketLaunchIcon fontSize='small'/> <l>Presale</l></div></Button></Typography>
-                </MenuItem>
+           
             
             </Menu>
           </Box>
@@ -323,23 +327,23 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             
           
-          <Button variant={homeButtonStyle} onClick={()=>{
+          <Button variant={homeButtonStyle} style={{color:homeButtonStyle=='contained'?'white':'#6f6aff',backgroundColor:homeButtonStyle=='contained'?'#6f6aff':'transparent',border:'none'}} onClick={()=>{
             window.location.href="/home2"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><HomeIcon fontSize='small'/> <l>Home</l></div></Button>
            {/* <Button variant={createButtonStyle} onClick={()=>{
             window.location.href="/creator"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><AddCircleOutlineIcon fontSize='small'/> <l>Create</l></div></Button> */}
-          <Button variant={tokenButtonStyle ? tokenButtonStyle : 'outlined'} onClick={()=>{
+          <Button variant={tokenButtonStyle ? tokenButtonStyle : 'outlined'} style={{color:tokenButtonStyle=='contained'?'white':'#6f6aff',backgroundColor:tokenButtonStyle=='contained'?'#6f6aff':'transparent',border:'none'}} onClick={()=>{
             window.location.href="/token"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><RocketLaunchIcon fontSize='small'/> <l>Launch</l></div></Button>
-          <Button variant={earnButtonStyle} onClick={()=>{
+          <Button variant={earnButtonStyle} style={{color:earnButtonStyle=='contained'?'white':'#6f6aff',backgroundColor:earnButtonStyle=='contained'?'#6f6aff':'transparent',border:'none'}} onClick={()=>{
             window.location.href="/tokenlist"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><ShowChartIcon fontSize='small'/> <l>Trade</l></div></Button>
 
-        <Button variant={presaleButtonStyle ? presaleButtonStyle : "outlined"} onClick={()=>{
+        <Button variant={presaleButtonStyle ? presaleButtonStyle : "outlined"} style={{color:presaleButtonStyle=='contained'?'white':'#6f6aff',backgroundColor:presaleButtonStyle=='contained'?'#6f6aff':'transparent',border:'none'}} onClick={()=>{
             window.location.href="/presalelist"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><GeneratingTokensIcon fontSize='small'/> <l>Presale</l></div></Button>
-            <Button variant="outlined" onClick={()=>{
+            <Button variant="outlined" style={{color:'#6f6aff',border:'none'}} onClick={()=>{
             window.location.href="/stake"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><GeneratingTokensIcon fontSize='small'/> <l>Stake</l></div></Button>
           
@@ -349,14 +353,14 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
 
 <div class="flexWala">
 
-<Button style={{cursor:'pointer'}}><NotificationsIcon/></Button>
+<Button style={{cursor:'pointer'}}><NotificationsIcon style={{color:'#6f6aff'}}/></Button>
 
          
 
          
 
 
-          <Button variant='outlined' 
+          <Button variant='outlined' style={{color:'#6f6aff',border:'0.2px solid #6f6aff'}}
               onClick={connectWallet}
             >{localStorage.getItem('walletAddress') ?
                `${localStorage.getItem('walletAddress').slice(0, 6)}...${localStorage.getItem('walletAddress').slice(-4)}` : 'Connect Wallet'
@@ -392,47 +396,47 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
           animation: 'popupAnimation 0.5s ease',
            
         }}>
-          <div style={{width:'100%',textAlign:'left',cursor:'pointer'}} onClick={()=>{
+          <div style={{width:'100%',textAlign:'left',cursor:'pointer',color:'#6f6aff'}} onClick={()=>{
             setShowDashboardDiv(false)
           }}>
           <CancelIcon style={{left:'2px'}}/>
           </div>
           <br></br>
-          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer'}} class="dashboardDivMenu" onClick={()=>{
+          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',color:'#6f6aff'}} class="dashboardDivMenu" onClick={()=>{
             window.location.href="/dashboard"
           }}><DashboardIcon/> <l>Dashboard</l></div>
           <br></br>
         
 
-        <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer'}} class="dashboardDivMenu" onClick={()=>{
+        <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',color:'#6f6aff'}} class="dashboardDivMenu" onClick={()=>{
           window.location.href="/mytokenlist"
         }}><PaidIcon/>Created Assets</div>
         <br></br>
 
-        <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer'}} class="dashboardDivMenu" onClick={()=>{
+        <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',color:'#6f6aff'}} class="dashboardDivMenu" onClick={()=>{
           window.location.href="/mytokenlist"
         }}><AccountBalanceWalletIcon/>Collected Assets</div>
         <br></br>
           
-          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer'}} class="dashboardDivMenu" onClick={()=>{
+          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',color:'#6f6aff'}} class="dashboardDivMenu" onClick={()=>{
             window.location.href="/chat"
           }}><ChatIcon/>Chats</div>
           <br></br>
 
         
           
-          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer'}} class="dashboardDivMenu" onClick={()=>{
+          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',color:'#6f6aff'}} class="dashboardDivMenu" onClick={()=>{
             window.location.href="/community"
           }}><GroupIcon/>Communities</div>
           <br></br>
 
-          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer'}} class="dashboardDivMenu" onClick={()=>{
+          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',color:'#6f6aff'}} class="dashboardDivMenu" onClick={()=>{
             window.location.href="/rewards"
           }}><CardGiftcardIcon fontSize='small'/>Rewards</div>
 
             <br></br>
 
-          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer'}} class="dashboardDivMenu" onClick={()=>{
+          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',color:'#6f6aff'}} class="dashboardDivMenu" onClick={()=>{
             window.location.href="/profilesettings"
           }}><SettingsIcon/> Profile Settings</div>
           <br></br>

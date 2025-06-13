@@ -827,22 +827,25 @@ function Home2() {
 
     return (
       <button
-        key={id}
-        className="buttonTop"
-        style={{
-          border: 'none',
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: isActive ? '#1876d1' : 'transparent',
-          color: isActive ? 'white' : '#1876d1',
-        }}
-        onClick={handleClick}
-      >
-        <span>{label}</span>
-        {icon && <>&nbsp;{icon}</>}
-      </button>
+      key={id}
+      className="buttonTop"
+      style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: isActive ? '#6f6aff' : 'transparent',
+        color: isActive ? 'white' : '#6f6aff',
+        border:  'none' ,
+       
+        borderRadius: '4px',
+        cursor: 'pointer'
+      }}
+      onClick={handleClick}
+    >
+      <span>{label}</span>
+      {icon && <>&nbsp;{icon}</>}
+    </button>
     );
   })}
 </div>
@@ -905,7 +908,7 @@ function Home2() {
     window.location.href="/creator"
   }}
 >
-  {showCommentsDiv.length==0 &&  <Fab color="primary" aria-label="add"  size="large" style={{bottom:'80%'}}>
+  {showCommentsDiv.length==0 &&  <Fab color="primary" aria-label="add"  size="large" style={{bottom:'80%',backgroundColor:'#6f6aff'}}>
     <AddIcon />
   </Fab>}
  
