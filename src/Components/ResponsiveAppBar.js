@@ -34,7 +34,7 @@ import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import GeneratingTokensIcon from '@mui/icons-material/GeneratingTokens';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
-
+import StorefrontIcon from '@mui/icons-material/Storefront';
 import { db } from "../firebase-config";
 import {
   collection,
@@ -285,7 +285,7 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
                  <MenuItem  onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}><Button variant={presaleButtonStyle ? presaleButtonStyle : "outlined"}  style={{color:presaleButtonStyle=='contained'?'white':'#6f6aff',backgroundColor:presaleButtonStyle=='contained'?'#6f6aff':'transparent',border:'none'}} onClick={()=>{
                     window.location.href="/presalelist"
-                  }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><RocketLaunchIcon fontSize='small'/> <l>Presale</l></div></Button></Typography>
+                  }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><StorefrontIcon/> <l>Presale</l></div></Button></Typography>
                 </MenuItem>
                 <MenuItem  onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}><Button variant="outlined" style={{color:'#6f6aff',border:'none'}} onClick={()=>{
@@ -339,11 +339,11 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><RocketLaunchIcon fontSize='small'/> <l>Launch</l></div></Button>
           <Button variant={earnButtonStyle} style={{color:earnButtonStyle=='contained'?'white':'#6f6aff',backgroundColor:earnButtonStyle=='contained'?'#6f6aff':'transparent',border:'none'}} onClick={()=>{
             window.location.href="/tokenlist"
-          }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><ShowChartIcon fontSize='small'/> <l>Trade</l></div></Button>
+          }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><ShowChartIcon fontSize='medium'/> <l>Trade</l></div></Button>
 
         <Button variant={presaleButtonStyle ? presaleButtonStyle : "outlined"} style={{color:presaleButtonStyle=='contained'?'white':'#6f6aff',backgroundColor:presaleButtonStyle=='contained'?'#6f6aff':'transparent',border:'none'}} onClick={()=>{
             window.location.href="/presalelist"
-          }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><GeneratingTokensIcon fontSize='small'/> <l>Presale</l></div></Button>
+          }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><StorefrontIcon fontSize='small'/> <l>Presale</l></div></Button>
             <Button variant="outlined" style={{color:'#6f6aff',border:'none'}} onClick={()=>{
             window.location.href="/stake"
           }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px'}}><GeneratingTokensIcon fontSize='small'/> <l>Stake</l></div></Button>
