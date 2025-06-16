@@ -686,7 +686,7 @@ export default function DeployConnectVerse() {
   const uploadImage = async () => {
     if (!image) return null;
     
-    setStatus("Uploading image to Cloudinary...");
+    setStatus("Configuring FIP Token details...");
     setUploadProgress(0);
     
     const formData = new FormData();
@@ -793,7 +793,7 @@ export default function DeployConnectVerse() {
 	  <br></br> <br></br> <br></br>
       
       <Container>
-        <Heading>Launch IP Token</Heading>
+        <Heading>Launch FIP Token</Heading>
 
         <FormGroup>
           <Label htmlFor="tokenName">Token Name</Label>
@@ -839,7 +839,7 @@ export default function DeployConnectVerse() {
             onChange={handleImageChange}
           />
           <ImageUploadLabel htmlFor="imageUpload">
-            {imagePreview ? "Change Token Image" : "Upload Token Image"}
+            {imagePreview ? "Change FIP Token Image" : "Upload FIP Token Image"}
           </ImageUploadLabel>
           
           {imagePreview && <ImagePreview src={imagePreview} alt="Preview" />}
