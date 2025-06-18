@@ -1,3 +1,4 @@
+
 import React,{useEffect, useState,useRef} from 'react'
 import { useOkto } from "okto-sdk-react";
 import { db } from "../firebase-config";
@@ -152,7 +153,7 @@ function Home2() {
              
               });
 
-      const notifyGift = (value) => toast(`You just claimed ${value} coins`,{
+     const notifyGift = (value) => toast(`You just claimed ${value} coins`,{
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -649,405 +650,16 @@ function Home2() {
           }
         })
       },[])
+// Icons and Components (keep your existing imports)
+// ... (all your existing imports remain the same)
 
 
-    
+
+  // ... (keep all your existing state and functions)
+
   return (
-    <div  >
-      <br></br>
-
-      {/* <div style={{top:'0',position:'fixed',zIndex:'999999999',width:'100%',backgroundColor:'black'}}>
-        <br></br>
-           <ResponsiveAppBar homeButtonStyle="contained" earnButtonStyle="outlined" createButtonStyle="outlined" dashboardButtonStyle="outlined" />
-
-           </div>
-           <br></br><br></br><br></br><br></br> */}
-
-           <ResponsiveAppBar homeButtonStyle="contained" earnButtonStyle="outlined" createButtonStyle="outlined" dashboardButtonStyle="outlined" />
-           <br></br><br></br><br></br><br></br>
-      
-    
- 
-{showConfetti && <Confetti 
-      width={"1500px"}
-      height={"800px"}
-    />}
-{showDiv && (
-        <div style={{
-          width: '330px', 
-          height: '400px',
-          padding: '20px', 
-          backgroundColor: 'black', 
-          border: '0.2px solid #6f6aff', 
-          textAlign: 'center', 
-          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
-          position: 'absolute', 
-          top: '20%', 
-          left: '50%', 
-          transform: 'translateX(-50%)',
-          zIndex: 9999,
-          animation: 'popupAnimation 0.5s ease',
-          color:'white'
-        }}>
-          <h1>Congratulations!</h1>
-          <img  style={{width: '130px', 
-    height: '100px', 
-    objectFit: 'cover' }}  src={coinImage}></img>
-          <br></br>
-          <h1>{localStorage.getItem('coins')}</h1>
-          <p>You just won {parseInt(localStorage.getItem('coins'))-parseInt(coins)} coins !</p>
-          <br></br>
-          <center>
-          <button class="button-85" style={{height:'3em'}} onClick={()=>{
-            if(localStorage.getItem('coins') && localStorage.getItem('coins')>=1 )
-            {
-             setShowDiv(false)
-             setShowConfetti(false)
-             localStorage.setItem('count',1)
-             notifyGift(parseInt(localStorage.getItem('coins'))-coins)
-             setCoins(parseInt(localStorage.getItem('coins')))
-
-             setInterval(()=>{
-              window.location.reload()
-             },3000)
-            }
-            
-           
-          }}>Claim</button>
-          </center>
-        </div>
-      )}
-
-      {/* Keyframes for animation */}
-      <style>
-        {`
-          @keyframes popupAnimation {
-            0% {
-              opacity: 0;
-              transform: translateX(-50%) scale(0.5);
-            }
-            100% {
-              opacity: 1;
-              transform: translateX(-50%) scale(1);
-            }
-          }
-        `}
-      </style>
-
-
-      {/* <div className="full-width-bar" >
-        <div class="logo" >  <img src={logo} style={{width:'3em'}} alt="Logo" /></div>
-       
-
-        <div style={{color:'white'}} >
-
-  
-      <Button  variant="contained" style={{borderRadius:'0px'}} >Events</Button>
-      <Button variant="outlined" style={{color:'#1876d1'}} style={{borderRadius:'0px'}} onClick={notify} >Concerts</Button>
-      <Button variant="outlined" style={{color:'#1876d1'}} style={{borderRadius:'0px'}} onClick={notify} >Movies</Button>
-      <Button  variant="outlined" style={{color:'#1876d1'}} style={{borderRadius:'0px'}} onClick={notify} >Sports</Button>
-    
-
-
-        </div>
-          
-            <div className="text" > <Button  onClick={()=>{
-              showWidgetModal()
-            }}> <AccountBalanceWalletIcon/></Button></div>
-          </div> */}
-
-
-    
-
-  <center>
-
-<div class="coin-container">
-
-
-  
-
-      <div class="coin" style={{marginLeft:'0%',position:'relative',zIndex:1
-        }}> 
-    
-    
-    <div style={{ width:'7em',height:'7em',overflow:'hidden'}} class="shine-container">
-  <img 
-    src={coinImage} 
-    alt="Logo" 
-    style={{ 
-      width: '100%', 
-      height: '100%', 
-      objectFit: 'cover' 
-    }} 
-  />
-</div>  <l style={{fontSize:"52px"}}><CountUp start={coins-100} end={coins} /></l></div>
-
-<br></br>
-     
-<Button variant="outlined" style={{border:"green 0.5px solid",color:'green'}} onClick={()=>{
-
-  getLeaderboard()
-}}>Leaderboard &nbsp; <LeaderboardIcon/></Button>
-<br></br><br></br>
-
-
-</div>
-</center>
- 
-
-<br></br> 
-<br></br>
-  {/* <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            style={{
-              position: "absolute",
-             
-              left: 0,
-              width: "100%",
-              height: "100vh",
-              objectFit: "cover",
-              zIndex: 0,
-            }}
-            src={backgroundVideo}
-          /> */}
-<div style={{ display: 'flex', justifyContent: 'center', gap: '1px', position: 'relative', zIndex: 1 }}>
-  {buttons.map(({ id, label, icon }) => {
-    const isActive = buttonHight === id;
-
-    const handleClick = () => {
-      if (id === 3) {
-        setOpen((prev) => !prev);
-      }
-      setButtonHighlight(id);
-      setCategory('');
-    };
-
-    return (
-      <button
-      key={id}
-      className="buttonTop"
-      style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: isActive ? '#6f6aff' : 'transparent',
-        color: isActive ? 'white' : '#6f6aff',
-        border:  'none' ,
-       
-        borderRadius: '4px',
-        cursor: 'pointer'
-      }}
-      onClick={handleClick}
-    >
-      <span>{label}</span>
-      {icon && <>&nbsp;{icon}</>}
-    </button>
-    );
-  })}
-</div>
-<br></br><br></br>
-
-
-     
-     
-<input style={{ width: '100%',
-    maxWidth: '20em',
-    padding: '12px 20px',
-    borderRadius: '25px',
-    border: '1px solid rgba(108, 99, 255, 0.3)',
-    backgroundColor: 'rgba(26, 24, 48, 0.7)',
-    color: '#fffffe',
-    fontSize: '16px',
-    outline: 'none',
-    transition: 'all 0.3s ease',
-    '&:focus': {
-      borderColor: '#6c63ff',
-      boxShadow: '0 0 15px rgba(108, 99, 255, 0.4)',
-    }}} class="inputLocation" onChange={(e)=>{
-  setSearch(e.target.value)
-}} placeholder="🔍 Search Movies,Concerts,Events,Sports"></input>
-
-<br></br>
-
-<br></br> <br></br>
-
-{buttonHight==1 && <MoviesComponent allEvents={allMovies} allUsersArray={allUsersArray} search={ search}event_id={event_id} setEvent_id={setEvent_id} getComments={getComments} notifyClipboard={notifyClipboard} formatDate={formatDate} notifyCustom={notifyCustom}></MoviesComponent>
-}
-
-{buttonHight==2 && <EventComponent allEvents={allEvents} allUsersArray={allUsersArray} search={ search}event_id={event_id} setEvent_id={setEvent_id} getComments={getComments} notifyClipboard={notifyClipboard} formatDate={formatDate} Category={"Standup"}></EventComponent> }
-
-
-{buttonHight==4 && <EventComponent allEvents={allEvents} allUsersArray={allUsersArray} search={ search}event_id={event_id} setEvent_id={setEvent_id} getComments={getComments} notifyClipboard={notifyClipboard} formatDate={formatDate} Category={"Concert"}></EventComponent> }
-
-
-
-    
-
-
-
-<br></br>
-
-
-<br></br><br></br><br></br><br></br><br></br>
-
-
-<Box
-  sx={{
-    position: 'fixed',   // Fixes it relative to the viewport
-    bottom: 65,          // 16px from the bottom
-    right: 16,           // 16px from the right
-    zIndex: 1000,        // Ensure it stays above other elements
-    '& > :not(style)': { m: 1 },
-  }}
-
-  onClick={()=>{
-    window.location.href="/creator"
-  }}
->
-  {showCommentsDiv.length==0 &&  <Fab color="primary" aria-label="add"  size="large" style={{bottom:'80%',backgroundColor:'#6f6aff'}}>
-    <AddIcon />
-  </Fab>}
- 
-</Box>
-<Drawer open={open} onClose={toggleDrawer(false)} >
-
-  <br></br><br></br><br></br><br></br><br></br>
-
-        {DrawerList}
-      </Drawer>
-
-     
-
-      {showLeaderboarddDiv &&  <div style={{
-          width: '250px', 
-          height: '350px',
-          padding: '20px', 
-          backgroundColor: 'black', 
-          boxShadow: '0 8px 32px 0 rgba(74, 34, 148, 0.3);',
-        backdropFilter: 'blur(17.5px)',
-       border:'2px solid rgb(48, 19, 90)',
-          blur:'50px', 
-          borderRadius:'10px',
-          textAlign: 'center', 
-         
-          position: 'absolute', 
-          top: '15%', 
-          left: '50%', 
-          borderRadius:'10px',
-          transform: 'translateX(-50%)',
-          zIndex: 9999,
-          animation: 'popupAnimation 0.5s ease',
-           
-        }}>
-           <div style={{width:'100%',textAlign:'left',cursor:'pointer',color:'#1876d1'}} onClick={()=>{
-            setShowLeaderboardboardDiv(false)
-          }}>
-          <CancelIcon style={{left:'2px'}}/>
-          </div>
-
-   
-          <h2 style={{color:'white'}}>Leaderboard</h2>
-          <br></br>
-          
-
-            <div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'3px',justifyContent: 'space-between',
-  width: '100%',color:'white'}}>
-
-         {leaderboardArray.map((x,index)=>{
-
-           if(index<=4) return (
-
-            <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'25px',border:'1px solid white',width:'100%'}}>
-
-              <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
-
-            <div>{index+1}.&nbsp;</div>
-              <img style={{width:'2em',height:'2em',borderRadius:'50%',objectFit: 'cover'}} src={x.ProfileImage}></img>
-              <div style={{ width:'3em'}}>{x.UserName.length<6 && `${x.UserName}`}{x.UserName.length>=6 && x.UserName.slice(0,6)}{x.UserName.length>6 && "..."}</div>
-
-              </div>
-
-              <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'3px' }}>
-
-                
-            <img style={{width:'2em',height:'2em',borderRadius:'50%',objectFit: 'cover'}} src={coinImg}></img>
-            <div style={{ width:'3em'}}>{x.Coins.toString().length<10 && `${x.Coins.toString()}`}{x.Coins.toString().length>=10 && x.Coins.toString().slice(0,10)}{x.Coins.toString().length>10 && "..."}</div>
-
-
-</div>
-
-            </div>
-           )
-
-         })}
-
-      <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'25px',border:'1px solid yellow',width:'100%',backgroundColor:'grey'}}>
-
-      <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'3px'}}>
-
-      <div>{leaderboardArray.length!=0 && leaderboardArray.findIndex(obj => obj.Email === localStorage.getItem('email'))+1
-      }.</div>
-      <img style={{width:'2em',height:'2em',borderRadius:'50%',objectFit: 'cover'}} src={leaderboardArray.length!=0 && leaderboardArray.filter(x=>x.Email==localStorage.getItem('email'))[0].ProfileImage}></img>
-      <div style={{ width:'3em'}}>You</div>
-
-      </div>
-
-      <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'3px' }}>
-
-        
-      <img style={{width:'2em',height:'2em',borderRadius:'50%',objectFit: 'cover'}} src={coinImg}></img>
-      <div style={{ width:'3em'}}>{leaderboardArray.length!=0 && leaderboardArray.filter(x=>x.Email==localStorage.getItem('email'))[0].Coins}</div>
-
-
-      </div>
-
-      </div>
-
-        
-         
-
-            </div>
-
-
-
-
-            
-
-            {/* <div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',justifyContent:'center',gap:'3px'}}>
-
-              {leaderboardArray.map((x,index)=>{
-
-              if(index<=8)   return (
-
-                <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'3px' }}>
-
-                
-                  <img style={{width:'2em',height:'2em',borderRadius:'50%',objectFit: 'cover'}} src={coinImg}></img>
-                  <div style={{ width:'3em'}}>{x.Coins.toString().length<10 && `${x.Coins.toString()}`}{x.Coins.toString().length>=10 && x.Coins.toString().slice(0,10)}{x.Coins.toString().length>10 && "..."}</div>
-
-
-                </div>
-                )
-
-               
-
-              })}
-
-                </div> */}
-
-
-
-      
-          
-      
-        </div>}
-
-  
-
+    <div>
+       <ToastContainer  />
 
         {showCommentsDiv.length !== 0 && (
   <div style={{
@@ -1171,47 +783,215 @@ function Home2() {
     </div>
   </div>
 )}
+   
+      {/* Glassmorphism Navbar */}
+      
+        <ResponsiveAppBar 
+          homeButtonStyle="contained" 
+          earnButtonStyle="outlined" 
+          createButtonStyle="outlined" 
+          dashboardButtonStyle="outlined" 
+        />
+    
+      <br></br>  <br></br>
+       <div className="web3-container">
 
-{/* <div style={{position:'fixed',bottom:'0',width:'100%'}}>
-     
+      {/* Main Content */}
+      <div className="web3-content">
+        {/* Coin Balance Card */}
+        <div className="web3-coin-card">
+          <div className="coin-shine-container">
+            <img src={coinImage} alt="Coin" className="coin-image" />
+          </div>
+          <div className="coin-balance">
+            <CountUp start={coins-100} end={coins} className="coin-count" />
+            <span className="coin-label">COINS</span>
+          </div>
+          <button 
+            className="web3-button leaderboard-button"
+            onClick={getLeaderboard}
+          >
+            <LeaderboardIcon className="button-icon" />
+            Leaderboard
+          </button>
+        </div>
 
-      <div className="full-width-bar" style={{height:'3em',borderTop:'0.1px solid rgb(255,255,255,0.5)',background: 'black', boxShadow: '0 8px 32px 0 rgba(74, 34, 148, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)'}} >
-                
-                  
-           
-                   <div style={{color:'white'}} >
-           
+        {/* Category Selector */}
+        <div className="category-selector">
+          {buttons.map(({ id, label, icon }) => (
+            <button
+              key={id}
+              className={`category-button ${buttonHight === id ? 'active' : ''}`}
+              onClick={() => {
+                if (id === 3) setOpen(prev => !prev);
+                setButtonHighlight(id);
+                setCategory('');
+              }}
+            >
+              {icon || label}
+            </button>
+          ))}
+        </div>
+
+        {/* Search Bar */}
+        <div className="web3-search-container" >
+         
+          <input
+            className="web3-search-input" style={{fontSize:'16px',width:'18em'}}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="🔍  Search Movies, Concerts, Events..."
+          />
+        </div>
+
+        {/* Content Sections */}
+        <div className="content-sections">
+          {buttonHight === 1 && (
+            <MoviesComponent 
+              allEvents={allMovies} 
+              allUsersArray={allUsersArray} 
+              search={search}
+              event_id={event_id} 
+              setEvent_id={setEvent_id} 
+              getComments={getComments} 
+              notifyClipboard={notifyClipboard} 
+              formatDate={formatDate} 
+              notifyCustom={notifyCustom}
+            />
+          )}
+          
+          {buttonHight === 2 && (
+            <EventComponent 
+              allEvents={allEvents} 
+              allUsersArray={allUsersArray} 
+              search={search}
+              event_id={event_id} 
+              setEvent_id={setEvent_id} 
+              getComments={getComments} 
+              notifyClipboard={notifyClipboard} 
+              formatDate={formatDate} 
+              Category={"Standup"}
+            />
+          )}
+          
+          {buttonHight === 4 && (
+            <EventComponent 
+              allEvents={allEvents} 
+              allUsersArray={allUsersArray} 
+              search={search}
+              event_id={event_id} 
+              setEvent_id={setEvent_id} 
+              getComments={getComments} 
+              notifyClipboard={notifyClipboard} 
+              formatDate={formatDate} 
+              Category={"Concert"}
+            />
+          )}
+        </div>
+
+        {/* Create Event Floating Button */}
+        <button 
+          className="web3-floating-button"
+          onClick={() => window.location.href = "/creator"}
+        >
+          <AddIcon />
+        </button>
+
+        {/* Modals and Drawers */}
+        <Drawer open={open} onClose={toggleDrawer(false)}>
+          <div className="drawer-content">
+            <h3 className="drawer-title">Categories</h3>
+            {DrawerList}
+          </div>
+        </Drawer>
+
+        {/* Leaderboard Modal */}
+        {showLeaderboarddDiv && (
+          <div className="web3-modal">
+            <div className="modal-header">
+              <h3>Leaderboard</h3>
+              <button className="close-button" onClick={() => setShowLeaderboardboardDiv(false)}>
+                <CancelIcon />
+              </button>
+            </div>
+            <div className="leaderboard-list">
+              {leaderboardArray.slice(0, 5).map((x, index) => (
+                <div key={index} className="leaderboard-item">
+                  <div className="user-info">
+                    <span className="rank">{index + 1}.</span>
+                    <img src={x.ProfileImage} alt="profile" className="user-avatar" />
+                    <span className="username">{x.UserName.length < 6 ? x.UserName : `${x.UserName.slice(0, 6)}...`}</span>
+                  </div>
+                  <div className="coin-info">
+                    <img src={coinImg} alt="coin" className="coin-icon" />
+                    <span className="coin-amount">{x.Coins}</span>
+                  </div>
+                </div>
+              ))}
+              {leaderboardArray.length > 0 && (
+                <div className="leaderboard-item current-user">
+                  <div className="user-info">
+                    <span className="rank">{leaderboardArray.findIndex(obj => obj.Email === localStorage.getItem('email')) + 1}.</span>
+                    <img src={leaderboardArray.filter(x => x.Email == localStorage.getItem('email'))[0].ProfileImage} alt="profile" className="user-avatar" />
+                    <span className="username">You</span>
+                  </div>
+                  <div className="coin-info">
+                    <img src={coinImg} alt="coin" className="coin-icon" />
+                    <span className="coin-amount">{leaderboardArray.filter(x => x.Email == localStorage.getItem('email'))[0].Coins}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+          </div>
+
+        {/* Comments Panel */}
                    
-                   <Button variant={!isOnline ? "contained" :"" } style={{borderRadius:'0'}}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px',color:isOnline && "#1876D0" }} onClick={()=>{
-                    setIsOnline(false)
-                   }}><LocationPinIcon fontSize='small'/> <l>Offline Events</l></div></Button>
+  
 
 
+      
 
-                   <Button variant={isOnline ? "contained" :"" } onClick={()=>{
-                     setIsOnline(true)
-                   }}><div style={{display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'3px',color:!isOnline && "#1876D0"}}><VideoCallIcon   fontSize='small'/> <l>Online Events</l></div></Button>
-                  
-                
-           
-           
-                   </div>
-                 
-                    
-                     </div>
-      </div> */}
+        {/* Confetti and Notification */}
+        {showConfetti && <Confetti width={1500} height={800} />}
+{showDiv && (
+  <div className="reward-popup">
+    <h1>Congratulations!</h1>
+    <img src={coinImage} className="reward-image" />
+    <h1>{localStorage.getItem('coins')}</h1>
+    <p>You just won {parseInt(localStorage.getItem('coins')) - parseInt(coins)} coins!</p>
 
-
-     <br></br> <br></br> <br></br> <br></br> <br></br> <br></br>
-
-     <ToastContainer style={{zIndex:'99999999999'}}/>
-
+   
+    
+    <div className="slider-button-container">
+       <center>
+      <button className='slider-button' style={{color:'white'}}
+        
+        onClick={() => {
+          if (localStorage.getItem('coins') && localStorage.getItem('coins') >= 1) {
+            setShowDiv(false);
+            setShowConfetti(false);
+            localStorage.setItem('count', 1);
+            notifyGift(parseInt(localStorage.getItem('coins')) - coins);
+            setCoins(parseInt(localStorage.getItem('coins')));
+            setInterval(() => window.location.reload(), 3000);
+          }
+        }}
+      >
+       <l style={{fontSize:'16px'}}>Claim</l> 
+        
+      </button>
+         </center>
     </div>
-  )
-}
+ 
+  </div>
+)}
+      </div>
 
-export default Home2
+     
+  
+    </div>
+  );
+};
 
-
-
-///idjepoidipedi
+export default Home2;
