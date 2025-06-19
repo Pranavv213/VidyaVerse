@@ -1455,7 +1455,7 @@ const FanFiEnhanced = () => {
                   </ButtonParticles>
                 </LaunchAppButton>
                 <WhitepaperButton onClick={()=>{
-                  window.location.href="https://drive.google.com/file/d/1Bne9AyNAra_UGTHa1fnx13xWa-Cx-THT/view?usp=sharing"
+                  window.location.href="https://drive.google.com/file/d/1Bne9AyNAra_UGTHa1fnx13xWa-Cx-THT/view"
                 }}>Download Whitepaper</WhitepaperButton>
               </CTAButtons>
             </HeroContent>
