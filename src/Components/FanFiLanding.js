@@ -1363,8 +1363,10 @@ const FanFiEnhanced = () => {
 
   useEffect(() => {
   const handleScroll = () => {
-    if (window.scrollY === 0) {
-      window.location.href = "/";
+    if (window.scrollY === 0 && window.location.href!='https://v2-six-puce.vercel.app/' && window.location.href!='http://localhost:3000/') {
+
+      
+     window.location.href="/"
     }
   };
 
@@ -1414,8 +1416,8 @@ const FanFiEnhanced = () => {
 
         {/* Navbar */}
 
- <br></br>  
-       <Nav style={{backgroundColor:'black',color:'#1876d1',position:'fixed',width:'100%',border:'0.5px solid grey',borderRadius:'30px',zIndex:999999999}}>
+
+       <Nav style={{backgroundColor:'black',color:'#1876d1',position:'fixed',width:'100%',border:'0.5px solid grey',borderRadius:'20px',zIndex:999999999}}>
       <Logo href="#"><img src={logo} style={{width:'4em'}}></img></Logo>
       <Hamburger onClick={() => setIsOpen(!isOpen)}>
         <span />
@@ -1442,7 +1444,9 @@ const FanFiEnhanced = () => {
               <HeroSubtitle>The decentralized platform where creators tokenize their IP and fans become stakeholders
               </HeroSubtitle>
               <CTAButtons>
-                <LaunchAppButton>
+                <LaunchAppButton onClick={()=>{
+                  window.location.href="/home2"
+                }}>
                   Launch App
                   <ButtonParticles>
                     {[...Array(12)].map((_, i) => (
@@ -1450,9 +1454,12 @@ const FanFiEnhanced = () => {
                     ))}
                   </ButtonParticles>
                 </LaunchAppButton>
-                <WhitepaperButton>Read Whitepaper</WhitepaperButton>
+                <WhitepaperButton onClick={()=>{
+                  window.location.href="https://drive.google.com/file/d/1Bne9AyNAra_UGTHa1fnx13xWa-Cx-THT/view?usp=sharing"
+                }}>Download Whitepaper</WhitepaperButton>
               </CTAButtons>
             </HeroContent>
+            <br></br> <br></br>
             <HeroVisual>
               <TokenOrb>
                 <OrbCore />
@@ -1833,7 +1840,9 @@ const FanFiEnhanced = () => {
               <p>
                 Whether you're a creator looking to monetize your IP or a fan wanting to invest in the content you love, FanFi is your gateway to the future of entertainment.
               </p>
-              <LaunchAppButton>
+              <LaunchAppButton onClick={()=>{
+                window.location.href="/home2"
+              }}>
                 Launch App
                 <ButtonParticles>
                   {[...Array(12)].map((_, i) => (
