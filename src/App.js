@@ -50,7 +50,8 @@ import Presale from './Components/Presale';
 
 import PresaleInteraction from './Components/PresaleInteract';
 import PresaleList from './Components/PresaleList';
-
+import FanFiLanding from './Components/FanFiLanding';
+import Landing from './Components/Landing'
 
 
 function App() {
@@ -61,7 +62,13 @@ function App() {
 
     <Router>
     <Routes>
+
+         <Route path="/" element={ <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}><FanFiLanding/></OktoProvider>} />
     
+ <Route path="/landing" element={ <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}><Landing/></OktoProvider>} />
+    
+
+
       <Route path="/creator" element={ <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}><AdminCreate/></OktoProvider>} />
       <Route path="/event/:event_id" element={<OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}><EventPage /></OktoProvider>} />
       
@@ -271,6 +278,8 @@ function App() {
         <OktoProvider apiKey={OKTO_CLIENT_API_KEY} buildType={BuildType.SANDBOX}>
      <PresaleList/>
     </OktoProvider>} />
+
+   
            
     </Routes>
   </Router>
