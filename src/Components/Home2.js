@@ -244,6 +244,8 @@ function Home2() {
     
     const [allMovies,setAllMovies]=useState([])
 
+    
+
 
     const  getLeaderboard=async ()=>{
 
@@ -802,12 +804,30 @@ function Home2() {
       <div className="web3-content">
         {/* Coin Balance Card */}
         <div className="web3-coin-card">
+
+          <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'5px'}}>
          
-          <div className="coin-balance">
-             <span className="coin-label">SCORE</span>
-            <CountUp start={coins-100} end={coins} className="coin-count" />
+          
+         
+          <div className="coinimg-perspective"  style={{ width: '5em', height: '5em', objectFit: 'cover' }}>
+             <div className="coinimg-container"  style={{ width: '5em', height: '5em', objectFit: 'cover' }}>
+               <img
+                 src={coinImg}
+                 alt="Coin"
+                 style={{ width: '5em', height: '5em', objectFit: 'cover' }}
+               />
+             </div>
+           </div>
+            
+      <div>
+           <CountUp start={coins-100} end={coins} className="coin-count" />
+           <br></br>
+            <span className="coin-label">COINS</span>
+            </div>
+           
            
           </div>
+          <br></br>
           <button 
             className="web3-button leaderboard-button"
             onClick={getLeaderboard}
@@ -858,7 +878,7 @@ function Home2() {
               getComments={getComments} 
               notifyClipboard={notifyClipboard} 
               formatDate={formatDate} 
-              Category={"Technology"}
+              Category={"Web3 Development"}
             />
           )}
           
@@ -872,7 +892,7 @@ function Home2() {
               getComments={getComments} 
               notifyClipboard={notifyClipboard} 
               formatDate={formatDate} 
-              Category={"Trading"}
+              Category={""}
             />
           )}
 

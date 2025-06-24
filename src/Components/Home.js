@@ -269,9 +269,7 @@ function Home() {
 
     }
    
-}}><l>Get Started</l>&nbsp; <img src={coinImg} style={{width: '40px', 
-  height: '40px', 
-  objectFit: 'cover' }}></img></button>}</center>
+}}><l>Get Started</l></button>}</center>
       
         </div>
       )}
@@ -297,10 +295,11 @@ function Home() {
 
         <div style={{color:'white'}} >
 
-      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Launch</Button>
-      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Trade</Button>
-      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Presale</Button>
-      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Stake</Button>
+      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Learn</Button>
+      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Dashboard</Button>
+      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Jobs</Button>
+      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Bounties</Button>
+      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Rewards</Button>
 
 
         </div>
@@ -310,7 +309,7 @@ function Home() {
             }}> <AccountBalanceWalletIcon/></Button></div>
           </div>
       <hr></hr>
-      <Alert severity="info" >Click on Start Earning to Get Started !</Alert>
+     
 <center>
   <br></br><br></br><br></br><br></br>
   <Confetti

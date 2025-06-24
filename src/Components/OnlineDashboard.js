@@ -405,6 +405,8 @@ function Home2() {
                     let eventsTemp=await data1.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
 
                     eventsTemp=eventsTemp.filter(obj=>obj.Type=="online")
+
+                    console.log("eventsTemp",eventsTemp)
                     
 
                     let eventsCreatedFound=eventsTemp.filter(obj =>  userCreationsFound.includes(obj.id) )

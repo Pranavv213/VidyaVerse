@@ -86,7 +86,7 @@ function AdminCreate() {
     const [startDateTime, setStartDateTime] = useState('2025-04-30T08:00');
     const [endDateTime, setEndDateTime] = useState('2025-05-01T14:00');
     const [capacity,setCapacity]=useState(0)
-    const [isOnline,setIsOnline]=useState(false)
+    const [isOnline,setIsOnline]=useState(true)
     const [moderatorLink,setModeratorLink]=useState("")
     const [guestLink,setGuestLink]=useState("")
     const { showWidgetModal, closeModal } = useOkto();
@@ -474,7 +474,7 @@ function AdminCreate() {
       <div class="form__group field">
 <div class="eventName">
     
-    <input type="input" style={{fontSize:'40px',background: "transparent", boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(0px)", border: "none", width:'100%',color:'white'}} placeholder="Event Name" required="" value={eventName} onChange={(e)=>setEventName(e.target.value)} />
+    <input type="input" style={{fontSize:'40px',background: "transparent", boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(0px)", border: "none", width:'100%',color:'white'}} placeholder="Course Name" required="" value={eventName} onChange={(e)=>setEventName(e.target.value)} />
     </div>
    
 </div>
@@ -659,11 +659,11 @@ isOnline && <div class="location"  style={{ cursor:'pointer',background: "rgba(2
                }
                else
                {  
-                notify("Subscribe to Premium for paid events","dark","top-right","error")
+                notify("Contact us for paid events","dark","top-right","error")
 
-                setTimeout(()=>{
-                    window.location.href="/pricing"
-                },3000)
+                // setTimeout(()=>{
+                //     window.location.href="/pricing"
+                // },3000)
 
                }
            

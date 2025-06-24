@@ -440,9 +440,9 @@ function EventPage() {
           Description: events[0].Description,
           Creator: events[0].Creator,
           Questions: events[0].Questions,
-          Attendees: events[0].Attendees, // If Attendees needs to be updated too, you can also use arrayUnion
+          Attendees: arrayUnion(result), // If Attendees needs to be updated too, you can also use arrayUnion
           Registrations: arrayUnion(result),
-          AttendeesCount: events[0].AttendeesCount, // Or handle via increment if it's dynamic
+          AttendeesCount: increment(1), // Or handle via increment if it's dynamic
           RegistrationsCount: increment(1),
           Coins: increment(1000), // This can also be increment(1000) or calculate based on your logic
         });
@@ -457,7 +457,7 @@ function EventPage() {
                       
        
         const userDoc1 = doc(db, "user", filteredArray[0].id);
-        const newFields1 = { Email: filteredArray[0].Email, Coins:filteredArray[0].Coins, EventsCreated:filteredArray[0].EventsCreated,EventsRegistered:[...filteredArray[0].EventsRegistered,event_id], EventsApproved:[...filteredArray[0].EventsApproved],EventsAttended:filteredArray[0].EventsAttended};
+        const newFields1 = { Email: filteredArray[0].Email, Coins:filteredArray[0].Coins, EventsCreated:filteredArray[0].EventsCreated,EventsRegistered:[...filteredArray[0].EventsRegistered,event_id], EventsApproved:[...filteredArray[0].EventsApproved,event_id],EventsAttended:filteredArray[0].EventsAttended};
 
           // update
 

@@ -78,19 +78,23 @@ function EventComponent({allEvents,allUsersArray,search,setEvent_id,getComments,
     allEvents
       .filter((x) => {
 
-      
+        console.log("Category",Category)
+        console.log("events",allEvents.filter(obj=>obj.Category==Category))
         const input = search.toLowerCase().replace(/[^\w\s]/g, '').trim();
         const name = x.Name?.toLowerCase().replace(/[^\w\s]/g, '') || '';
 
-        if (search.length === 0) {
-          return x.Type !== 'online'; // show all offline events if search is empty
-        } else {
-          return name.includes(input) && x.Type !== 'online'; // filter offline events based on address
+        if (search.length != 0) {
+          return name.includes(input) ; // filter offline events based on address
+        }
+        else{
+          return true
         }
       })
       .map((x) => {
-        if(x.Category==Category)
-        return (
+       
+       
+        
+        if(x.Category==Category) return (
             <Card sx={{ maxWidth: 350,minWidth:300 ,maxHeight:1000  }} style={{ position:'relative',background: 'black', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.5px solid rgba(255, 255, 255,0.2)',position:'relative',borderRadius:'20px'}}>
                  <CardActionArea>
                    
@@ -218,7 +222,7 @@ function EventComponent({allEvents,allUsersArray,search,setEvent_id,getComments,
                    <br></br> <br></br>
                    <Button variant='outlined' onClick={()=>{
                     window.location.href=`event/${x.id}`
-                   }} style={{backgroundColor:'rgb(236,16,52)',color:'white',borderRadius:'20px'}}>Book Tickets</Button>
+                   }} style={{backgroundColor:'rgb(236,16,52)',color:'white',borderRadius:'20px'}}>Register</Button>
                    <br></br><br></br>
                    </CardContent>
                  </CardActionArea>

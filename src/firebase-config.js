@@ -3,13 +3,13 @@ import { getFirestore } from "@firebase/firestore";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 const firebaseConfig = {
-    apiKey: "AIzaSyD7aKk923ZavyHlGZXR9aHUvCQti92P5i0",
-    authDomain: "connectversev1.firebaseapp.com",
-    projectId: "connectversev1",
-    storageBucket: "connectversev1.firebasestorage.app",
-    messagingSenderId: "664225251835",
-    appId: "1:664225251835:web:dbf794a73d42ca8a354b5e",
-    measurementId: "G-D4M7YSW6QF"
+  apiKey: "AIzaSyBkMka24mHwmBa_3rFDoyur-e9dXON9neY",
+  authDomain: "vidyaverse-d4097.firebaseapp.com",
+  projectId: "vidyaverse-d4097",
+  storageBucket: "vidyaverse-d4097.firebasestorage.app",
+  messagingSenderId: "222292601109",
+  appId: "1:222292601109:web:a070aae60c5da6bbdda11c",
+  measurementId: "G-ZLQG4CTRGD"
 };
 
 
