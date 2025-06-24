@@ -52,7 +52,7 @@ const notifyCustom = (text,type) => toast(text,{
 const Inner = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-end;
 `;
 
@@ -1846,11 +1846,11 @@ const VidyaVerseLanding = () => {
           </Copyright>
         </FooterBottom>
       </Footer>
-      {!chatbot &&  <Wrapper style={{cursor:'pointer'}} onClick={()=>{
+      {!chatbot &&  <Wrapper style={{cursor:'pointer',width:'100px',height:'100px'}} onClick={()=>{
         setChatbot(true)
       }}>
       <Inner>
-        <FullText style={{color:'linear-gradient(90deg, #8a2be2,rgb(197, 208, 200),rgb(210, 192, 215),rgb(220, 220, 220));',fontFamily:'poppins'}}>Hi, I am Vidya AI! How can I help you?</FullText>
+        <FullText style={{color:'linear-gradient(90deg, #8a2be2,rgb(197, 208, 200),rgb(210, 192, 215),rgb(220, 220, 220));',fontFamily:'poppins'}}>Vidya AI</FullText>
         <MobileText style={{color:'linear-gradient(90deg, #8a2be2,rgb(197, 208, 200),rgb(210, 192, 215),rgb(220, 220, 220));',fontFamily:'poppins'}}>Vidya AI</MobileText>
         <Avatar src={vidya} alt="Vidya" />
       </Inner>
