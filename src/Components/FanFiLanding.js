@@ -150,7 +150,7 @@ const Section = styled.section`
 `;
 
 const HeroSection = styled(Section)`
-  min-height: 100vh;
+  
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1563,6 +1563,7 @@ const VidyaVerseLanding = () => {
         ))}
         
         <HeroContent>
+          <br></br> <br></br> <br></br> <br></br>
         
           <Title>VidyaVerse</Title>
           <AnimatedSubtitleBlock>
