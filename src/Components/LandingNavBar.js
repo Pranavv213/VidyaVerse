@@ -7,8 +7,8 @@ const Navbar = () => {
 
   return (
    
-    <Nav style={{backgroundColor:'black',color:'#1876d1',position:'fixed',width:'100%',border:'0.5px solid grey',borderRadius:'30px',zIndex:999999999}}>
-      <Logo href="#"><img src={logo} style={{width:'4em'}}></img></Logo>
+    <Nav style={{backgroundColor:'#16082A',color:'#D8B3FE',position:'fixed',width:'95%',border:'0.5px solid grey',borderLeft:'none',borderRight:'none',zIndex:999999999}}>
+      <Logo href="#"><img src={logo} style={{width:'2em'}}></img></Logo>
       <Hamburger onClick={() => setIsOpen(!isOpen)}>
         <span />
         <span />
@@ -17,7 +17,9 @@ const Navbar = () => {
       <Menu isOpen={isOpen}>
         <MenuLink href="/">Home</MenuLink>
         <MenuLink href="#features">Features</MenuLink>
-        <MenuLink href="#how-it-works">How it Works</MenuLink>
+        <MenuLink href="#popular-courses">Popular Courses</MenuLink>
+        <MenuLink href="#instructors">Instructors</MenuLink>
+        <MenuLink href="#faq">FAQ</MenuLink>
         <MenuLink href="#community">Community</MenuLink>
       </Menu>
     </Nav>
@@ -57,6 +59,7 @@ const Hamburger = styled.div`
     background: #fff;
     margin-bottom: 4px;
     border-radius: 5px;
+    margin-right: 2em;
   }
   
   @media (max-width: 768px) {
@@ -80,16 +83,17 @@ const Menu = styled.div`
 `;
 
 const MenuLink = styled.a`
+
   padding: 1rem 2rem;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
-  color: #ecf0f1;
+  color: #D8B3FE;
   transition: all 0.3s ease-in;
   font-size: 0.9rem;
   
   &:hover {
-    color: #3498db;
+    color:rgb(237, 243, 247);
   }
   
   @media (max-width: 768px) {

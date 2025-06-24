@@ -234,7 +234,7 @@ const Chat = () => {
   return (
     <div>
      <br></br>
-         <ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="outlined" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined"/>
+         <ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="outlined" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined" communityButtonStyle="contained"/>
          <br></br> <br></br>  <br></br> <br></br>  <br></br> <br></br>
       <Button variant="outlined" onClick={()=>{
            setShowCreateDiv(true)

@@ -1047,49 +1047,108 @@ isOnline && <div class="location"  style={{ cursor:'pointer',background: "rgba(2
           
           onChange={(e)=>{
             setCapacity(parseInt(e.target.value))
-          }} placeholder='Standup'>{category}</p>
+          }} placeholder='Web3 Development'>{category}</p>
           
           <br></br> <br></br>
           <Button variant="outlined" style={{borderRadius:'5px', margin: '5px'}} onClick={()=>{
-  if(!category.toLowerCase().includes("Standup".toLowerCase())) {
-    setCategory(category.length === 0 ? "Standup" : category + ",Standup");
+  if(!category.toLowerCase().includes("Web3 Development".toLowerCase())) {
+    setCategory(category.length === 0 ? "Web3 Development" : category + ",Web3 Development");
     categoryColor[0]="#1876d1"
     setCategoryColor(categoryColor)
   } else {
     categoryColor[0]="white"
     setCategoryColor(categoryColor)
-    if(category.startsWith("Standup,")) {
-      setCategory(category.slice("Standup,".length));
-    } else if(category === "Standup") {
+    if(category.startsWith("Web3 Development,")) {
+      setCategory(category.slice("Web3 Development,".length));
+    } else if(category === "Web3 Development") {
       setCategory("");
-    } else if(category.startsWith("Standup")) {
-      setCategory(category.slice("Standup".length));
+    } else if(category.startsWith("Web3 Development")) {
+      setCategory(category.slice("Web3 Development".length));
     } else {
-      setCategory(category.slice(0,category.indexOf(",Standup"))+category.slice(category.indexOf(",Standup")+5));
+      setCategory(category.slice(0,category.indexOf(",Web3 Development"))+category.slice(category.indexOf(",Web3 Development")+5));
     }
   }
-}}>Standup</Button>
+}}>Web3 Development</Button>
 
 <Button variant="outlined" style={{borderRadius:'5px', margin: '5px'}} onClick={()=>{
-  if(!category.toLowerCase().includes("Concert".toLowerCase())) {
-    setCategory(category.length === 0 ? "Concert" : category + ",Concert");
+  if(!category.toLowerCase().includes("AI Development".toLowerCase())) {
+    setCategory(category.length === 0 ? "AI Development" : category + ",AI Development");
     categoryColor[1]="#1876d1"
     setCategoryColor(categoryColor)
   } else {
     categoryColor[1]="white"
     setCategoryColor(categoryColor)
-    if(category.startsWith("Concert,")) {
-      setCategory(category.slice("Concert,".length));
-    } else if(category === "Concert") {
+    if(category.startsWith("AI Development,")) {
+      setCategory(category.slice("AI Development,".length));
+    } else if(category === "AI Development") {
       setCategory("");
-    } else if(category.startsWith("Concert")) {
-      setCategory(category.slice("Concert".length));
+    } else if(category.startsWith("AI Development")) {
+      setCategory(category.slice("AI Development".length));
     } else {
-      setCategory(category.slice(0,category.indexOf(",Concert"))+category.slice(category.indexOf(",Concert")+7));
+      setCategory(category.slice(0,category.indexOf(",AI Development"))+category.slice(category.indexOf(",AI Development")+7));
     }
   }
-}}>Concert</Button>
+}}>AI Development</Button>
 
+<Button variant="outlined" style={{borderRadius:'5px', margin: '5px'}} onClick={()=>{
+  if(!category.toLowerCase().includes("Crypto Trading".toLowerCase())) {
+    setCategory(category.length === 0 ? "Crypto Trading" : category + ",Crypto Trading");
+    categoryColor[2]="#1876d1"
+    setCategoryColor(categoryColor)
+  } else {
+    categoryColor[2]="white"
+    setCategoryColor(categoryColor)
+    if(category.startsWith("Crypto Trading,")) {
+      setCategory(category.slice("Crypto Trading,".length));
+    } else if(category === "Crypto Trading") {
+      setCategory("");
+    } else if(category.startsWith("Crypto Trading")) {
+      setCategory(category.slice("Crypto Trading".length));
+    } else {
+      setCategory(category.slice(0,category.indexOf(",Crypto Trading"))+category.slice(category.indexOf(",Crypto Trading")+7));
+    }
+  }
+}}>Crypto Trading</Button>
+
+<Button variant="outlined" style={{borderRadius:'5px', margin: '5px'}} onClick={()=>{
+  if(!category.toLowerCase().includes("Marketing".toLowerCase())) {
+    setCategory(category.length === 0 ? "Marketing" : category + ",Marketing");
+    categoryColor[3]="#1876d1"
+    setCategoryColor(categoryColor)
+  } else {
+    categoryColor[3]="white"
+    setCategoryColor(categoryColor)
+    if(category.startsWith("Marketing,")) {
+      setCategory(category.slice("Marketing,".length));
+    } else if(category === "Marketing") {
+      setCategory("");
+    } else if(category.startsWith("Marketing")) {
+      setCategory(category.slice("Marketing".length));
+    } else {
+      setCategory(category.slice(0,category.indexOf(",Marketing"))+category.slice(category.indexOf(",Marketing")+7));
+    }
+  }
+}}>Marketing</Button>
+
+<Button variant="outlined" style={{borderRadius:'5px', margin: '5px'}} onClick={()=>{
+  if(!category.toLowerCase().includes("Others".toLowerCase())) {
+    setCategory(category.length === 0 ? "Others" : category + ",Others");
+    categoryColor[4]="#1876d1"
+    setCategoryColor(categoryColor)
+  } else {
+    categoryColor[4]="white"
+    setCategoryColor(categoryColor)
+    if(category.startsWith("Others,")) {
+      setCategory(category.slice("Others,".length));
+    } else if(category === "Others") {
+      setCategory("");
+    } else if(category.startsWith("Others")) {
+      setCategory(category.slice("Others".length));
+    } else {
+      setCategory(category.slice(0,category.indexOf(",Others"))+category.slice(category.indexOf(",Others")+7));
+    }
+  }
+}}>Others</Button>
 
           
           </center>

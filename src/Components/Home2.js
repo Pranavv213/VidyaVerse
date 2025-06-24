@@ -73,11 +73,13 @@ import EventComponent from './EventComponent';
 import MoviesComponent from './MoviesComponent';
 
 const buttons = [
-  { id: 1, label: 'Movies', icon: null },
-  { id: 2, label: 'Standup', icon: null },
-  { id: 4, label: 'Concerts', icon: null},
-  { id: 5, label: 'Sports', icon: null},
-  { id: 3, label: '', icon: <CategoryIcon fontSize="large" /> },
+ 
+  { id: 1, label: 'Web3 Development', icon: null },
+  { id: 2, label: 'AI Development', icon: null},
+  { id: 3, label: 'Crypto Trading', icon: null}, 
+  { id: 4, label: 'Marketing', icon: null },
+  { id: 5, label: 'Others', icon: null},
+  { id: 6, label: '', icon: <CategoryIcon fontSize="large" /> },
 ];
 
 
@@ -800,12 +802,11 @@ function Home2() {
       <div className="web3-content">
         {/* Coin Balance Card */}
         <div className="web3-coin-card">
-          <div className="coin-shine-container">
-            <img src={coinImage} alt="Coin" className="coin-image" />
-          </div>
+         
           <div className="coin-balance">
+             <span className="coin-label">SCORE</span>
             <CountUp start={coins-100} end={coins} className="coin-count" />
-            <span className="coin-label">COINS</span>
+           
           </div>
           <button 
             className="web3-button leaderboard-button"
@@ -823,7 +824,7 @@ function Home2() {
               key={id}
               className={`category-button ${buttonHight === id ? 'active' : ''}`}
               onClick={() => {
-                if (id === 3) setOpen(prev => !prev);
+                if (id === 6) setOpen(prev => !prev);
                 setButtonHighlight(id);
                 setCategory('');
               }}
@@ -839,15 +840,17 @@ function Home2() {
           <input
             className="web3-search-input" style={{fontSize:'16px',width:'18em'}}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="🔍  Search Movies, Concerts, Events..."
+            placeholder="🔍  Search Live Courses..."
           />
         </div>
 
         {/* Content Sections */}
         <div className="content-sections">
+         
+          
           {buttonHight === 1 && (
-            <MoviesComponent 
-              allEvents={allMovies} 
+            <EventComponent 
+              allEvents={allEvents} 
               allUsersArray={allUsersArray} 
               search={search}
               event_id={event_id} 
@@ -855,7 +858,7 @@ function Home2() {
               getComments={getComments} 
               notifyClipboard={notifyClipboard} 
               formatDate={formatDate} 
-              notifyCustom={notifyCustom}
+              Category={"Technology"}
             />
           )}
           
@@ -869,11 +872,11 @@ function Home2() {
               getComments={getComments} 
               notifyClipboard={notifyClipboard} 
               formatDate={formatDate} 
-              Category={"Standup"}
+              Category={"Trading"}
             />
           )}
-          
-          {buttonHight === 4 && (
+
+           {buttonHight === 3 && (
             <EventComponent 
               allEvents={allEvents} 
               allUsersArray={allUsersArray} 
@@ -883,7 +886,7 @@ function Home2() {
               getComments={getComments} 
               notifyClipboard={notifyClipboard} 
               formatDate={formatDate} 
-              Category={"Concert"}
+              Category={"Marketing"}
             />
           )}
         </div>
@@ -922,7 +925,7 @@ function Home2() {
                     <span className="username">{x.UserName.length < 6 ? x.UserName : `${x.UserName.slice(0, 6)}...`}</span>
                   </div>
                   <div className="coin-info">
-                    <img src={coinImg} alt="coin" className="coin-icon" />
+                   
                     <span className="coin-amount">{x.Coins}</span>
                   </div>
                 </div>
@@ -935,7 +938,7 @@ function Home2() {
                     <span className="username">You</span>
                   </div>
                   <div className="coin-info">
-                    <img src={coinImg} alt="coin" className="coin-icon" />
+                   
                     <span className="coin-amount">{leaderboardArray.filter(x => x.Email == localStorage.getItem('email'))[0].Coins}</span>
                   </div>
                 </div>
