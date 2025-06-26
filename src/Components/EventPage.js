@@ -53,6 +53,7 @@ import { ethers } from 'ethers';
 import LinearProgress from '@mui/material/LinearProgress';
 import USDC_TOKEN_ABI from '../Contracts/USDCABI.json'
 import EVENT_ABI from '../Contracts/EventManager.json'
+import { GoogleLogin } from '@react-oauth/google';
 
 const USDC_TOKEN_ADDRESS = '0x489058E31fAADA526C59561eE858120A816a09C8';
 
@@ -231,7 +232,7 @@ function EventPage() {
                     // Firestore updates
                     if (!userEmail) {
                       notify("Please log in first", "error");
-                      localStorage.setItem("currentEvent", event_id);
+                     
                       return;
                     }
                 
@@ -390,6 +391,14 @@ function EventPage() {
         setcreator(filteredArray)
         console.log("filteredArrayof users", filteredArray)
 
+        if(localStorage.getItem('isEvent'))
+      {
+        localStorage.removeItem('isEvent');
+        localStorage.removeItem('isEventObj');
+        setShowAcceptInvite(true)
+      }
+
+
         
        
       
@@ -397,23 +406,37 @@ function EventPage() {
 
       const updateUser = async (result) => {
 
-        console.log("answersArray",answers)
+       
 
-        if(Object.keys(result).slice(1).some(key => result[key] === undefined || result[key] === ""))
-        {
-          notifyCustom("Fill all the fields","error")
+        if (
+          Object.keys(result)
+            .filter(key => key !== "Email") // exclude email
+            .slice(1)
+            .some(key => result[key] === undefined || result[key] === "")
+        ) {
 
+         
+
+        
+           
+          notifyCustom("Fill all the fields", "error");
           return;
-        }
+        
+      }
+        
 
         try{
 
-          if(!localStorage.getItem('email')){
-            notify("Please Login in first","error")
-            localStorage.setItem('currentEvent',event_id)
-            return
 
-          }
+          if(!localStorage.getItem('email'))
+            {
+              localStorage.setItem('isEventObj',JSON.stringify(result))
+    
+              localStorage.setItem('isEvent',event_id)
+              signInWithGoogle()
+              return;
+            }
+          
 
 
 
@@ -446,6 +469,9 @@ function EventPage() {
           RegistrationsCount: increment(1),
           Coins: increment(1000), // This can also be increment(1000) or calculate based on your logic
         });
+
+       
+        
      
 
         
@@ -480,10 +506,7 @@ function EventPage() {
 
     useEffect(() => {
 
-      if(localStorage.getItem('currentEvent'))
-      {
-        localStorage.removeItem('currentEvent');
-      }
+     
         getEvents();
      
          
@@ -645,9 +668,10 @@ function EventPage() {
 <a href="#up" style={{textDecoration:'none'}}>
   <br></br>
     <button class="button-85" style={{height:'2.5em'}} type="submit" onClick={()=>{
-
+      
+      
       setShowAcceptInvite(true)
-    }}>Accept Invitation</button></a>
+    }}>Register</button></a>
 <br></br>
 
   </div>
@@ -658,8 +682,9 @@ function EventPage() {
 <a href="#up" style={{textDecoration:'none'}}>
     <button class="button-85" style={{height:'3em'}} type="submit" onClick={()=>{
 
-      setShowAcceptInvite(true)
-    }}>Accept Invitation</button></a>
+
+setShowAcceptInvite(true)
+}}>Register</button></a>
 
 
   </div>

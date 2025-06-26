@@ -236,16 +236,81 @@ const Chat = () => {
      <br></br>
          <ResponsiveAppBar homeButtonStyle="outlined" earnButtonStyle="outlined" createButtonStyle="outlined" chatButtonStyle="contained" dashboardButtonStyle="outlined" communityButtonStyle="contained"/>
          <br></br> <br></br>  <br></br> <br></br>  <br></br> <br></br>
-      <Button variant="outlined" onClick={()=>{
-           setShowCreateDiv(true)
-      }}>Create  &nbsp;<AddCircleIcon/></Button>
-      <Button variant="outlined" onClick={()=>{
-           window.location.href = '/manage';
-      }}>Manage &nbsp;<EditCalendarIcon/></Button>
-      <br></br> <br></br> <br></br>
-
+    
+     
+  
 
       <br></br>
+
+      <h2 style={{color:'white'}}>Joined ({joinedCommunities && joinedCommunities.length })</h2>
+   <br></br>
+
+   <div style={{display:'flex',flexWrap:'wrap',gap:'2em',justifyContent:'center'}}>
+      {joinedCommunities && joinedCommunities.length !== 0 && joinedCommunities.map((x)=>{
+
+        return (
+            <Card 
+            sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.5px solid rgba(255, 255, 255,0.2)',position:'relative',borderRadius:'20px'}}
+>
+  <CardActionArea
+    onClick={() => {
+      window.location.href = `/testing3/${x.id}`;
+    }}
+  >
+    <img 
+     style={{width:'20em' ,height:'20em'}}
+      src={x.ProfileImage} 
+      alt="Event"
+    />
+
+    <CardContent 
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+       
+        color: 'white',
+        gap: '5px',
+        padding: '1em'
+      }}
+    >
+      <h2>{x.Name}</h2>
+
+      <div style={{display:'flex',gap:'3px',flexWrap:'wrap',justifyContent:'center'}}>
+
+      <Button variant="outlined" onClick={(e)=>{
+
+        e.stopPropagation()
+
+        window.location.href=`/testing3/${x.id}`
+        }}><OpenInNewIcon/></Button>
+
+      <Button variant="outlined" onClick={(e)=>{
+         e.stopPropagation()
+
+         navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/testing3/${x.id}`)
+       .then(() => {
+        notifyCustom("Community link copied","success");
+       })
+       .catch(err => {
+         console.error('Failed to copy: ', err);
+       });
+      }}><ShareIcon/></Button>
+
+      <Button variant="outlined" style={{border:'0.08px solid red',color:'red'}}><LogoutIcon/></Button>
+
+     
+
+
+      </div>
+     
+     
+    </CardContent>
+  </CardActionArea>
+</Card>
+
+       ) })}
+       </div>
 
       <h2 style={{color:'white'}}>All ({allCommunities && allCommunities.length })</h2>
 
@@ -401,75 +466,7 @@ const Chat = () => {
 
    <hr style={{ border: '0.5px solid rgba(255, 255, 255, 0.3)'}}></hr>
 
-   <h2 style={{color:'white'}}>Joined ({joinedCommunities && joinedCommunities.length })</h2>
-   <br></br>
 
-   <div style={{display:'flex',flexWrap:'wrap',gap:'2em',justifyContent:'center'}}>
-      {joinedCommunities && joinedCommunities.length !== 0 && joinedCommunities.map((x)=>{
-
-        return (
-            <Card 
-            sx={{ maxWidth: 400,minWidth:300 ,maxHeight:600  }} style={{ position:'relative',background: 'transparent', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.5)', backdropFilter: 'blur(17.5px)', WebkitBackdropFilter: 'blur(17.5px)', borderRadius: '20px' , border: '0.5px solid rgba(255, 255, 255,0.2)',position:'relative',borderRadius:'20px'}}
->
-  <CardActionArea
-    onClick={() => {
-      window.location.href = `/testing3/${x.id}`;
-    }}
-  >
-    <img 
-     style={{width:'20em' ,height:'20em'}}
-      src={x.ProfileImage} 
-      alt="Event"
-    />
-
-    <CardContent 
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-       
-        color: 'white',
-        gap: '5px',
-        padding: '1em'
-      }}
-    >
-      <h2>{x.Name}</h2>
-
-      <div style={{display:'flex',gap:'3px',flexWrap:'wrap',justifyContent:'center'}}>
-
-      <Button variant="outlined" onClick={(e)=>{
-
-        e.stopPropagation()
-
-        window.location.href=`/testing3/${x.id}`
-        }}><OpenInNewIcon/></Button>
-
-      <Button variant="outlined" onClick={(e)=>{
-         e.stopPropagation()
-
-         navigator.clipboard.writeText(`https://v2-six-puce.vercel.app/testing3/${x.id}`)
-       .then(() => {
-        notifyCustom("Community link copied","success");
-       })
-       .catch(err => {
-         console.error('Failed to copy: ', err);
-       });
-      }}><ShareIcon/></Button>
-
-      <Button variant="outlined" style={{border:'0.08px solid red',color:'red'}}><LogoutIcon/></Button>
-
-     
-
-
-      </div>
-     
-     
-    </CardContent>
-  </CardActionArea>
-</Card>
-
-       ) })}
-       </div>
 <br></br> <br></br><br></br>
 
 {showCreateDiv && (

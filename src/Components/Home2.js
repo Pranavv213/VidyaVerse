@@ -79,7 +79,7 @@ const buttons = [
   { id: 3, label: 'Crypto Trading', icon: null}, 
   { id: 4, label: 'Marketing', icon: null },
   { id: 5, label: 'Others', icon: null},
-  { id: 6, label: '', icon: <CategoryIcon fontSize="large" /> },
+  { id: 6, label: '', icon: <CategoryIcon fontSize="small" /> },
 ];
 
 
@@ -345,30 +345,47 @@ function Home2() {
               <List>
               
                 {[
-   
-   "Stand-Up",
-   "Sketch",
-   "Improv",
-   "Satire",
-   "Sitcom",
-   "Slapstick",
-   "Roast",
-   "Desi Comedy",
-   "Offbeat",
-   "Panel Show",
-   "Pop",
-   "Rock",
-   "Hip-Hop",
-   "Classical",
-   "Jazz",
-   "EDM",
-   "Folk",
-   "Reggae",
-   "Country",
-   "Bollywood",
-   "Blues",
-   "Metal"
- ].map((text, index) => (
+  "DeFi",
+  "DAOs",
+  "NFTs",
+  "Smart Contracts",
+  "Layer 1",
+  "Layer 2",
+  "ZK Proofs",
+  "Tokenomics",
+  "Web3 Infrastructure",
+  "Decentralized Identity",
+  "Interoperability",
+  "Technical Analysis",
+  "Fundamental Analysis",
+  "Altcoins",
+  "Meme Coins",
+  "Trading Strategies",
+  "Market Psychology",
+  "On-Chain Analysis",
+  "Regulations",
+  "Risk Management",
+  "Generative AI",
+  "Prompt Engineering",
+  "AI in Web3",
+  "AI Trading Bots",
+  "NLP",
+  "Computer Vision",
+  "Reinforcement Learning",
+  "Ethical AI",
+  "Open Source LLMs",
+  "Growth Hacking",
+  "Influencer Marketing",
+  "Community Building",
+  "Content Strategy",
+  "Performance Marketing",
+  "SEO",
+  "Brand Positioning",
+  "Event Activations",
+  "Funnel Optimization",
+  "Virality"
+]
+.map((text, index) => (
                   <ListItem key={text} disablePadding onClick={()=>{
                     setCategory(text)
                     toggleDrawer(false)
@@ -646,10 +663,7 @@ function Home2() {
 
               }
 
-              if(!localStorage.getItem('userLocationData'))
-              {
-                window.location.href="/location"
-              }
+              
           
           }
         })
@@ -803,39 +817,7 @@ function Home2() {
       {/* Main Content */}
       <div className="web3-content">
         {/* Coin Balance Card */}
-        <div className="web3-coin-card">
-
-          <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'5px'}}>
-         
-          
-         
-          <div className="coinimg-perspective"  style={{ width: '5em', height: '5em', objectFit: 'cover' }}>
-             <div className="coinimg-container"  style={{ width: '5em', height: '5em', objectFit: 'cover' }}>
-               <img
-                 src={coinImg}
-                 alt="Coin"
-                 style={{ width: '5em', height: '5em', objectFit: 'cover' }}
-               />
-             </div>
-           </div>
-            
-      <div>
-           <CountUp start={coins-100} end={coins} className="coin-count" />
-           <br></br>
-            <span className="coin-label">COINS</span>
-            </div>
-           
-           
-          </div>
-          <br></br>
-          <button 
-            className="web3-button leaderboard-button"
-            onClick={getLeaderboard}
-          >
-            <LeaderboardIcon className="button-icon" />
-            Leaderboard
-          </button>
-        </div>
+     
 
         {/* Category Selector */}
         <div className="category-selector">
@@ -843,6 +825,7 @@ function Home2() {
             <button
               key={id}
               className={`category-button ${buttonHight === id ? 'active' : ''}`}
+              style={{borderRadius:'10px',maxWidth:'12em'}}
               onClick={() => {
                 if (id === 6) setOpen(prev => !prev);
                 setButtonHighlight(id);

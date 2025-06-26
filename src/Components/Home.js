@@ -9,6 +9,8 @@ import {
   updateDoc,
   deleteDoc,
   doc,
+  arrayUnion,
+  increment
 } from "firebase/firestore";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -24,7 +26,7 @@ import coinImg from '../assets/images/coinImg.png'
 import Alert from '@mui/material/Alert';
 import { ToastContainer, toast } from 'react-toastify';
 import Modal from '@mui/material/Modal';
-
+import ResponsiveAppbar from './ResponsiveAppBar';
 
 
 
@@ -90,10 +92,81 @@ function Home() {
 
 
   
+const addForCurrentEvent=async()=>{
+  
 
+  const data = await getDocs(usersCollectionRef1);
+  let users=await data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+
+  let filteredArray=users.filter(obj=>obj.Email==localStorage.getItem('email'))
+
+  if(filteredArray.length!=0)
+  {
+    localStorage.setItem('coins',filteredArray[0].Coins)
+    if(filteredArray[0].WalletAddress)
+    {
+      localStorage.setItem('walletAddress',filteredArray[0].WalletAddress)
+    }
+    if(filteredArray[0].ProfileImage)
+    {
+      localStorage.setItem('profileImg',filteredArray[0].ProfileImage)
+    }
+    if(filteredArray[0].UserName)
+    {
+      localStorage.setItem('userName',filteredArray[0].UserName)
+    }
+
+    const eventDocRef = doc(db, "events", localStorage.getItem('isEvent'));
+
+   console.log("event",JSON.parse(localStorage.getItem('isEventObj')))
+
+   let result=JSON.parse(localStorage.getItem('isEventObj'))
+   result.Email=localStorage.getItem('email')
+    await updateDoc(eventDocRef, { 
+      Attendees: arrayUnion(result), 
+      Registrations: arrayUnion(result),
+      AttendeesCount: increment(1), 
+      RegistrationsCount: increment(1),
+      Coins: increment(1000),
+     }) 
+    const userDocRef = doc(db, "user", filteredArray[0].id);
+
+    await updateDoc(userDocRef,{
+      EventsRegistered:arrayUnion(localStorage.getItem('isEvent'))
+    })
+                    
+
+  }
+  else{
+
+    await addDoc(usersCollectionRef1, { Email:localStorage.getItem('email'), Coins: 100, EventsCreated: [], EventsRegistered: [], EventsApproved:[],EventsAttended: [],WalletAddress:localStorage.getItem('email')});
+    setCoins(100)
+
+    localStorage.setItem('coins',100)
+
+   
+  window.location.href=`/event/${localStorage.getItem('isEvent')}`
+  }
+
+                      
+         
+                      
+                         
+        
+         
+           
+}
 
 
       useEffect(()=>{
+
+        if(localStorage.getItem('isEvent') && localStorage.getItem('email'))
+        {
+
+          addForCurrentEvent()
+
+          return;
+        }
 
       if(localStorage.getItem('email') && localStorage.getItem('coins'))
       {
@@ -137,13 +210,9 @@ function Home() {
                     {
                       localStorage.setItem('userName',filteredArray[0].UserName)
                     }
-                  if(localStorage.getItem('currentEvent'))
-                  {
-                    window.location.href=`/event/${localStorage.getItem('currentEvent')}`
-                  }
-                  else{
+                 
                     window.location.href="/home2"
-                  }
+               
                   
                 }
                 else{
@@ -170,6 +239,8 @@ function Home() {
     <div >
   
       <br></br>
+      <ResponsiveAppbar/>
+      <br></br>
     
       {/* <div style={{
   width: '300px', 
@@ -188,6 +259,7 @@ function Home() {
   <p>Your account has been created.</p>
   <p>Click on Start Earning to continue.</p>
 </div> */}
+
 
 {showDiv && (
         <div style={{
@@ -227,15 +299,7 @@ function Home() {
           await addDoc(usersCollectionRef1, { Email:localStorage.getItem('email'), Coins: 100, EventsCreated: [], EventsRegistered: [], EventsApproved:[],EventsAttended: [],WalletAddress:localStorage.getItem('email')});
           setCoins(100)
 
-          if(localStorage.getItem('currentEvent'))
-            {
-    
-              window.location.href=`event/${localStorage.getItem('currentEvent')}`
-            }
-    
-            else{
-              window.location.href = '/home2';
-            }
+          
         }
         
         else if(localStorage.getItem('email'))
@@ -244,15 +308,9 @@ function Home() {
             await addDoc(usersCollectionRef1, { Email:localStorage.getItem('email'), Coins: 100, EventsCreated: [], EventsRegistered: [], EventsApproved:[],EventsAttended: []});
             setCoins(100)
 
-            if(localStorage.getItem('currentEvent'))
-              {
-      
-                window.location.href=`event/${localStorage.getItem('currentEvent')}`
-              }
-      
-              else{
+            
                 window.location.href = '/home2';
-              }
+              
           }
       
        
@@ -269,7 +327,9 @@ function Home() {
 
     }
    
-}}><l>Get Started</l></button>}</center>
+}}><l>Get Started</l>&nbsp; <img src={coinImg} style={{width: '40px', 
+  height: '40px', 
+  objectFit: 'cover' }}></img></button>}</center>
       
         </div>
       )}
@@ -290,38 +350,19 @@ function Home() {
         `}
       </style>
 
-      <div className="full-width-bar" >
-        <div class="logo" >  <img src={logo} style={{width:'6em'}} alt="Logo" /></div>
-
-        <div style={{color:'white'}} >
-
-      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Learn</Button>
-      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Dashboard</Button>
-      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Jobs</Button>
-      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Bounties</Button>
-      <Button variant="outlined" onClick={notify} style={{color:'#6f6aff',border:'none'}}>Rewards</Button>
-
-
-        </div>
-          
-            <div className="text" > <Button variant="outlined" onClick={()=>{
-              showWidgetModal()
-            }}> <AccountBalanceWalletIcon/></Button></div>
-          </div>
-      <hr></hr>
+     
+      
      
 <center>
   <br></br><br></br><br></br><br></br>
-  <Confetti
+  {/* <Confetti
       width={"1500px"}
       height={"800px"}
-    />
+    /> */}
   
 
 
-<div class="coin" style={{marginLeft:'0%',marginTop:'0%'}}>  <img src={coinImg} style={{width: '130px', 
-    height: '100px', 
-    objectFit: 'cover' }} alt="Logo"  />   <l style={{fontSize:"52px"}}>0</l></div>
+<div class="coin" style={{marginLeft:'0%',marginTop:'0%'}}>  </div>
       </center>
 
 <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>

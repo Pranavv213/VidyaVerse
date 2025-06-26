@@ -398,7 +398,7 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
 
 {showDashboardDiv &&  <div style={{
           width: '150px', 
-          height: '370px',
+          height: '250px',
           padding: '20px', 
           backgroundColor: 'black', 
           boxShadow: '0 8px 32px 0 rgba(74, 34, 148, 0.3);',
@@ -423,7 +423,7 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
           <CancelIcon style={{left:'2px'}}/>
           </div>
           <br></br>
-          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',color:'#6f6aff'}} class="dashboardDivMenu" onClick={()=>{
+          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',color:'white'}} class="dashboardDivMenu" onClick={()=>{
             window.location.href="/dashboard"
           }}><DashboardIcon/> <l>Dashboard</l></div>
           <br></br>
@@ -433,25 +433,22 @@ function ResponsiveAppBar({homeButtonStyle,earnButtonStyle,createButtonStyle,das
 
         
           
-          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',color:'#6f6aff'}} class="dashboardDivMenu" onClick={()=>{
-            window.location.href="/chat"
-          }}><ChatIcon/>Chats</div>
-          <br></br>
+      
 
         
           
-          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',color:'#6f6aff'}} class="dashboardDivMenu" onClick={()=>{
+          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',color:'white'}} class="dashboardDivMenu" onClick={()=>{
             window.location.href="/community"
           }}><GroupIcon/>Communities</div>
           <br></br>
 
-          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',color:'#6f6aff'}} class="dashboardDivMenu" onClick={()=>{
+          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',color:'white'}} class="dashboardDivMenu" onClick={()=>{
             window.location.href="/rewards"
           }}><CardGiftcardIcon fontSize='small'/>Certificates</div>
 
             <br></br>
 
-          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',color:'#6f6aff'}} class="dashboardDivMenu" onClick={()=>{
+          <div style={{width:'100%',borderRadius:'0',textAlign:'left',display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',color:'white'}} class="dashboardDivMenu" onClick={()=>{
             window.location.href="/profilesettings"
           }}><SettingsIcon/> Profile Settings</div>
           <br></br>
